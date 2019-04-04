@@ -158,7 +158,6 @@ public enum Instruction {
         rd.setUnsigned(rs.getUnsigned() - rt.getUnsigned());
     }),
     SW((ITypeAction) (cpu, rs, rt, immediate) -> {
-        System.out.println(immediate.integerValue());
         cpu.getRam().saveWord(rs.get() + immediate.integerValue(), rt.get());
     }),
     SWC1,
