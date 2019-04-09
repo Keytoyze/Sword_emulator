@@ -3,10 +3,9 @@
  * All Rights Reserved.
  */
 
-package indi.key.mipsemulator.model.disassembler;
+package indi.key.mipsemulator.control.model;
 
 import indi.key.mipsemulator.model.exception.InternalException;
-import indi.key.mipsemulator.controller.instruction.Instruction;
 import indi.key.mipsemulator.util.BitArray;
 
 // FIXME: In fact, Operation should not be abstracted like this. Due to some corner cases, we need dynamic abstractions,

@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.controller.instruction;
+package indi.key.mipsemulator.control.model;
 
 import indi.key.mipsemulator.model.exception.OverflowException;
 import indi.key.mipsemulator.util.BitArray;

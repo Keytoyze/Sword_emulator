@@ -1,9 +1,9 @@
-package indi.key.mipsemulator.model.storage;
+package indi.key.mipsemulator.memory;
 
 import java.io.File;
 import java.util.Arrays;
 
-import indi.key.mipsemulator.controller.emulator.Resetable;
+import indi.key.mipsemulator.control.controller.Resetable;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.util.BitArray;
 import indi.key.mipsemulator.util.IoUtils;

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="777.0" prefWidth="1011.0" xmlns="http://javafx.com/javafx/8.0.201" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="675.0" prefWidth="1011.0" VBox.vgrow="ALWAYS">
+      <children>
+            <RadioButton layoutX="14.0" layoutY="28.0" mnemonicParsing="false" selected="true" text="文本">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </RadioButton>
+            <RadioButton layoutX="165.0" layoutY="28.0" mnemonicParsing="false" text="8×8西文">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </RadioButton>
+            <RadioButton layoutX="352.0" layoutY="29.0" mnemonicParsing="false" text="16×16汉">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </RadioButton>
+            <RadioButton layoutX="548.0" layoutY="28.0" mnemonicParsing="false" text="图形">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </RadioButton>
+            <GridPane gridLinesVisible="true" layoutX="670.0" layoutY="26.0" prefHeight="261.0" prefWidth="325.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <GridPane gridLinesVisible="true" layoutX="670.0" layoutY="310.0" prefHeight="62.0" prefWidth="325.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <GridPane layoutX="670.0" layoutY="378.0" prefHeight="32.0" prefWidth="325.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="4">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="5">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="6">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="7">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="8">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="9">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="10">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="11">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="12">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="13">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="14">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="15">
+                     <GridPane.margin>
+                        <Insets left="3.0" />
+                     </GridPane.margin>
+                  </Circle>
+               </children>
+            </GridPane>
+            <GridPane gridLinesVisible="true" layoutX="720.0" layoutY="418.0" prefHeight="200.0" prefWidth="200.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <ToggleButton layoutX="931.0" layoutY="564.0" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="27.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" text="R" />
+            <Button layoutX="14.0" layoutY="575.0" mnemonicParsing="false" prefWidth="26.0" text="加载" />
+            <Button layoutX="102.0" layoutY="575.0" mnemonicParsing="false" text="执行" />
+            <Button layoutX="198.0" layoutY="575.0" mnemonicParsing="false" text="执行到" />
+            <Button layoutX="290.0" layoutY="575.0" mnemonicParsing="false" text="单步P" />
+            <AnchorPane layoutX="14.0" layoutY="72.0" prefHeight="480.0" prefWidth="640.0" style="-fx-background-color: #000000;" />
+            <!--<ToggleButtonGroup layoutX="637.0" layoutY="632.0" prefHeight="32.0" prefWidth="47.0" selectionType="MULTIPLE">-->
+               <!--<toggles>-->
+                  <!--<ToggleButton mnemonicParsing="false" selected="true" text="2" />-->
+                  <!--<ToggleButton mnemonicParsing="false" selected="true" text="1" />-->
+               <!--</toggles>-->
+            <!--</ToggleButtonGroup>-->
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>

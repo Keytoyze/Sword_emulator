@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.controller.emulator;
+package indi.key.mipsemulator.control.controller;
 
 public class CpuStatistics {
     public long time;
@@ -13,6 +13,6 @@ public class CpuStatistics {
 
     @Override
     public String toString() {
-        return "time: " + time + ", instruction: " + instructionCount + ", error: " + errorCount;
+        return "time: " + time + ", model: " + instructionCount + ", error: " + errorCount;
     }
 }

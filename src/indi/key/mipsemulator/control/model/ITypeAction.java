@@ -1,7 +1,6 @@
-package indi.key.mipsemulator.controller.instruction;
+package indi.key.mipsemulator.control.model;
 
-import indi.key.mipsemulator.controller.emulator.Cpu;
-import indi.key.mipsemulator.model.storage.Register;
+import indi.key.mipsemulator.control.controller.Cpu;
 import indi.key.mipsemulator.util.BitArray;
 
 public interface ITypeAction extends Action {

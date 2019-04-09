@@ -1,17 +1,17 @@
-package indi.key.mipsemulator.controller.emulator;
+package indi.key.mipsemulator.control.controller;
 
-import indi.key.mipsemulator.model.storage.Ram;
-import indi.key.mipsemulator.model.storage.Register;
-import indi.key.mipsemulator.model.storage.RegisterType;
-import indi.key.mipsemulator.model.storage.Rom;
+import indi.key.mipsemulator.memory.Ram;
+import indi.key.mipsemulator.control.model.Register;
+import indi.key.mipsemulator.control.model.RegisterType;
+import indi.key.mipsemulator.memory.Rom;
 import indi.key.mipsemulator.model.exception.NotImplementedException;
-import indi.key.mipsemulator.controller.instruction.Action;
-import indi.key.mipsemulator.controller.instruction.ConditionalAction;
-import indi.key.mipsemulator.controller.instruction.ITypeAction;
-import indi.key.mipsemulator.controller.instruction.Instruction;
-import indi.key.mipsemulator.controller.instruction.JTypeAction;
-import indi.key.mipsemulator.controller.instruction.JumpAction;
-import indi.key.mipsemulator.controller.instruction.RTypeAction;
+import indi.key.mipsemulator.control.model.Action;
+import indi.key.mipsemulator.control.model.ConditionalAction;
+import indi.key.mipsemulator.control.model.ITypeAction;
+import indi.key.mipsemulator.control.model.Instruction;
+import indi.key.mipsemulator.control.model.JTypeAction;
+import indi.key.mipsemulator.control.model.JumpAction;
+import indi.key.mipsemulator.control.model.RTypeAction;
 import indi.key.mipsemulator.util.BitArray;
 
 public class Cpu implements Resetable {

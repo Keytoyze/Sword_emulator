@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.model.storage;
+package indi.key.mipsemulator.memory;
 
 import java.io.File;
 
