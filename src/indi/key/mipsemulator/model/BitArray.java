@@ -237,7 +237,6 @@ public class BitArray {
         for (int i = 0; i < length; i += 8) {
             result[i / 8] = (byte) subArray(i, i + Math.min(8, length - i)).value;
         }
-        LogUtils.i(result.length + " " + length);
         return result;
     }
 

@@ -2,7 +2,7 @@ package indi.key.mipsemulator;
 
 import java.io.File;
 
-import indi.key.mipsemulator.control.controller.Cpu;
+import indi.key.mipsemulator.core.controller.Cpu;
 import indi.key.mipsemulator.keyboard.PS2Key;
 import indi.key.mipsemulator.model.BitArray;
 import indi.key.mipsemulator.util.LogUtils;

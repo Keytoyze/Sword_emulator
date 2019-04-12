@@ -1,18 +1,21 @@
-package indi.key.mipsemulator.control.controller;
+package indi.key.mipsemulator.core.controller;
 
 import java.io.File;
 
-import indi.key.mipsemulator.control.model.Action;
-import indi.key.mipsemulator.control.model.AddressAction;
-import indi.key.mipsemulator.control.model.ConditionalAction;
-import indi.key.mipsemulator.control.model.ITypeAction;
-import indi.key.mipsemulator.control.model.Instruction;
-import indi.key.mipsemulator.control.model.JumpAction;
-import indi.key.mipsemulator.control.model.RTypeAction;
-import indi.key.mipsemulator.control.model.Register;
-import indi.key.mipsemulator.control.model.RegisterType;
-import indi.key.mipsemulator.memory.AddressRedirector;
-import indi.key.mipsemulator.memory.MemoryType;
+import indi.key.mipsemulator.core.action.Action;
+import indi.key.mipsemulator.core.action.MemoryAction;
+import indi.key.mipsemulator.core.action.ConditionalAction;
+import indi.key.mipsemulator.core.action.ITypeAction;
+import indi.key.mipsemulator.core.model.CpuStatistics;
+import indi.key.mipsemulator.core.model.Instruction;
+import indi.key.mipsemulator.core.action.JumpAction;
+import indi.key.mipsemulator.core.action.RTypeAction;
+import indi.key.mipsemulator.core.model.Statement;
+import indi.key.mipsemulator.model.Resetable;
+import indi.key.mipsemulator.storage.Register;
+import indi.key.mipsemulator.storage.RegisterType;
+import indi.key.mipsemulator.storage.AddressRedirector;
+import indi.key.mipsemulator.storage.MemoryType;
 import indi.key.mipsemulator.model.exception.NotImplementedException;
 import indi.key.mipsemulator.model.BitArray;
 import indi.key.mipsemulator.util.LogUtils;
@@ -161,12 +164,12 @@ public class Cpu implements Resetable {
                 beforeExcution(pc, ra, linkNext);
                 pc.set(jumpAction.getNext(cpu, statement));
             };
-        } else if (action instanceof AddressAction) {
-            AddressAction addressAction = (AddressAction) action;
+        } else if (action instanceof MemoryAction) {
+            MemoryAction memoryAction = (MemoryAction) action;
             return () -> {
                 cpu.track(index, statement);
                 beforeExcution(pc, ra, linkNext);
-                addressAction.execute(cpu, rs.getUnsigned() + immediate.integerValue(), rt);
+                memoryAction.execute(cpu, rs.getUnsigned() + immediate.integerValue(), rt);
             };
         } else {
             return () -> {

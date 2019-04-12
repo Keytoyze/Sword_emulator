@@ -1,6 +1,6 @@
-package indi.key.mipsemulator.control.model;
+package indi.key.mipsemulator.storage;
 
-import indi.key.mipsemulator.control.controller.Resetable;
+import indi.key.mipsemulator.model.Resetable;
 import indi.key.mipsemulator.model.exception.EmulatorException;
 import indi.key.mipsemulator.model.exception.ModifyZeroException;
 

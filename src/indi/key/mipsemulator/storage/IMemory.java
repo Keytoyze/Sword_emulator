@@ -1,6 +1,6 @@
-package indi.key.mipsemulator.memory;
+package indi.key.mipsemulator.storage;
 
-import indi.key.mipsemulator.control.controller.Resetable;
+import indi.key.mipsemulator.model.Resetable;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 
 public interface IMemory extends Resetable {

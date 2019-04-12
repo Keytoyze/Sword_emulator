@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.control.model;
+package indi.key.mipsemulator.storage;
 
 public enum RegisterType {
 

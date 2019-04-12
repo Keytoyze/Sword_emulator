@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package indi.key.mipsemulator.control.model;
+package indi.key.mipsemulator.core.model;
 
 import indi.key.mipsemulator.model.exception.InternalException;
 import indi.key.mipsemulator.model.BitArray;

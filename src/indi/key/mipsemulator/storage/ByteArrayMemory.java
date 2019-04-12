@@ -1,11 +1,10 @@
-package indi.key.mipsemulator.memory;
+package indi.key.mipsemulator.storage;
 
 import java.io.File;
 import java.util.Arrays;
 
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.util.IoUtils;
-import indi.key.mipsemulator.util.LogUtils;
 
 public class ByteArrayMemory implements IMemory {
 
@@ -38,7 +37,6 @@ public class ByteArrayMemory implements IMemory {
 
     @Override
     public void save(long address, byte[] bytes) throws MemoryOutOfBoundsException {
-        LogUtils.i(address + " " + bytes.length + " " + memory.length);
         System.arraycopy(bytes, 0, memory, (int) address, bytes.length);
     }
 
@@ -48,12 +46,12 @@ public class ByteArrayMemory implements IMemory {
     }
 
     //    void checkBounds(int address) throws MemoryOutOfBoundsException {
-////        if (address >= memory.length) {
+////        if (address >= storage.length) {
 ////            throw new MemoryOutOfBoundsException("Try to access address " + address
-////                    + " of " + getType() + " (depth = " + memory.length + ")");
+////                    + " of " + getType() + " (depth = " + storage.length + ")");
 ////        } else if (address < 0) {
 ////            throw new MemoryOutOfBoundsException("Try to access negative address " + address
-////                    + " of " + getType() + " (depth = " + memory.length + ")");
+////                    + " of " + getType() + " (depth = " + storage.length + ")");
 ////        }
 ////    }
 

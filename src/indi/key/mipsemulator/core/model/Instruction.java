@@ -1,5 +1,11 @@
-package indi.key.mipsemulator.control.model;
+package indi.key.mipsemulator.core.model;
 
+import indi.key.mipsemulator.core.action.Action;
+import indi.key.mipsemulator.core.action.ConditionalAction;
+import indi.key.mipsemulator.core.action.ITypeAction;
+import indi.key.mipsemulator.core.action.JumpAction;
+import indi.key.mipsemulator.core.action.MemoryAction;
+import indi.key.mipsemulator.core.action.RTypeAction;
 import indi.key.mipsemulator.model.BitArray;
 import indi.key.mipsemulator.model.exception.OverflowException;
 import indi.key.mipsemulator.util.IoUtils;
@@ -55,18 +61,18 @@ public enum Instruction {
     JALR((JumpAction) (cpu, statement) -> cpu.getRegister(statement.getRs()).get(), true),
     JR((JumpAction) (cpu, statement) -> cpu.getRegister(statement.getRs()).get()),
     LA,
-    LB((AddressAction) (cpu, address, rt) -> {
+    LB((MemoryAction) (cpu, address, rt) -> {
         rt.set(IoUtils.bytesToInt(cpu.loadMemory(address, 1)));
     }),
-    LBU((AddressAction) (cpu, address, rt) -> {
+    LBU((MemoryAction) (cpu, address, rt) -> {
         rt.set(IoUtils.bytesToUnsignedInt(cpu.loadMemory(address, 1)));
     }),
     LDC1,
     LDC2,
-    LH((AddressAction) (cpu, address, rt) -> {
+    LH((MemoryAction) (cpu, address, rt) -> {
         rt.set(IoUtils.bytesToInt(cpu.loadMemory(address, 2)));
     }),
-    LHU((AddressAction) (cpu, address, rt) -> {
+    LHU((MemoryAction) (cpu, address, rt) -> {
         rt.set(IoUtils.bytesToUnsignedInt(cpu.loadMemory(address, 2)));
     }),
     LI,
@@ -74,7 +80,7 @@ public enum Instruction {
     LUI((ITypeAction) (cpu, rs, rt, immediate) -> {
         rt.set(immediate.value() << 16);
     }),
-    LW((AddressAction) (cpu, address, rt) -> {
+    LW((MemoryAction) (cpu, address, rt) -> {
         rt.set(cpu.loadInt(address));
     }),
     LWC1,
@@ -108,7 +114,7 @@ public enum Instruction {
         rt.set(rs.get() | immediate.value());
     }),
     PREF,
-    SB((AddressAction) (cpu, address, rt) -> {
+    SB((MemoryAction) (cpu, address, rt) -> {
         cpu.saveMemory(address, BitArray.ofValue(rt.get()).setLength(4).bytes());
     }),
     SC,
@@ -117,7 +123,7 @@ public enum Instruction {
     SDC2,
     //    SDL,
 //    SDR,
-    SH((AddressAction) (cpu, address, rt) -> {
+    SH((MemoryAction) (cpu, address, rt) -> {
         cpu.saveMemory(address, BitArray.ofValue(rt.get()).setLength(8).bytes());
     }),
     SLL((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
@@ -157,7 +163,7 @@ public enum Instruction {
     SUBU((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
         rd.setUnsigned(rs.getUnsigned() - rt.getUnsigned());
     }),
-    SW((AddressAction) (cpu, address, rt) -> {
+    SW((MemoryAction) (cpu, address, rt) -> {
         cpu.saveInt(address, rt.get());
     }),
     SWC1,

@@ -1,12 +1,10 @@
-package indi.key.mipsemulator.control.controller;
+package indi.key.mipsemulator.core.model;
 
-import indi.key.mipsemulator.control.model.Action;
-import indi.key.mipsemulator.control.model.ConditionalAction;
-import indi.key.mipsemulator.control.model.ITypeAction;
-import indi.key.mipsemulator.control.model.Instruction;
-import indi.key.mipsemulator.control.model.Operation;
-import indi.key.mipsemulator.control.model.RTypeAction;
-import indi.key.mipsemulator.control.model.RegisterType;
+import indi.key.mipsemulator.core.action.Action;
+import indi.key.mipsemulator.core.action.ConditionalAction;
+import indi.key.mipsemulator.core.action.ITypeAction;
+import indi.key.mipsemulator.core.action.RTypeAction;
+import indi.key.mipsemulator.storage.RegisterType;
 import indi.key.mipsemulator.model.BitArray;
 
 
@@ -34,7 +32,7 @@ public class Statement {
         this.address = value.subArray(0, 26);
     }
 
-    static Statement of(int value) {
+    public static Statement of(int value) {
         return new Statement(value);
     }
 

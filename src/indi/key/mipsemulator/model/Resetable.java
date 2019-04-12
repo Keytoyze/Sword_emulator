@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.control.controller;
+package indi.key.mipsemulator.model;
 
 public interface Resetable {
     void reset();
