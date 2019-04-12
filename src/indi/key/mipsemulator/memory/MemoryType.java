@@ -4,31 +4,31 @@ import indi.key.mipsemulator.model.Range;
 
 public enum MemoryType {
 
-    RAM(new Range<>(0x00000000, 0x0000FFFF)),
-    VRAM_TEXT(new Range<>(0x00000000, 0x000012BF)),
-    VRAM_GRAPH(new Range<>(0x00002000, 0x0004CFFF)),
-    SEGMENT(0xFFFFFE00),
-    SEGMENT_COMPAT(0xE0000000),
-    GPIO(0xFFFFFF00),
-    GPIO_COMPAT(0xF0000000),
-    BUTTON(0xFFFFFC00),
-    BUTTON_COMPAT(0xC0000000),
-    COUNTER(0xFFFFFF04),
-    COUNTER_COMPAT(0xF0000004),
-    PS2(0xFFFFD000);
+    RAM(new Range<>(0x00000000L, 0x0000FFFFL)),
+    VRAM_TEXT(new Range<>(0x00000000L, 0x000012BFL)),
+    VRAM_GRAPH(new Range<>(0x00002000L, 0x0004CFFFL)),
+    SEGMENT(0xFFFFFE00L),
+    SEGMENT_COMPAT(0xE0000000L),
+    GPIO(0xFFFFFF00L),
+    GPIO_COMPAT(0xF0000000L),
+    BUTTON(0xFFFFFC00L),
+    BUTTON_COMPAT(0xC0000000L),
+    COUNTER(0xFFFFFF04L),
+    COUNTER_COMPAT(0xF0000004L),
+    PS2(0xFFFFD000L);
 
 
-    private Range<Integer> addressRange;
+    private Range<Long> addressRange;
 
-    MemoryType(Integer address) {
+    MemoryType(Long address) {
         this.addressRange = new Range<>(address, address + 3);
     }
 
-    MemoryType(Range<Integer> addressRange) {
+    MemoryType(Range<Long> addressRange) {
         this.addressRange = addressRange;
     }
 
-    public boolean contains(Range<Integer> dataRange) {
+    public boolean contains(Range<Long> dataRange) {
         return contains(dataRange, 0);
     }
 
@@ -36,16 +36,16 @@ public enum MemoryType {
         return new ByteArrayMemory(getLength());
     }
 
-    public int getRelativeAddress(int address) {
-        return address - addressRange.getStart();
+    public int getRelativeAddress(long address) {
+        return (int) (address - addressRange.getStart());
     }
 
     public int getLength() {
-        return addressRange.getEnd() - addressRange.getStart();
+        return (int) (addressRange.getEnd() - addressRange.getStart() + 1);
     }
 
-    public boolean contains(Range<Integer> dataRange, int offset) {
-        Range<Integer> realDataRange = new Range<>(dataRange);
+    public boolean contains(Range<Long> dataRange, int offset) {
+        Range<Long> realDataRange = new Range<>(dataRange);
         realDataRange.setStart(realDataRange.getStart() - offset);
         realDataRange.setEnd(realDataRange.getEnd() - offset);
         return addressRange.contains(realDataRange);

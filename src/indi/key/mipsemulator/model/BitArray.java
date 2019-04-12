@@ -5,6 +5,8 @@
 
 package indi.key.mipsemulator.model;
 
+import indi.key.mipsemulator.util.LogUtils;
+
 /**
  * Index starts from right to left.
  */
@@ -231,10 +233,11 @@ public class BitArray {
     }
 
     public byte[] bytes() {
-        byte[] result = new byte[length / 8 + 1];
+        byte[] result = new byte[(int) Math.ceil(length / 8.0)];
         for (int i = 0; i < length; i += 8) {
             result[i / 8] = (byte) subArray(i, i + Math.min(8, length - i)).value;
         }
+        LogUtils.i(result.length + " " + length);
         return result;
     }
 
@@ -406,6 +409,9 @@ public class BitArray {
     }
 
     private static int makeBitRange(int fromIndex, int toIndex) {
+        if (fromIndex == toIndex) {
+            return 0;
+        }
         return ((~0) >>> (CAPACITY - (toIndex - fromIndex))) << fromIndex;
     }
 

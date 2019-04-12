@@ -1,7 +1,11 @@
 package indi.key.mipsemulator;
 
+import java.io.File;
+
+import indi.key.mipsemulator.control.controller.Cpu;
 import indi.key.mipsemulator.keyboard.PS2Key;
 import indi.key.mipsemulator.model.BitArray;
+import indi.key.mipsemulator.util.LogUtils;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -48,24 +52,20 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
-//        for (KeyCode d : KeyCode.values()) {
-//            System.out.println(d.name());
-//        }
-//        String path = "G:\\code\\java\\mipsasm\\mipsasm\\test\\computer_MCPU.bin";
-//        RAM ram = new RAM(65536);
-//        Rom rom = new Rom(new File(path));
-//        Cpu cpu = new Cpu(ram, rom);
-//        //long time = System.currentTimeMillis();
-//        cpu.loop();
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException ignore) {
-//
-//        }
-//
-//        System.out.println(cpu.exitLoop().toString());
-//        //System.out.println(System.currentTimeMillis() - time);
+        String path = "G:\\code\\java\\mipsasm\\mipsasm\\test\\computer_MCPU.bin";
+        Cpu cpu = new Cpu(new File(path));
+        //long time = System.currentTimeMillis();
+        for (int i = 0; i < 100; i++) {
+            try {
+                cpu.singleStep();
+            } catch (Exception e) {
+                LogUtils.i(e);
+                //e.printStackTrace();
+            }
+
+        }
+
+        //System.out.println(System.currentTimeMillis() - time);
 //        // 1953 1878 2090 2043 1959
 //        // 2280 2216 2193
 //        // 205

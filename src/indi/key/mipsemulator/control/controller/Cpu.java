@@ -3,10 +3,10 @@ package indi.key.mipsemulator.control.controller;
 import java.io.File;
 
 import indi.key.mipsemulator.control.model.Action;
+import indi.key.mipsemulator.control.model.AddressAction;
 import indi.key.mipsemulator.control.model.ConditionalAction;
 import indi.key.mipsemulator.control.model.ITypeAction;
 import indi.key.mipsemulator.control.model.Instruction;
-import indi.key.mipsemulator.control.model.JTypeAction;
 import indi.key.mipsemulator.control.model.JumpAction;
 import indi.key.mipsemulator.control.model.RTypeAction;
 import indi.key.mipsemulator.control.model.Register;
@@ -15,6 +15,7 @@ import indi.key.mipsemulator.memory.AddressRedirector;
 import indi.key.mipsemulator.memory.MemoryType;
 import indi.key.mipsemulator.model.exception.NotImplementedException;
 import indi.key.mipsemulator.model.BitArray;
+import indi.key.mipsemulator.util.LogUtils;
 
 public class Cpu implements Resetable {
 
@@ -60,19 +61,21 @@ public class Cpu implements Resetable {
         return registers[RegisterType.LO.ordinal()];
     }
 
-    public byte[] loadMemory(int address, int bytesNum) {
+    public byte[] loadMemory(long address, int bytesNum) {
         return addressRedirector.load(address, bytesNum);
     }
 
-    public int loadInt(int address) {
+    public int loadInt(long address) {
         return addressRedirector.loadInt(address);
     }
 
-    public void saveMemory(int address, byte[] data) {
+    public void saveMemory(long address, byte[] data) {
+        LogUtils.i(data.length);
         addressRedirector.save(address, data);
     }
 
-    public void saveInt(int address, int data) {
+    public void saveInt(long address, int data) {
+        LogUtils.i(address);
         addressRedirector.saveInt(address, data);
     }
 
@@ -124,7 +127,7 @@ public class Cpu implements Resetable {
         Register ra = cpu.getRegister(RegisterType.RA);
         BitArray immediate = statement.getImmediate();
         int shamt = statement.getShamt();
-        int address = statement.getAddress();
+        long address = statement.getAddress();
 
 
         if (action instanceof RTypeAction) {
@@ -140,13 +143,6 @@ public class Cpu implements Resetable {
                 cpu.track(index, statement);
                 beforeExcution(pc, ra, linkNext);
                 iTypeAction.execute(cpu, rs, rt, immediate);
-            };
-        } else if (action instanceof JTypeAction) {
-            JTypeAction jTypeAction = (JTypeAction) action;
-            return () -> {
-                cpu.track(index, statement);
-                beforeExcution(pc, ra, linkNext);
-                jTypeAction.execute(cpu, address);
             };
         } else if (action instanceof ConditionalAction) {
             ConditionalAction conditionalAction = (ConditionalAction) action;
@@ -165,6 +161,13 @@ public class Cpu implements Resetable {
                 beforeExcution(pc, ra, linkNext);
                 pc.set(jumpAction.getNext(cpu, statement));
             };
+        } else if (action instanceof AddressAction) {
+            AddressAction addressAction = (AddressAction) action;
+            return () -> {
+                cpu.track(index, statement);
+                beforeExcution(pc, ra, linkNext);
+                addressAction.execute(cpu, rs.getUnsigned() + immediate.integerValue(), rt);
+            };
         } else {
             return () -> {
                 throw new NotImplementedException("Action " + instruction.name() + " haven't been implemented.");
@@ -173,7 +176,7 @@ public class Cpu implements Resetable {
     }
 
     private void track(int index, Statement statement) {
-
+        LogUtils.i(index + ": " + statement.toString());
     }
 
     private static void beforeExcution(Register pc, Register ra, boolean linkNext) {

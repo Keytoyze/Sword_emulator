@@ -4,7 +4,6 @@ import indi.key.mipsemulator.control.model.Action;
 import indi.key.mipsemulator.control.model.ConditionalAction;
 import indi.key.mipsemulator.control.model.ITypeAction;
 import indi.key.mipsemulator.control.model.Instruction;
-import indi.key.mipsemulator.control.model.JTypeAction;
 import indi.key.mipsemulator.control.model.Operation;
 import indi.key.mipsemulator.control.model.RTypeAction;
 import indi.key.mipsemulator.control.model.RegisterType;
@@ -97,8 +96,6 @@ public class Statement {
             stringBuilder.append(" ").append(getRs().toString())
                     .append(" ").append(getRt().toString())
                     .append(" ").append(immediate.integerValue());
-        } else if (action instanceof JTypeAction) {
-            stringBuilder.append(" ").append(address.toDecimalString());
         } else if (action instanceof ConditionalAction) {
             stringBuilder.append(" ").append(getRs().toString())
                     .append(" ").append(getRt().toString())
