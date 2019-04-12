@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import indi.key.mipsemulator.control.controller.Resetable;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
-import indi.key.mipsemulator.util.BitArray;
+import indi.key.mipsemulator.model.BitArray;
 import indi.key.mipsemulator.util.IoUtils;
 
 public abstract class BaseMemory implements Resetable {

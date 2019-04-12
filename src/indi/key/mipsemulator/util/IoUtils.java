@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import indi.key.mipsemulator.model.BitArray;
+
 public class IoUtils {
 
     public static byte[] read(File file) {
@@ -40,5 +42,17 @@ public class IoUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static int bytesToInt(byte[] bytes) {
+        return BitArray.of(bytes).value();
+    }
+
+    public static int bytesToUnsignedInt(byte[] bytes) {
+        return BitArray.of(bytes).integerValue();
+    }
+
+    public static byte[] intToBytes(int value, int length) {
+        return BitArray.of(value, length).bytes();
     }
 }

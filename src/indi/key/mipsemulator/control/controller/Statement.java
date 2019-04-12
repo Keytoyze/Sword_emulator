@@ -5,11 +5,10 @@ import indi.key.mipsemulator.control.model.ConditionalAction;
 import indi.key.mipsemulator.control.model.ITypeAction;
 import indi.key.mipsemulator.control.model.Instruction;
 import indi.key.mipsemulator.control.model.JTypeAction;
-import indi.key.mipsemulator.control.model.RTypeAction;
 import indi.key.mipsemulator.control.model.Operation;
+import indi.key.mipsemulator.control.model.RTypeAction;
 import indi.key.mipsemulator.control.model.RegisterType;
-import indi.key.mipsemulator.util.BitArray;
-import javafx.scene.input.KeyCode;
+import indi.key.mipsemulator.model.BitArray;
 
 
 public class Statement {
@@ -24,8 +23,8 @@ public class Statement {
     private BitArray immediate;
     private BitArray address;
 
-    private Statement(BitArray value) {
-        this.value = BitArray.of(value);
+    private Statement(int word) {
+        this.value = BitArray.of(word, 32);
         this.op = value.subArray(26, 32);
         this.rs = value.subArray(21, 26);
         this.rt = value.subArray(16, 21);
@@ -36,7 +35,7 @@ public class Statement {
         this.address = value.subArray(0, 26);
     }
 
-    static Statement of(BitArray value) {
+    static Statement of(int value) {
         return new Statement(value);
     }
 

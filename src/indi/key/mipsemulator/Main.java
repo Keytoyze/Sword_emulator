@@ -1,7 +1,7 @@
 package indi.key.mipsemulator;
 
 import indi.key.mipsemulator.keyboard.PS2Key;
-import indi.key.mipsemulator.util.BitArray;
+import indi.key.mipsemulator.model.BitArray;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -53,7 +53,7 @@ public class Main extends Application {
 //            System.out.println(d.name());
 //        }
 //        String path = "G:\\code\\java\\mipsasm\\mipsasm\\test\\computer_MCPU.bin";
-//        Ram ram = new Ram(65536);
+//        RAM ram = new RAM(65536);
 //        Rom rom = new Rom(new File(path));
 //        Cpu cpu = new Cpu(ram, rom);
 //        //long time = System.currentTimeMillis();

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package indi.key.mipsemulator.util;
+package indi.key.mipsemulator.model;
 
 /**
  * Index starts from right to left.
@@ -41,13 +41,10 @@ public class BitArray {
      * @return The new {@code BitArray}
      */
     public static BitArray of(int value, int length) {
-        if (lengthOf(value) > length) {
-            throw new IllegalArgumentException("Value length > specified length, value: " + value + ", length: "
-                    + length);
-        } else if (length > CAPACITY) {
+        if (length > CAPACITY) {
             throw new IllegalArgumentException("Length > capacity, " + "length: " + length + ", capacity: " + CAPACITY);
         }
-        return new BitArray(value, length);
+        return new BitArray(value, length).trimValue();
     }
 
     public static BitArray of(int value, int fromIndex, int toIndex) {
@@ -398,9 +395,10 @@ public class BitArray {
         }
     }
 
-    private void trimValue() {
+    private BitArray trimValue() {
         // clear() checks range.
         value &= ~makeBitRange(length, CAPACITY);
+        return this;
     }
 
     private static int makeBit(int index) {

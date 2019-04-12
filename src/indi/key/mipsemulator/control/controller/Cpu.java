@@ -1,10 +1,7 @@
 package indi.key.mipsemulator.control.controller;
 
-import indi.key.mipsemulator.memory.Ram;
-import indi.key.mipsemulator.control.model.Register;
-import indi.key.mipsemulator.control.model.RegisterType;
-import indi.key.mipsemulator.memory.Rom;
-import indi.key.mipsemulator.model.exception.NotImplementedException;
+import java.io.File;
+
 import indi.key.mipsemulator.control.model.Action;
 import indi.key.mipsemulator.control.model.ConditionalAction;
 import indi.key.mipsemulator.control.model.ITypeAction;
@@ -12,13 +9,17 @@ import indi.key.mipsemulator.control.model.Instruction;
 import indi.key.mipsemulator.control.model.JTypeAction;
 import indi.key.mipsemulator.control.model.JumpAction;
 import indi.key.mipsemulator.control.model.RTypeAction;
-import indi.key.mipsemulator.util.BitArray;
+import indi.key.mipsemulator.control.model.Register;
+import indi.key.mipsemulator.control.model.RegisterType;
+import indi.key.mipsemulator.memory.AddressRedirector;
+import indi.key.mipsemulator.memory.MemoryType;
+import indi.key.mipsemulator.model.exception.NotImplementedException;
+import indi.key.mipsemulator.model.BitArray;
 
 public class Cpu implements Resetable {
 
     private Register[] registers;
-    private Ram ram;
-    private Rom rom;
+    private AddressRedirector addressRedirector;
 
     // For looping
     private boolean looping;
@@ -28,9 +29,8 @@ public class Cpu implements Resetable {
 
     private Runnable[] instructionCache;
 
-    public Cpu(Ram ram, Rom rom) {
-        this.ram = ram;
-        this.rom = rom;
+    public Cpu(File initFile) {
+        this.addressRedirector = new AddressRedirector(initFile);
         registers = new Register[RegisterType.values().length];
         for (int i = 0; i < registers.length; i++) {
             registers[i] = new Register(RegisterType.of(i));
@@ -43,9 +43,8 @@ public class Cpu implements Resetable {
         for (Register register : registers) {
             register.reset();
         }
-        this.ram.reset();
-        this.rom.reset();
-        instructionCache = new Runnable[rom.getDepth() / 4 + 1];
+        addressRedirector.reset();
+        instructionCache = new Runnable[MemoryType.RAM.getLength() / 4 + 1];
     }
 
     public Register getRegister(RegisterType registerType) {
@@ -61,8 +60,20 @@ public class Cpu implements Resetable {
         return registers[RegisterType.LO.ordinal()];
     }
 
-    public Ram getRam() {
-        return ram;
+    public byte[] loadMemory(int address, int bytesNum) {
+        return addressRedirector.load(address, bytesNum);
+    }
+
+    public int loadInt(int address) {
+        return addressRedirector.loadInt(address);
+    }
+
+    public void saveMemory(int address, byte[] data) {
+        addressRedirector.save(address, data);
+    }
+
+    public void saveInt(int address, int data) {
+        addressRedirector.saveInt(address, data);
     }
 
     public void singleStep() {
@@ -103,7 +114,7 @@ public class Cpu implements Resetable {
         Register pc = cpu.getRegister(RegisterType.PC);
         int index = pc.get();
         //System.out.println(pc.get() / 4 + 1 + " " + statement.toString());
-        Statement statement = Statement.of(cpu.rom.load(index, 4));
+        Statement statement = Statement.of(cpu.addressRedirector.loadInt(index));
         Instruction instruction = statement.getInstruction();
         Action action = instruction.getAction();
         boolean linkNext = instruction.isLinkNext();
