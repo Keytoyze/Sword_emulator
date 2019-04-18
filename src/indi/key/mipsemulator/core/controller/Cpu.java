@@ -11,6 +11,7 @@ import indi.key.mipsemulator.core.model.Instruction;
 import indi.key.mipsemulator.core.action.JumpAction;
 import indi.key.mipsemulator.core.action.RTypeAction;
 import indi.key.mipsemulator.core.model.Statement;
+import indi.key.mipsemulator.model.RegisterListener;
 import indi.key.mipsemulator.model.Resetable;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
@@ -31,6 +32,7 @@ public class Cpu implements Resetable {
     private int instructionCount;
     private int errorCount;
 
+    // Use cache to speed loop
     private Runnable[] instructionCache;
 
     public Cpu(File initFile) {
@@ -55,6 +57,12 @@ public class Cpu implements Resetable {
         return registers[registerType.ordinal()];
     }
 
+    public void setRegisterListener(RegisterListener registerListener) {
+        for (Register register : registers) {
+            register.setRegisterListener(registerListener);
+        }
+    }
+
 
     public Register getHI() {
         return registers[RegisterType.HI.ordinal()];
@@ -73,12 +81,10 @@ public class Cpu implements Resetable {
     }
 
     public void saveMemory(long address, byte[] data) {
-        LogUtils.i(data.length);
         addressRedirector.save(address, data);
     }
 
     public void saveInt(long address, int data) {
-        LogUtils.i(address);
         addressRedirector.saveInt(address, data);
     }
 
@@ -119,7 +125,6 @@ public class Cpu implements Resetable {
     private static Runnable getStatementRunnable(Cpu cpu) {
         Register pc = cpu.getRegister(RegisterType.PC);
         int index = pc.get();
-        //System.out.println(pc.get() / 4 + 1 + " " + statement.toString());
         Statement statement = Statement.of(cpu.addressRedirector.loadInt(index));
         Instruction instruction = statement.getInstruction();
         Action action = instruction.getAction();
@@ -130,8 +135,6 @@ public class Cpu implements Resetable {
         Register ra = cpu.getRegister(RegisterType.RA);
         BitArray immediate = statement.getImmediate();
         int shamt = statement.getShamt();
-        long address = statement.getAddress();
-
 
         if (action instanceof RTypeAction) {
             RTypeAction rTypeAction = (RTypeAction) action;

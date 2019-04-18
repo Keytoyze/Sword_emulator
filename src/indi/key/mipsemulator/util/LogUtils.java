@@ -1,9 +1,17 @@
 package indi.key.mipsemulator.util;
 
+import java.util.Arrays;
+
 public class LogUtils {
 
-    public static void i(Object object) {
-        System.out.println(buildMessage(String.valueOf(object)));
+    public static void i(Object... object) {
+        String message;
+        if (object.length == 1) {
+            message = String.valueOf(object[0]);
+        } else {
+            message = Arrays.toString(object);
+        }
+        System.out.println(buildMessage(message));
     }
 
     private static String buildMessage(String rawMessage) {

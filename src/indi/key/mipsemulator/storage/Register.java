@@ -1,13 +1,16 @@
 package indi.key.mipsemulator.storage;
 
+import indi.key.mipsemulator.model.RegisterListener;
 import indi.key.mipsemulator.model.Resetable;
 import indi.key.mipsemulator.model.exception.EmulatorException;
 import indi.key.mipsemulator.model.exception.ModifyZeroException;
+import javafx.application.Platform;
 
 public class Register implements Comparable<Register>, Resetable {
 
     private RegisterType registerType;
     private Integer value;
+    private RegisterListener registerListener = null;
 
     public Register(RegisterType registerType) {
         this.registerType = registerType;
@@ -16,16 +19,27 @@ public class Register implements Comparable<Register>, Resetable {
 
     public void set(int value) throws EmulatorException {
         checkZero(value);
-        this.value = value;
+        setInternal(value);
     }
 
     public void setUnsigned(long value) throws EmulatorException {
         checkZero((int) value);
-        this.value = (int) value;
+        setInternal((int) value);
+    }
+
+    private void setInternal(int value) {
+        this.value = value;
+        if (registerListener != null) {
+            Platform.runLater(() -> registerListener.onRegisterChange(Register.this));
+        }
     }
 
     public int get() {
         return value;
+    }
+
+    public RegisterType getRegisterType() {
+        return registerType;
     }
 
     @Override
@@ -39,6 +53,10 @@ public class Register implements Comparable<Register>, Resetable {
 
     public long getUnsigned() {
         return Integer.toUnsignedLong(value);
+    }
+
+    public void setRegisterListener(RegisterListener registerListener) {
+        this.registerListener = registerListener;
     }
 
     private void checkZero(int value) {
