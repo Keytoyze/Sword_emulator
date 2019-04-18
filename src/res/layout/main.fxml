@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?><?import javafx.scene.control.Menu?><?import javafx.scene.control.MenuBar?><?import javafx.scene.control.MenuItem?><?import javafx.scene.control.RadioMenuItem?><?import javafx.scene.control.SeparatorMenuItem?><?import javafx.scene.image.ImageView?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.VBox?>
+<?import javafx.scene.canvas.Canvas?><?import javafx.scene.control.ComboBox?><?import javafx.scene.control.Menu?><?import javafx.scene.control.MenuBar?><?import javafx.scene.control.MenuItem?><?import javafx.scene.control.RadioMenuItem?><?import javafx.scene.control.SeparatorMenuItem?><?import javafx.scene.image.ImageView?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="742.0"
-    prefWidth="1203.0"
+    prefWidth="1225.0"
     xmlns="http://javafx.com/javafx/8.0.201"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="indi.key.mipsemulator.view.SwordController">
@@ -45,6 +45,7 @@
                     <items>
 
                         <MenuItem
+                            fx:id="debugExecuteMenu"
                             mnemonicParsing="false"
                             text="执行" />
 
@@ -127,10 +128,10 @@
 
                 <GridPane
                     fx:id="registerPane"
-                    layoutX="670.0"
-                    layoutY="17.0"
+                    layoutX="673.0"
+                    layoutY="47.0"
                     prefHeight="270.0"
-                    prefWidth="509.0">
+                    prefWidth="539.0">
 
                     <columnConstraints>
 
@@ -201,10 +202,10 @@
 
                 <GridPane
                     gridLinesVisible="true"
-                    layoutX="670.0"
-                    layoutY="378.0"
+                    layoutX="674.0"
+                    layoutY="411.0"
                     prefHeight="49.0"
-                    prefWidth="325.0">
+                    prefWidth="358.0">
 
                     <columnConstraints>
 
@@ -300,8 +301,8 @@
 
                 <GridPane
                     gridLinesVisible="true"
-                    layoutX="1013.0"
-                    layoutY="302.0"
+                    layoutX="1046.0"
+                    layoutY="335.0"
                     prefHeight="169.0"
                     prefWidth="165.0">
 
@@ -354,16 +355,16 @@
 
                 <Canvas
                     height="63.0"
-                    layoutX="670.0"
-                    layoutY="302.0"
-                    width="325.0" />
+                    layoutX="674.0"
+                    layoutY="335.0"
+                    width="358.0" />
 
                 <GridPane
                     gridLinesVisible="true"
-                    layoutX="670.0"
-                    layoutY="439.0"
+                    layoutX="674.0"
+                    layoutY="472.0"
                     prefHeight="32.0"
-                    prefWidth="325.0">
+                    prefWidth="358.0">
 
                     <columnConstraints>
 
@@ -456,6 +457,12 @@
                             vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
+
+                <ComboBox
+                    fx:id="registerModeComboBox"
+                    layoutX="1061.0"
+                    layoutY="12.0"
+                    prefWidth="150.0" />
                 <!--<ToggleButtonGroup layoutX="637.0" layoutY="632.0" prefHeight="32.0" prefWidth="47.0" selectionType="MULTIPLE">-->
                 <!--<toggles>-->
                 <!--<ToggleButton mnemonicParsing="false" selected="true" text="2" />-->

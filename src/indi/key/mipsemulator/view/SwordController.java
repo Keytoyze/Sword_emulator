@@ -6,12 +6,13 @@ import java.util.ResourceBundle;
 
 import indi.key.mipsemulator.core.controller.Cpu;
 import indi.key.mipsemulator.util.LogUtils;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
@@ -27,7 +28,11 @@ public class SwordController implements Initializable {
     @FXML
     ImageView vgaScreen;
     @FXML
+    MenuItem debugExecuteMenu;
+    @FXML
     MenuItem debugSingleIMenu;
+    @FXML
+    ComboBox<String> registerModeComboBox;
 
     private Cpu cpu;
     private RegisterController registerController;
@@ -40,9 +45,8 @@ public class SwordController implements Initializable {
         String path = "G:\\code\\java\\mipsasm\\mipsasm\\test\\computer_MCPU.bin";
         cpu = new Cpu(new File(path));
 
-
-        registerController = new RegisterController(registerPane, cpu);
-
+        setUpRegisters();
+        setUpMenu();
 
         writableImage = new WritableImage(640, 480);
         byte[] d = new byte[3100000 * 4];
@@ -62,6 +66,35 @@ public class SwordController implements Initializable {
 
         vgaScreen.setImage(writableImage);
 
+    }
+
+    private void setUpRegisters() {
+        registerController = new RegisterController(registerPane, cpu);
+        ObservableList<String> options =
+                FXCollections.observableArrayList(
+                        "十六进制",
+                        "有符号十进制",
+                        "无符号十进制"
+                );
+        registerModeComboBox.setItems(options);
+        registerModeComboBox.setOnAction(event -> {
+            switch (registerModeComboBox.getSelectionModel().getSelectedIndex()) {
+                case 0:
+                    registerController.setDisplayMode(RegisterController.DisplayMode.HEXADECIMAL);
+                    break;
+                case 1:
+                    registerController.setDisplayMode(RegisterController.DisplayMode.SIGNED_DECIMAL);
+                    break;
+                case 2:
+                    registerController.setDisplayMode(RegisterController.DisplayMode.UNSIGNED_DECIMAL);
+                    break;
+            }
+        });
+        registerModeComboBox.setValue(registerModeComboBox.getItems().get(0));
+    }
+
+    public void setUpMenu() {
+        debugExecuteMenu.setOnAction(event -> cpu.loop());
         debugSingleIMenu.setOnAction(event -> cpu.singleStep());
     }
 

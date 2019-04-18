@@ -39,7 +39,7 @@ public class Cpu implements Resetable {
         this.addressRedirector = new AddressRedirector(initFile);
         registers = new Register[RegisterType.values().length];
         for (int i = 0; i < registers.length; i++) {
-            registers[i] = new Register(RegisterType.of(i));
+            registers[i] = new Register(RegisterType.of(i), this);
         }
         reset();
     }
@@ -86,6 +86,10 @@ public class Cpu implements Resetable {
 
     public void saveInt(long address, int data) {
         addressRedirector.saveInt(address, data);
+    }
+
+    public boolean isLooping() {
+        return looping;
     }
 
     public void singleStep() {
@@ -182,7 +186,9 @@ public class Cpu implements Resetable {
     }
 
     private void track(int index, Statement statement) {
-        LogUtils.i(index + ": " + statement.toString());
+        if (!looping) {
+            LogUtils.i(index + ": " + statement.toString());
+        }
     }
 
     private static void beforeExcution(Register pc, Register ra, boolean linkNext) {

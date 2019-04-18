@@ -1,5 +1,7 @@
 package indi.key.mipsemulator.view;
 
+import java.util.function.Function;
+
 import indi.key.mipsemulator.core.controller.Cpu;
 import indi.key.mipsemulator.model.interfaces.RegisterListener;
 import indi.key.mipsemulator.storage.Register;
@@ -9,15 +11,42 @@ import javafx.scene.layout.GridPane;
 
 class RegisterController implements RegisterListener {
 
+    public enum DisplayMode {
+        HEXADECIMAL(integer -> "0x" + Integer.toHexString(integer)),
+        SIGNED_DECIMAL(Object::toString),
+        UNSIGNED_DECIMAL(integer -> {
+            return String.valueOf(Integer.toUnsignedLong(integer));
+        });
+
+        Function<Integer, String> convertFunc;
+
+        DisplayMode(Function<Integer, String> convertFunc) {
+            this.convertFunc = convertFunc;
+        }
+    }
+
     private GridPane registerPane;
     private Cpu cpu;
     private Label[] registerLable = new Label[32];
+    private DisplayMode displayMode = DisplayMode.HEXADECIMAL;
 
     RegisterController(GridPane registerPane, Cpu cpu) {
         this.registerPane = registerPane;
         this.cpu = cpu;
         cpu.setRegisterListener(this);
         initView();
+    }
+
+    public void setDisplayMode(DisplayMode displayMode) {
+        this.displayMode = displayMode;
+        updateAllRegisters();
+    }
+
+    private void updateAllRegisters() {
+        for (int i = 0; i < 32; i++) {
+            RegisterType registerType = getType(i);
+            updateRegisterValue(cpu.getRegister(registerType));
+        }
     }
 
     private void initView() {
@@ -28,9 +57,9 @@ class RegisterController implements RegisterListener {
                 registerLable[index] = new Label("");
                 registerLable[index].setTextFill(registerType.getColor());
                 registerPane.add(registerLable[index], j, i);
-                updateRegisterValue(cpu.getRegister(registerType));
             }
         }
+        updateAllRegisters();
     }
 
     private static RegisterType getType(int index) {
@@ -51,7 +80,8 @@ class RegisterController implements RegisterListener {
         RegisterType registerType = register.getRegisterType();
         int index = getIndex(registerType);
         if (index != -1) {
-            registerLable[index].setText(registerType + ": " + register.get());
+            registerLable[index].setText(registerType + ": " +
+                    displayMode.convertFunc.apply(register.get()));
         }
     }
 

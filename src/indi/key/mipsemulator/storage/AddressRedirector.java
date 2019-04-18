@@ -30,7 +30,6 @@ public class AddressRedirector implements IMemory {
     }
 
     public void saveInt(long address, int data) {
-        LogUtils.i(Arrays.toString(IoUtils.intToBytes(data, 32)));
         save(address, IoUtils.intToBytes(data, 32));
     }
 
