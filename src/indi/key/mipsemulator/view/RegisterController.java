@@ -1,7 +1,7 @@
 package indi.key.mipsemulator.view;
 
 import indi.key.mipsemulator.core.controller.Cpu;
-import indi.key.mipsemulator.model.RegisterListener;
+import indi.key.mipsemulator.model.interfaces.RegisterListener;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
 import javafx.scene.control.Label;

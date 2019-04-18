@@ -11,14 +11,14 @@ import indi.key.mipsemulator.core.model.Instruction;
 import indi.key.mipsemulator.core.action.JumpAction;
 import indi.key.mipsemulator.core.action.RTypeAction;
 import indi.key.mipsemulator.core.model.Statement;
-import indi.key.mipsemulator.model.RegisterListener;
-import indi.key.mipsemulator.model.Resetable;
+import indi.key.mipsemulator.model.interfaces.RegisterListener;
+import indi.key.mipsemulator.model.interfaces.Resetable;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
 import indi.key.mipsemulator.storage.AddressRedirector;
 import indi.key.mipsemulator.storage.MemoryType;
 import indi.key.mipsemulator.model.exception.NotImplementedException;
-import indi.key.mipsemulator.model.BitArray;
+import indi.key.mipsemulator.model.bean.BitArray;
 import indi.key.mipsemulator.util.LogUtils;
 
 public class Cpu implements Resetable {

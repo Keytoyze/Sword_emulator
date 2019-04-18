@@ -6,10 +6,13 @@ import java.util.ResourceBundle;
 
 import indi.key.mipsemulator.core.controller.Cpu;
 import indi.key.mipsemulator.util.LogUtils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
@@ -23,6 +26,8 @@ public class SwordController implements Initializable {
     GridPane registerPane;
     @FXML
     ImageView vgaScreen;
+    @FXML
+    MenuItem debugSingleIMenu;
 
     private Cpu cpu;
     private RegisterController registerController;
@@ -56,6 +61,8 @@ public class SwordController implements Initializable {
                 , d, 0, 640 * 4);
 
         vgaScreen.setImage(writableImage);
+
+        debugSingleIMenu.setOnAction(event -> cpu.singleStep());
     }
 
     public static void run(Stage primaryStage) throws Exception {

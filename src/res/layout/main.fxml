@@ -53,6 +53,7 @@
                             text="执行到" />
 
                         <MenuItem
+                            fx:id="debugSingleIMenu"
                             mnemonicParsing="false"
                             text="单步I" />
 

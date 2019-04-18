@@ -5,7 +5,7 @@ import indi.key.mipsemulator.core.action.ConditionalAction;
 import indi.key.mipsemulator.core.action.ITypeAction;
 import indi.key.mipsemulator.core.action.RTypeAction;
 import indi.key.mipsemulator.storage.RegisterType;
-import indi.key.mipsemulator.model.BitArray;
+import indi.key.mipsemulator.model.bean.BitArray;
 
 
 public class Statement {

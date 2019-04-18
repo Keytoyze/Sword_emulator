@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.model;
+package indi.key.mipsemulator.model.bean;
 
 /**
  * A range is left-inclusive and right-inclusive.

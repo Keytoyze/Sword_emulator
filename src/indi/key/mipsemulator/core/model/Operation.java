@@ -6,7 +6,7 @@
 package indi.key.mipsemulator.core.model;
 
 import indi.key.mipsemulator.model.exception.InternalException;
-import indi.key.mipsemulator.model.BitArray;
+import indi.key.mipsemulator.model.bean.BitArray;
 
 // FIXME: In fact, Operation should not be abstracted like this. Due to some corner cases, we need dynamic abstractions,
 // like OperandPrototype and OperandInstance, and in this case template and instance.

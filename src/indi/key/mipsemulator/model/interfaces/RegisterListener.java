@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.model;
+package indi.key.mipsemulator.model.interfaces;
 
 import indi.key.mipsemulator.storage.Register;
 

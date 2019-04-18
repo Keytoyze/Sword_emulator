@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import indi.key.mipsemulator.model.BitArray;
+import indi.key.mipsemulator.model.bean.BitArray;
 
 public class IoUtils {
 

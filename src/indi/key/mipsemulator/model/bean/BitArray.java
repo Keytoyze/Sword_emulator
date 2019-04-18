@@ -3,9 +3,7 @@
  * All Rights Reserved.
  */
 
-package indi.key.mipsemulator.model;
-
-import indi.key.mipsemulator.util.LogUtils;
+package indi.key.mipsemulator.model.bean;
 
 /**
  * Index starts from right to left.
