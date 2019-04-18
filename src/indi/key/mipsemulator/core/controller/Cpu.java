@@ -32,7 +32,7 @@ public class Cpu implements Resetable, TickCallback {
 
     // For looping
     private boolean looping;
-
+    private Exception resentException;
     private long startTime;
     private int instructionCount;
     private int errorCount;
@@ -118,6 +118,7 @@ public class Cpu implements Resetable, TickCallback {
         looping = true;
         instructionCount = 0;
         errorCount = 0;
+        resentException = null;
         startTime = System.currentTimeMillis();
         new Thread(() -> {
             while (looping) {
@@ -131,6 +132,7 @@ public class Cpu implements Resetable, TickCallback {
                     instructionCache[index].run();
                 } catch (Exception exception) {
                     errorCount++;
+                    resentException = exception;
                 }
             }
         }).start();
@@ -140,6 +142,9 @@ public class Cpu implements Resetable, TickCallback {
     public CpuStatistics exitLoop() {
         looping = false;
         TimingRenderer.unRegister(this);
+        if (resentException != null) {
+            resentException.printStackTrace();
+        }
         return new CpuStatistics(System.currentTimeMillis() - startTime, instructionCount, errorCount);
     }
 

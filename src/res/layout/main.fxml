@@ -6,7 +6,7 @@
     prefWidth="1225.0"
     xmlns="http://javafx.com/javafx/8.0.201"
     xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="indi.key.mipsemulator.view.SwordController">
+    fx:controller="indi.key.mipsemulator.controller.SwordController">
 
     <children>
 

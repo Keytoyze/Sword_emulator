@@ -6,6 +6,7 @@ import java.util.Set;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.util.Duration;
 
 public class TimingRenderer {
@@ -51,7 +52,11 @@ public class TimingRenderer {
     }
 
     private static void start() {
-        scheduledService.start();
+        if (scheduledService.getState() != Worker.State.READY) {
+            scheduledService.restart();
+        } else {
+            scheduledService.start();
+        }
     }
 
     private static void stop() {

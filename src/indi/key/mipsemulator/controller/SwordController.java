@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.view;
+package indi.key.mipsemulator.controller;
 
 import java.io.File;
 import java.net.URL;
@@ -94,7 +94,15 @@ public class SwordController implements Initializable {
     }
 
     public void setUpMenu() {
-        debugExecuteMenu.setOnAction(event -> cpu.loop());
+        debugExecuteMenu.setOnAction(event -> {
+            if (cpu.isLooping()) {
+                LogUtils.i(cpu.exitLoop());
+                debugExecuteMenu.setText("运行");
+            } else {
+                cpu.loop();
+                debugExecuteMenu.setText("暂停");
+            }
+        });
         debugSingleIMenu.setOnAction(event -> cpu.singleStep());
     }
 

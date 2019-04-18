@@ -1,14 +1,13 @@
 package indi.key.mipsemulator.storage;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import indi.key.mipsemulator.model.bean.Range;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.util.IoUtils;
-import indi.key.mipsemulator.util.LogUtils;
+import javafx.util.Pair;
 
 public class AddressRedirector implements IMemory {
 
@@ -25,8 +24,8 @@ public class AddressRedirector implements IMemory {
 
     @Override
     public void save(long address, byte[] bytes) throws MemoryOutOfBoundsException {
-        Map.Entry<MemoryType, IMemory> entry = selectMemory(new Range<>(address, address + bytes.length - 1));
-        entry.getValue().save(entry.getKey().getRelativeAddress(address), bytes);
+        Pair<IMemory, Integer> memoryPair = selectMemory(new Range<>(address, address + bytes.length - 1));
+        memoryPair.getKey().save(memoryPair.getValue(), bytes);
     }
 
     public void saveInt(long address, int data) {
@@ -35,26 +34,28 @@ public class AddressRedirector implements IMemory {
 
     @Override
     public byte[] load(long address, int bytesNum) throws MemoryOutOfBoundsException {
-        Map.Entry<MemoryType, IMemory> entry = selectMemory(new Range<>(address, address + bytesNum - 1));
-        return entry.getValue().load(entry.getKey().getRelativeAddress(address), bytesNum);
+        Pair<IMemory, Integer> memoryPair = selectMemory(new Range<>(address, address + bytesNum - 1));
+        return memoryPair.getKey().load(memoryPair.getValue(), bytesNum);
     }
 
     public int loadInt(long address) {
         return IoUtils.bytesToInt(load(address, 4));
     }
 
-    private Map.Entry<MemoryType, IMemory> selectMemory(Range<Long> dataRange) throws MemoryOutOfBoundsException {
+    private Pair<IMemory, Integer> selectMemory(Range<Long> dataRange) throws MemoryOutOfBoundsException {
         for (Map.Entry<MemoryType, IMemory> entry : memoryMap.entrySet()) {
             MemoryType memoryType = entry.getKey();
-            boolean check;
             if (memoryType == MemoryType.VRAM_GRAPH || memoryType == MemoryType.VRAM_TEXT) {
                 // TODO: remove magical number
-                check = memoryType.contains(dataRange, 0x000C0000);
+                if (memoryType.contains(dataRange, 0x000C0000)) {
+                    return new Pair<>(entry.getValue(),
+                            memoryType.getRelativeAddress(dataRange.getStart()) - 0x000C0000);
+                }
             } else {
-                check = memoryType.contains(dataRange);
-            }
-            if (check) {
-                return entry;
+                if (memoryType.contains(dataRange)) {
+                    return new Pair<>(entry.getValue(),
+                            memoryType.getRelativeAddress(dataRange.getStart()));
+                }
             }
         }
         throw new MemoryOutOfBoundsException("Cannot assess the address " + dataRange.toString());

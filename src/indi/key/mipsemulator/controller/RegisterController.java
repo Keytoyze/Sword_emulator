@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.view;
+package indi.key.mipsemulator.controller;
 
 import java.util.function.Function;
 
