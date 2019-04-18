@@ -1,18 +1,15 @@
 package indi.key.mipsemulator.storage;
 
 import indi.key.mipsemulator.core.controller.Cpu;
-import indi.key.mipsemulator.model.interfaces.RegisterListener;
-import indi.key.mipsemulator.model.interfaces.Resetable;
 import indi.key.mipsemulator.model.exception.EmulatorException;
 import indi.key.mipsemulator.model.exception.ModifyZeroException;
-import javafx.application.Platform;
+import indi.key.mipsemulator.model.interfaces.Resetable;
 
 public class Register implements Comparable<Register>, Resetable {
 
     private RegisterType registerType;
     private Integer value;
     private Cpu cpu;
-    private RegisterListener registerListener = null;
 
     public Register(RegisterType registerType, Cpu cpu) {
         this.registerType = registerType;
@@ -32,9 +29,7 @@ public class Register implements Comparable<Register>, Resetable {
 
     private void setInternal(int value) {
         this.value = value;
-        if (!cpu.isLooping() && registerListener != null) {
-            Platform.runLater(() -> registerListener.onRegisterChange(Register.this));
-        }
+        cpu.notifyRegisterChange(this);
     }
 
     public int get() {
@@ -56,10 +51,6 @@ public class Register implements Comparable<Register>, Resetable {
 
     public long getUnsigned() {
         return Integer.toUnsignedLong(value);
-    }
-
-    public void setRegisterListener(RegisterListener registerListener) {
-        this.registerListener = registerListener;
     }
 
     private void checkZero(int value) {

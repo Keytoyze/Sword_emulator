@@ -13,6 +13,7 @@ import indi.key.mipsemulator.core.action.RTypeAction;
 import indi.key.mipsemulator.core.model.Statement;
 import indi.key.mipsemulator.model.interfaces.RegisterListener;
 import indi.key.mipsemulator.model.interfaces.Resetable;
+import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
 import indi.key.mipsemulator.storage.AddressRedirector;
@@ -20,14 +21,18 @@ import indi.key.mipsemulator.storage.MemoryType;
 import indi.key.mipsemulator.model.exception.NotImplementedException;
 import indi.key.mipsemulator.model.bean.BitArray;
 import indi.key.mipsemulator.util.LogUtils;
+import indi.key.mipsemulator.util.TimingRenderer;
+import javafx.application.Platform;
 
-public class Cpu implements Resetable {
+public class Cpu implements Resetable, TickCallback {
 
     private Register[] registers;
     private AddressRedirector addressRedirector;
+    private RegisterListener registerListener;
 
     // For looping
     private boolean looping;
+
     private long startTime;
     private int instructionCount;
     private int errorCount;
@@ -58,9 +63,19 @@ public class Cpu implements Resetable {
     }
 
     public void setRegisterListener(RegisterListener registerListener) {
-        for (Register register : registers) {
-            register.setRegisterListener(registerListener);
+        this.registerListener = registerListener;
+    }
+
+    public void notifyRegisterChange(Register register) {
+        if (!looping) {
+            // notify asynchronously
+            Platform.runLater(() -> {
+                if (registerListener != null) {
+                    registerListener.onRegisterChange(register);
+                }
+            });
         }
+        // The system will notify registers synchronously in the onTick()
     }
 
 
@@ -119,10 +134,12 @@ public class Cpu implements Resetable {
                 }
             }
         }).start();
+        TimingRenderer.register(this);
     }
 
     public CpuStatistics exitLoop() {
         looping = false;
+        TimingRenderer.unRegister(this);
         return new CpuStatistics(System.currentTimeMillis() - startTime, instructionCount, errorCount);
     }
 
@@ -198,5 +215,16 @@ public class Cpu implements Resetable {
         if (linkNext) {
             ra.set(pc.get());
         }
+    }
+
+    @Override
+    public void onTick() {
+        Platform.runLater(() -> {
+            if (registerListener == null) return;
+            for (Register register : registers) {
+                registerListener.onRegisterChange(register);
+            }
+        });
+
     }
 }
