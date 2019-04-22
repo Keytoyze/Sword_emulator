@@ -6,7 +6,7 @@ import java.util.Arrays;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.util.IoUtils;
 
-public class ByteArrayMemory implements IMemory {
+public class ByteArrayMemory implements Memory {
 
     private byte[] memory;
     private int depth;

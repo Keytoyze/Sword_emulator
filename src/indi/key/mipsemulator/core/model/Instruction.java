@@ -212,7 +212,7 @@ public enum Instruction {
 
     private static int checkOverflow(long value) throws OverflowException {
         if ((int) value != value) {
-            throw new OverflowException("Result " + value + " overflow.");
+            //throw new OverflowException("Result " + value + " overflow.");
         }
         return (int) value;
     }

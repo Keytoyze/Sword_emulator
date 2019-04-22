@@ -1,6 +1,5 @@
 package indi.key.mipsemulator;
 
-import indi.key.mipsemulator.controller.SwordController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

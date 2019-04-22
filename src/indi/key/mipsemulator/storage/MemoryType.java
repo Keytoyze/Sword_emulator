@@ -6,7 +6,7 @@ public enum MemoryType {
 
     RAM(new Range<>(0x00000000L, 0x0000FFFFL)),
     VRAM_TEXT(new Range<>(0x00000000L, 0x000012BFL)),
-    VRAM_GRAPH(new Range<>(0x00002000L, 0x0004CFFFL)),
+    VRAM_GRAPH(new Range<>(0x00002000L, 0x00097FFFL)),
     SEGMENT(0xFFFFFE00L),
     SEGMENT_COMPAT(0xE0000000L),
     GPIO(0xFFFFFF00L),
@@ -32,7 +32,7 @@ public enum MemoryType {
         return contains(dataRange, 0);
     }
 
-    public IMemory generateStorage() {
+    public Memory generateStorage() {
         return new ByteArrayMemory(getLength());
     }
 

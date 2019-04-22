@@ -32,7 +32,7 @@ public class TimingRenderer {
                 };
             }
         };
-        scheduledService.setPeriod(Duration.millis(50));
+        scheduledService.setPeriod(Duration.millis(40));
     }
 
     private static Set<TickCallback> callbackSet = new HashSet<>();

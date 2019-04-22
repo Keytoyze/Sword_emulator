@@ -9,7 +9,7 @@ import indi.key.mipsemulator.storage.RegisterType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-class RegisterController implements RegisterListener {
+public class RegisterController implements RegisterListener {
 
     public enum DisplayMode {
         HEXADECIMAL(integer -> "0x" + Integer.toHexString(integer)),
@@ -30,10 +30,10 @@ class RegisterController implements RegisterListener {
     private Label[] registerLable = new Label[32];
     private DisplayMode displayMode = DisplayMode.HEXADECIMAL;
 
-    RegisterController(GridPane registerPane, Cpu cpu) {
+    public RegisterController(GridPane registerPane, Cpu cpu) {
         this.registerPane = registerPane;
         this.cpu = cpu;
-        cpu.setRegisterListener(this);
+        cpu.addRegisterListener(this);
         initView();
     }
 

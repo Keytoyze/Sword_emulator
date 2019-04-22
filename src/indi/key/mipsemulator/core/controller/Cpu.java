@@ -1,25 +1,27 @@
 package indi.key.mipsemulator.core.controller;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 import indi.key.mipsemulator.core.action.Action;
-import indi.key.mipsemulator.core.action.MemoryAction;
 import indi.key.mipsemulator.core.action.ConditionalAction;
 import indi.key.mipsemulator.core.action.ITypeAction;
+import indi.key.mipsemulator.core.action.JumpAction;
+import indi.key.mipsemulator.core.action.MemoryAction;
+import indi.key.mipsemulator.core.action.RTypeAction;
 import indi.key.mipsemulator.core.model.CpuStatistics;
 import indi.key.mipsemulator.core.model.Instruction;
-import indi.key.mipsemulator.core.action.JumpAction;
-import indi.key.mipsemulator.core.action.RTypeAction;
 import indi.key.mipsemulator.core.model.Statement;
+import indi.key.mipsemulator.model.bean.BitArray;
+import indi.key.mipsemulator.model.exception.NotImplementedException;
 import indi.key.mipsemulator.model.interfaces.RegisterListener;
 import indi.key.mipsemulator.model.interfaces.Resetable;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
-import indi.key.mipsemulator.storage.Register;
-import indi.key.mipsemulator.storage.RegisterType;
 import indi.key.mipsemulator.storage.AddressRedirector;
 import indi.key.mipsemulator.storage.MemoryType;
-import indi.key.mipsemulator.model.exception.NotImplementedException;
-import indi.key.mipsemulator.model.bean.BitArray;
+import indi.key.mipsemulator.storage.Register;
+import indi.key.mipsemulator.storage.RegisterType;
 import indi.key.mipsemulator.util.LogUtils;
 import indi.key.mipsemulator.util.TimingRenderer;
 import javafx.application.Platform;
@@ -28,7 +30,9 @@ public class Cpu implements Resetable, TickCallback {
 
     private Register[] registers;
     private AddressRedirector addressRedirector;
-    private RegisterListener registerListener;
+    private Counter counter;
+
+    private Set<RegisterListener> registerListenerSet = new HashSet<>();
 
     // For looping
     private boolean looping;
@@ -47,6 +51,7 @@ public class Cpu implements Resetable, TickCallback {
             registers[i] = new Register(RegisterType.of(i), this);
         }
         reset();
+        counter = new Counter(this);
     }
 
     @Override
@@ -62,22 +67,25 @@ public class Cpu implements Resetable, TickCallback {
         return registers[registerType.ordinal()];
     }
 
-    public void setRegisterListener(RegisterListener registerListener) {
-        this.registerListener = registerListener;
+    public void addRegisterListener(RegisterListener registerListener) {
+        registerListenerSet.add(registerListener);
     }
 
     public void notifyRegisterChange(Register register) {
         if (!looping) {
             // notify asynchronously
             Platform.runLater(() -> {
-                if (registerListener != null) {
-                    registerListener.onRegisterChange(register);
+                for (RegisterListener listener : registerListenerSet) {
+                    listener.onRegisterChange(register);
                 }
             });
         }
         // The system will notify registers synchronously in the onTick()
     }
 
+    public AddressRedirector getAddressRedirector() {
+        return addressRedirector;
+    }
 
     public Register getHI() {
         return registers[RegisterType.HI.ordinal()];
@@ -112,6 +120,7 @@ public class Cpu implements Resetable, TickCallback {
             return;
         }
         getStatementRunnable(this).run();
+        counter.ticks();
     }
 
     public void loop() {
@@ -120,6 +129,7 @@ public class Cpu implements Resetable, TickCallback {
         errorCount = 0;
         resentException = null;
         startTime = System.currentTimeMillis();
+        //counter.beginTicking();
         new Thread(() -> {
             while (looping) {
                 Register pc = getRegister(RegisterType.PC);
@@ -134,6 +144,7 @@ public class Cpu implements Resetable, TickCallback {
                     errorCount++;
                     resentException = exception;
                 }
+                counter.ticks();
             }
         }).start();
         TimingRenderer.register(this);
@@ -142,6 +153,7 @@ public class Cpu implements Resetable, TickCallback {
     public CpuStatistics exitLoop() {
         looping = false;
         TimingRenderer.unRegister(this);
+        //counter.endTicking();
         if (resentException != null) {
             resentException.printStackTrace();
         }
@@ -175,6 +187,7 @@ public class Cpu implements Resetable, TickCallback {
                 cpu.track(index, statement);
                 beforeExcution(pc, ra, linkNext);
                 iTypeAction.execute(cpu, rs, rt, immediate);
+                afterExcution(cpu);
             };
         } else if (action instanceof ConditionalAction) {
             ConditionalAction conditionalAction = (ConditionalAction) action;
@@ -185,6 +198,7 @@ public class Cpu implements Resetable, TickCallback {
                 if (check) {
                     pc.set(pc.get() + statement.getOffset() * 4);
                 }
+                afterExcution(cpu);
             };
         } else if (action instanceof JumpAction) {
             JumpAction jumpAction = (JumpAction) action;
@@ -192,6 +206,7 @@ public class Cpu implements Resetable, TickCallback {
                 cpu.track(index, statement);
                 beforeExcution(pc, ra, linkNext);
                 pc.set(jumpAction.getNext(cpu, statement));
+                afterExcution(cpu);
             };
         } else if (action instanceof MemoryAction) {
             MemoryAction memoryAction = (MemoryAction) action;
@@ -199,6 +214,7 @@ public class Cpu implements Resetable, TickCallback {
                 cpu.track(index, statement);
                 beforeExcution(pc, ra, linkNext);
                 memoryAction.execute(cpu, rs.getUnsigned() + immediate.integerValue(), rt);
+                afterExcution(cpu);
             };
         } else {
             return () -> {
@@ -222,12 +238,17 @@ public class Cpu implements Resetable, TickCallback {
         }
     }
 
+    private static void afterExcution(Cpu cpu) {
+
+    }
+
     @Override
     public void onTick() {
         Platform.runLater(() -> {
-            if (registerListener == null) return;
-            for (Register register : registers) {
-                registerListener.onRegisterChange(register);
+            for (RegisterListener listener : registerListenerSet) {
+                for (Register register : registers) {
+                    listener.onRegisterChange(register);
+                }
             }
         });
 

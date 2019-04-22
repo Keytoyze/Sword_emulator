@@ -1,9 +1,11 @@
-package indi.key.mipsemulator.controller;
+package indi.key.mipsemulator;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import indi.key.mipsemulator.controller.RegisterController;
+import indi.key.mipsemulator.controller.VgaController;
 import indi.key.mipsemulator.core.controller.Cpu;
 import indi.key.mipsemulator.util.LogUtils;
 import javafx.collections.FXCollections;
@@ -15,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -36,6 +37,7 @@ public class SwordController implements Initializable {
 
     private Cpu cpu;
     private RegisterController registerController;
+    private VgaController vgaController;
     private WritableImage writableImage;
 
     @Override
@@ -47,25 +49,7 @@ public class SwordController implements Initializable {
 
         setUpRegisters();
         setUpMenu();
-
-        writableImage = new WritableImage(640, 480);
-        byte[] d = new byte[3100000 * 4];
-
-
-        for (int i = 0; i < 640 * 480; i++) {
-            int x = i % 640;
-            int y = i / 640;
-
-            d[i * 4] = (x * x + y * y <= 90000) ? (byte) 255 : 0;
-            d[i * 4 + 1] = 0;
-            d[i * 4 + 2] = 0;
-            d[i * 4 + 3] = (byte) 255;
-        }
-        writableImage.getPixelWriter().setPixels(0, 0, 640, 480, PixelFormat.getByteBgraPreInstance()
-                , d, 0, 640 * 4);
-
-        vgaScreen.setImage(writableImage);
-
+        setUpVGA();
     }
 
     private void setUpRegisters() {
@@ -104,6 +88,10 @@ public class SwordController implements Initializable {
             }
         });
         debugSingleIMenu.setOnAction(event -> cpu.singleStep());
+    }
+
+    public void setUpVGA() {
+        vgaController = new VgaController(vgaScreen, cpu);
     }
 
     public static void run(Stage primaryStage) throws Exception {
