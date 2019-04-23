@@ -66,9 +66,9 @@ public class AddressRedirector implements Memory {
             MemoryType memoryType = entry.getKey();
             if (memoryType == MemoryType.VRAM_GRAPH || memoryType == MemoryType.VRAM_TEXT) {
                 // TODO: remove magical number
-                if (memoryType.contains(dataRange, 0x000C0000)) {
+                if (memoryType.contains(dataRange, 0x000C3F00)) {
                     return new Pair<>(memoryType,
-                            memoryType.getRelativeAddress(dataRange.getStart()) - 0x000C0000);
+                            memoryType.getRelativeAddress(dataRange.getStart()) - 0x000C3F00);
                 }
             } else {
                 if (memoryType.contains(dataRange)) {

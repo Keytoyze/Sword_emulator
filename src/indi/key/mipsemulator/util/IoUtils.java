@@ -5,29 +5,46 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import indi.key.mipsemulator.model.bean.BitArray;
 
 public class IoUtils {
 
+    public static byte[] read(String resName) {
+        try {
+            return read(IoUtils.class.getResourceAsStream(resName));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static byte[] read(File file) {
+        try {
+            return read(new FileInputStream(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static byte[] read(InputStream inputStream) {
         byte[] buffer = null;
-        FileInputStream fis = null;
         ByteArrayOutputStream bos = null;
 
         try {
-            fis = new FileInputStream(file);
             bos = new ByteArrayOutputStream();
             byte[] b = new byte[1024];
             int n;
-            while ((n = fis.read(b)) != -1) {
+            while ((n = inputStream.read(b)) != -1) {
                 bos.write(b, 0, n);
             }
             buffer = bos.toByteArray();
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
-            close(fis);
+            close(inputStream);
             close(bos);
         }
 
