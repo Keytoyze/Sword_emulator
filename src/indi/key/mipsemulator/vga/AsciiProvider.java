@@ -5,7 +5,6 @@ import indi.key.mipsemulator.core.controller.Cpu;
 import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.MemoryType;
 import indi.key.mipsemulator.util.IoUtils;
-import indi.key.mipsemulator.util.LogUtils;
 
 public class AsciiProvider extends VgaProvider {
 
@@ -24,8 +23,8 @@ public class AsciiProvider extends VgaProvider {
     @Override
     public void onMemoryChange(Memory memory, int address, int length) {
         for (int i = address - address % 2; i < address + length; i += 2) {
-            int width = VgaRegisters.getFont().getWidth();
-            int height = VgaRegisters.getFont().getHeight();
+            int width = VgaConfigures.getFont().getWidth();
+            int height = VgaConfigures.getFont().getHeight();
             int wn = VgaController.WIDTH / width;
             int hn = VgaController.HEIGHT / height;
             int nx = i / 2 % wn;
@@ -37,7 +36,6 @@ public class AsciiProvider extends VgaProvider {
             byte[] bytes = memory.load(i, 2);
 
             byte chara = bytes[0];
-            LogUtils.i(bytes[1]);
 
             int a = chara * 8;
             for (int k = 0; k < 8; k++) {

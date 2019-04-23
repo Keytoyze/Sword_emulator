@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.keyboard;
+package indi.key.mipsemulator.model.info;
 
 import javafx.scene.input.KeyCode;
 

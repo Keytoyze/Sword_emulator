@@ -2,7 +2,7 @@ package indi.key.mipsemulator.vga;
 
 import indi.key.mipsemulator.core.controller.Cpu;
 
-public class VgaRegisters {
+public class VgaConfigures {
 
     public enum Font {
         EN_8_8(0b000, 8, 8),
@@ -49,6 +49,10 @@ public class VgaRegisters {
     }
 
     public static Resolution getResolution() {
-        return Resolution.CLOSE;
+        return Resolution.RE_640_480;
+    }
+
+    public static int getAddressOffset() {
+        return 0x000C3F00;
     }
 }

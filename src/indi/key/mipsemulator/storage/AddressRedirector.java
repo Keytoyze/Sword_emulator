@@ -4,11 +4,12 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import indi.key.mipsemulator.model.bean.Range;
+import indi.key.mipsemulator.model.info.Range;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.model.interfaces.MemoryListener;
 import indi.key.mipsemulator.util.IoUtils;
 import indi.key.mipsemulator.util.LogUtils;
+import indi.key.mipsemulator.vga.VgaConfigures;
 import javafx.util.Pair;
 
 public class AddressRedirector implements Memory {
@@ -65,10 +66,9 @@ public class AddressRedirector implements Memory {
         for (Map.Entry<MemoryType, Memory> entry : memoryMap.entrySet()) {
             MemoryType memoryType = entry.getKey();
             if (memoryType == MemoryType.VRAM_GRAPH || memoryType == MemoryType.VRAM_TEXT) {
-                // TODO: remove magical number
-                if (memoryType.contains(dataRange, 0x000C3F00)) {
+                if (memoryType.contains(dataRange, VgaConfigures.getAddressOffset())) {
                     return new Pair<>(memoryType,
-                            memoryType.getRelativeAddress(dataRange.getStart()) - 0x000C3F00);
+                            memoryType.getRelativeAddress(dataRange.getStart()) - VgaConfigures.getAddressOffset());
                 }
             } else {
                 if (memoryType.contains(dataRange)) {

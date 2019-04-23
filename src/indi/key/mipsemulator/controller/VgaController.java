@@ -4,7 +4,7 @@ import indi.key.mipsemulator.core.controller.Cpu;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.util.TimingRenderer;
 import indi.key.mipsemulator.vga.VgaProvider;
-import indi.key.mipsemulator.vga.VgaRegisters;
+import indi.key.mipsemulator.vga.VgaConfigures;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
@@ -22,13 +22,16 @@ public class VgaController implements TickCallback {
         content = new WritableImage(WIDTH, HEIGHT);
 
         screen.setImage(content);
-        vgaProvider = VgaRegisters.getProvider(cpu);
+        vgaProvider = VgaConfigures.getProvider(cpu);
 
         TimingRenderer.register(this);
     }
 
     @Override
     public void onTick() {
+        if (VgaConfigures.getResolution() == VgaConfigures.Resolution.CLOSE) {
+            return;
+        }
         content.getPixelWriter().setPixels(0, 0, WIDTH, HEIGHT, PixelFormat.getByteBgraPreInstance()
                 , vgaProvider.getRgbBytes(), 0, WIDTH * 4);
     }

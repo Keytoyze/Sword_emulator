@@ -1,6 +1,6 @@
 package indi.key.mipsemulator.storage;
 
-import indi.key.mipsemulator.model.bean.Range;
+import indi.key.mipsemulator.model.info.Range;
 
 public enum MemoryType {
 

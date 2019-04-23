@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package indi.key.mipsemulator.model.bean;
+package indi.key.mipsemulator.model.info;
 
 /**
  * Index starts from right to left.

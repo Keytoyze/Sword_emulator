@@ -6,7 +6,7 @@ import indi.key.mipsemulator.core.action.ITypeAction;
 import indi.key.mipsemulator.core.action.JumpAction;
 import indi.key.mipsemulator.core.action.MemoryAction;
 import indi.key.mipsemulator.core.action.RTypeAction;
-import indi.key.mipsemulator.model.bean.BitArray;
+import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.exception.OverflowException;
 import indi.key.mipsemulator.util.IoUtils;
 

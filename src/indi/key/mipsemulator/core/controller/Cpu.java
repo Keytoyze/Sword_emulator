@@ -13,7 +13,7 @@ import indi.key.mipsemulator.core.action.RTypeAction;
 import indi.key.mipsemulator.core.model.CpuStatistics;
 import indi.key.mipsemulator.core.model.Instruction;
 import indi.key.mipsemulator.core.model.Statement;
-import indi.key.mipsemulator.model.bean.BitArray;
+import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.exception.NotImplementedException;
 import indi.key.mipsemulator.model.interfaces.RegisterListener;
 import indi.key.mipsemulator.model.interfaces.Resetable;

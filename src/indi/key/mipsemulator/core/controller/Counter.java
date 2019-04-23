@@ -2,7 +2,7 @@ package indi.key.mipsemulator.core.controller;
 
 import java.util.Arrays;
 
-import indi.key.mipsemulator.model.bean.BitArray;
+import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.MemoryType;
