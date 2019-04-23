@@ -15,8 +15,7 @@ public class IoUtils {
         try {
             return read(IoUtils.class.getResourceAsStream(resName));
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
@@ -24,9 +23,8 @@ public class IoUtils {
         try {
             return read(new FileInputStream(file));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     private static byte[] read(InputStream inputStream) {

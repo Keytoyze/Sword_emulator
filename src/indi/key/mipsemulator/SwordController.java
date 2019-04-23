@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import indi.key.mipsemulator.controller.KeyboardController;
 import indi.key.mipsemulator.controller.RegisterController;
 import indi.key.mipsemulator.controller.VgaController;
 import indi.key.mipsemulator.core.controller.Cpu;
@@ -17,7 +18,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -37,8 +37,11 @@ public class SwordController implements Initializable {
 
     private Cpu cpu;
     private RegisterController registerController;
+    private KeyboardController keyboardController;
     private VgaController vgaController;
-    private WritableImage writableImage;
+
+    @FXML
+    Pane root;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -92,6 +95,14 @@ public class SwordController implements Initializable {
 
     public void setUpVGA() {
         vgaController = new VgaController(vgaScreen, cpu);
+        keyboardController = new KeyboardController(cpu);
+
+        root.setOnKeyPressed(event -> {
+            keyboardController.press(event.getCode());
+        });
+        root.setOnKeyReleased(event -> {
+            keyboardController.release(event.getCode());
+        });
     }
 
     public static void run(Stage primaryStage) throws Exception {

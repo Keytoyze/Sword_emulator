@@ -113,6 +113,7 @@
         </MenuBar>
 
         <AnchorPane
+            fx:id="root"
             maxHeight="-1.0"
             maxWidth="-1.0"
             prefHeight="720.0"

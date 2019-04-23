@@ -1,5 +1,6 @@
 package indi.key.mipsemulator.storage;
 
+import indi.key.mipsemulator.controller.KeyboardController;
 import indi.key.mipsemulator.model.info.Range;
 
 public enum MemoryType {
@@ -33,6 +34,9 @@ public enum MemoryType {
     }
 
     public Memory generateStorage() {
+        if (this == PS2) {
+            return new KeyboardController.PS2Memory(getLength());
+        }
         return new ByteArrayMemory(getLength());
     }
 

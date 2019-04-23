@@ -12,7 +12,7 @@ public class ByteArrayMemory implements Memory {
     private int depth;
     private File initFile = null;
 
-    ByteArrayMemory(int depth) {
+    public ByteArrayMemory(int depth) {
         this.depth = depth;
         reset();
     }

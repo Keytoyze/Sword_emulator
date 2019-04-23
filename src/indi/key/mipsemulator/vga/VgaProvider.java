@@ -21,7 +21,7 @@ public abstract class VgaProvider implements MemoryListener, Resetable {
     protected abstract MemoryType getBindMemory();
 
     public VgaProvider(Cpu cpu) {
-        cpu.getAddressRedirector().setListener(getBindMemory(), this);
+        cpu.getAddressRedirector().addListener(getBindMemory(), this);
         reset();
     }
 

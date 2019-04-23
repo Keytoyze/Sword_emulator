@@ -13,8 +13,8 @@ import indi.key.mipsemulator.core.action.RTypeAction;
 import indi.key.mipsemulator.core.model.CpuStatistics;
 import indi.key.mipsemulator.core.model.Instruction;
 import indi.key.mipsemulator.core.model.Statement;
-import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.exception.NotImplementedException;
+import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.interfaces.RegisterListener;
 import indi.key.mipsemulator.model.interfaces.Resetable;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
@@ -33,6 +33,7 @@ public class Cpu implements Resetable, TickCallback {
     private Counter counter;
 
     private Set<RegisterListener> registerListenerSet = new HashSet<>();
+    private Set<TickCallback> callbackSet = new HashSet<>();
 
     // For looping
     private boolean looping;
@@ -69,6 +70,10 @@ public class Cpu implements Resetable, TickCallback {
 
     public void addRegisterListener(RegisterListener registerListener) {
         registerListenerSet.add(registerListener);
+    }
+
+    public void addCpuListener(TickCallback tickCallback) {
+        callbackSet.add(tickCallback);
     }
 
     public void notifyRegisterChange(Register register) {
@@ -239,7 +244,9 @@ public class Cpu implements Resetable, TickCallback {
     }
 
     private static void afterExcution(Cpu cpu) {
-
+        for (TickCallback callback : cpu.callbackSet) {
+            callback.onTick();
+        }
     }
 
     @Override
