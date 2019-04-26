@@ -14,13 +14,11 @@ public class ButtonController {
 
     private GridPane pane;
     private Memory btnMemory;
-    private Machine machine;
     private Button[] buttons = new Button[25];
     private static final int BUTTON_WIDTH = 40;
 
     public ButtonController(GridPane buttonPane, Machine machine) {
         this.pane = buttonPane;
-        this.machine = machine;
         this.btnMemory = machine.getAddressRedirector().getMemory(MemoryType.BUTTON);
         initView();
     }

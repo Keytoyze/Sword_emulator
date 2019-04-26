@@ -8,36 +8,31 @@ import indi.key.mipsemulator.model.info.Range;
 
 public enum MemoryType {
 
-    RAM(new Range<>(0x00000000L, 0x0000FFFFL)),
-    VRAM_TEXT(new Range<>(0x00000000L, 0x000012BFL)),
-    VRAM_GRAPH(new Range<>(0x00002000L, 0x00097FFFL)),
-    SEGMENT(0xFFFFFE00L),
-    SEGMENT_COMPAT(0xE0000000L),
-    GPIO(0xFFFFFF00L, GpioRegister::new),
-    GPIO_COMPAT(0xF0000000L),
-    BUTTON(0xFFFFFC00L, ButtonController.ButtonMemory::new),
-    BUTTON_COMPAT(0xC0000000L),
-    COUNTER(0xFFFFFF04L),
-    COUNTER_COMPAT(0xF0000004L),
-    PS2(0xFFFFD000L, KeyboardController.PS2Memory::new);
+    RAM(new MemoryRange(0x00000000L, 0x0000FFFFL)),
+    VRAM_TEXT(new MemoryRange(0x00000000L, 0x000012BFL)),
+    VRAM_GRAPH(new MemoryRange(0x00002000L, 0x00097FFFL)),
+    SEGMENT(new MemoryRange(0xFFFFFE00L),
+            new MemoryRange(0xE0000000L)),
+    GPIO(GpioRegister::new,
+            new MemoryRange(0xFFFFFF00L),
+            new MemoryRange(0xF0000000L)),
+    BUTTON(ButtonController.ButtonMemory::new,
+            new MemoryRange(0xFFFFFC00L),
+            new MemoryRange(0xC0000000L)),
+    COUNTER(new MemoryRange(0xFFFFFF04L),
+            new MemoryRange(0xF0000004L)),
+    PS2(KeyboardController.PS2Memory::new,
+            new MemoryRange(0xFFFFD000L));
 
-    private Range<Long> addressRange;
     private Function<Integer, Memory> memorySupplier;
+    private MemoryRange[] ranges;
 
-    MemoryType(Long address) {
-        this(address, null);
+    MemoryType(MemoryRange... address) {
+        this(null, address);
     }
 
-    MemoryType(Long address, Function<Integer, Memory> memorySupplier) {
-        this(new Range<>(address, address + 3), memorySupplier);
-    }
-
-    MemoryType(Range<Long> addressRange) {
-        this(addressRange, null);
-    }
-
-    MemoryType(Range<Long> addressRange, Function<Integer, Memory> memorySupplier) {
-        this.addressRange = addressRange;
+    MemoryType(Function<Integer, Memory> memorySupplier, MemoryRange... address) {
+        this.ranges = address;
         if (memorySupplier == null) {
             this.memorySupplier = ByteArrayMemory::new;
         } else {
@@ -45,26 +40,64 @@ public enum MemoryType {
         }
     }
 
-    public boolean contains(Range<Long> dataRange) {
-        return contains(dataRange, 0);
+    public int getRelativeAddress(Range<Long> dataRange) {
+        return getRelativeAddress(dataRange, 0);
+    }
+
+    public int getRelativeAddress(Range<Long> dataRange, int offset) {
+        Range<Long> realDataRange = new Range<>(dataRange);
+        realDataRange.setStart(realDataRange.getStart() - offset);
+        realDataRange.setEnd(realDataRange.getEnd() - offset);
+        for (MemoryRange range : ranges) {
+            if (range.contains(realDataRange)) {
+                return range.getRelativeAddress(realDataRange.getStart());
+            }
+        }
+        return -1;
     }
 
     public Memory generateStorage() {
         return memorySupplier.apply(getLength());
     }
 
-    public int getRelativeAddress(long address) {
-        return (int) (address - addressRange.getStart());
-    }
+//    public int getRelativeAddress(long address) {
+//        for (MemoryRange range : ranges) {
+//            if (range.contains(dataRange, offset)) {
+//                return range.contains(dataRange, offset);
+//            }
+//        }
+//        return -1;
+//    }
 
     public int getLength() {
-        return (int) (addressRange.getEnd() - addressRange.getStart() + 1);
+        return ranges[0].getLength();
     }
 
-    public boolean contains(Range<Long> dataRange, int offset) {
-        Range<Long> realDataRange = new Range<>(dataRange);
-        realDataRange.setStart(realDataRange.getStart() - offset);
-        realDataRange.setEnd(realDataRange.getEnd() - offset);
-        return addressRange.contains(realDataRange);
+    private static class MemoryRange {
+
+        Range<Long> addressRange;
+
+        MemoryRange(long address) {
+            this(address, address + 3);
+        }
+
+        MemoryRange(long begin, long end) {
+            this.addressRange = new Range<>(begin, end);
+        }
+
+        boolean contains(Range<Long> dataRange) {
+            Range<Long> realDataRange = new Range<>(dataRange);
+            realDataRange.setStart(realDataRange.getStart());
+            realDataRange.setEnd(realDataRange.getEnd());
+            return addressRange.contains(realDataRange);
+        }
+
+        int getLength() {
+            return (int) (addressRange.getEnd() - addressRange.getStart() + 1);
+        }
+
+        int getRelativeAddress(long address) {
+            return (int) (address - addressRange.getStart());
+        }
     }
 }

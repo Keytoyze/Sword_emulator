@@ -67,14 +67,14 @@ public class AddressRedirector implements Memory {
     private Pair<MemoryType, Integer> selectMemory(Range<Long> dataRange) throws MemoryOutOfBoundsException {
         for (MemoryType memoryType : MemoryType.values()) {
             if (memoryType == MemoryType.VRAM_GRAPH || memoryType == MemoryType.VRAM_TEXT) {
-                if (memoryType.contains(dataRange, VgaConfigures.getAddressOffset())) {
-                    return new Pair<>(memoryType,
-                            memoryType.getRelativeAddress(dataRange.getStart()) - VgaConfigures.getAddressOffset());
+                int relative = memoryType.getRelativeAddress(dataRange, VgaConfigures.getAddressOffset());
+                if (relative >= 0) {
+                    return new Pair<>(memoryType, relative);
                 }
             } else {
-                if (memoryType.contains(dataRange)) {
-                    return new Pair<>(memoryType,
-                            memoryType.getRelativeAddress(dataRange.getStart()));
+                int relative = memoryType.getRelativeAddress(dataRange);
+                if (relative >= 0) {
+                    return new Pair<>(memoryType, relative);
                 }
             }
         }
