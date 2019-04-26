@@ -4,7 +4,7 @@ import indi.key.mipsemulator.core.controller.Cpu;
 import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.MemoryType;
 
-public class ChineseProvider extends VgaProvider {
+public class ChineseProvider extends ScreenProvider {
 
     public ChineseProvider(Cpu cpu) {
         super(cpu);

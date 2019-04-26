@@ -3,7 +3,7 @@
 <?import javafx.scene.canvas.Canvas?><?import javafx.scene.control.ComboBox?><?import javafx.scene.control.Menu?><?import javafx.scene.control.MenuBar?><?import javafx.scene.control.MenuItem?><?import javafx.scene.control.RadioMenuItem?><?import javafx.scene.control.SeparatorMenuItem?><?import javafx.scene.image.ImageView?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="742.0"
-    prefWidth="1225.0"
+    prefWidth="1272.0"
     xmlns="http://javafx.com/javafx/8.0.201"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="indi.key.mipsemulator.SwordController">
@@ -129,10 +129,11 @@
 
                 <GridPane
                     fx:id="registerPane"
+                    gridLinesVisible="true"
                     layoutX="673.0"
                     layoutY="47.0"
                     prefHeight="270.0"
-                    prefWidth="539.0">
+                    prefWidth="579.0">
 
                     <columnConstraints>
 
@@ -202,11 +203,12 @@
                 </GridPane>
 
                 <GridPane
-                    gridLinesVisible="true"
+                    fx:id="slideSwitchGrid"
+                    hgap="4.0"
                     layoutX="674.0"
-                    layoutY="411.0"
-                    prefHeight="49.0"
-                    prefWidth="358.0">
+                    layoutY="413.0"
+                    prefHeight="28.0"
+                    prefWidth="394.0">
 
                     <columnConstraints>
 
@@ -301,8 +303,124 @@
                 </GridPane>
 
                 <GridPane
+                    fx:id="slideLabelGrid"
+                    hgap="4.0"
+                    layoutX="674.0"
+                    layoutY="441.0"
+                    prefHeight="22.0"
+                    prefWidth="394.0">
+
+                    <columnConstraints>
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+                    </columnConstraints>
+
+                    <rowConstraints>
+
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
+                    </rowConstraints>
+                </GridPane>
+
+                <GridPane
                     gridLinesVisible="true"
-                    layoutX="1046.0"
+                    layoutX="1087.0"
                     layoutY="335.0"
                     prefHeight="169.0"
                     prefWidth="165.0">
@@ -362,10 +480,11 @@
 
                 <GridPane
                     gridLinesVisible="true"
+                    hgap="4.0"
                     layoutX="674.0"
-                    layoutY="472.0"
-                    prefHeight="32.0"
-                    prefWidth="358.0">
+                    layoutY="477.0"
+                    prefHeight="22.0"
+                    prefWidth="394.0">
 
                     <columnConstraints>
 

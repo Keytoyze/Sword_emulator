@@ -1,5 +1,7 @@
 package indi.key.mipsemulator.storage;
 
+import java.util.function.Function;
+
 import indi.key.mipsemulator.controller.KeyboardController;
 import indi.key.mipsemulator.model.info.Range;
 
@@ -10,23 +12,36 @@ public enum MemoryType {
     VRAM_GRAPH(new Range<>(0x00002000L, 0x00097FFFL)),
     SEGMENT(0xFFFFFE00L),
     SEGMENT_COMPAT(0xE0000000L),
-    GPIO(0xFFFFFF00L),
+    GPIO(0xFFFFFF00L, GpioRegister::new),
     GPIO_COMPAT(0xF0000000L),
     BUTTON(0xFFFFFC00L),
     BUTTON_COMPAT(0xC0000000L),
     COUNTER(0xFFFFFF04L),
     COUNTER_COMPAT(0xF0000004L),
-    PS2(0xFFFFD000L);
-
+    PS2(0xFFFFD000L, KeyboardController.PS2Memory::new);
 
     private Range<Long> addressRange;
+    private Function<Integer, Memory> memorySupplier;
 
     MemoryType(Long address) {
-        this.addressRange = new Range<>(address, address + 3);
+        this(address, null);
+    }
+
+    MemoryType(Long address, Function<Integer, Memory> memorySupplier) {
+        this(new Range<>(address, address + 3), memorySupplier);
     }
 
     MemoryType(Range<Long> addressRange) {
+        this(addressRange, null);
+    }
+
+    MemoryType(Range<Long> addressRange, Function<Integer, Memory> memorySupplier) {
         this.addressRange = addressRange;
+        if (memorySupplier == null) {
+            this.memorySupplier = ByteArrayMemory::new;
+        } else {
+            this.memorySupplier = memorySupplier;
+        }
     }
 
     public boolean contains(Range<Long> dataRange) {
@@ -34,10 +49,7 @@ public enum MemoryType {
     }
 
     public Memory generateStorage() {
-        if (this == PS2) {
-            return new KeyboardController.PS2Memory(getLength());
-        }
-        return new ByteArrayMemory(getLength());
+        return memorySupplier.apply(getLength());
     }
 
     public int getRelativeAddress(long address) {

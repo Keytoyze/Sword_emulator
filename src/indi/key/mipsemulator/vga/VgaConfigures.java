@@ -40,7 +40,7 @@ public class VgaConfigures {
         }
     }
 
-    public static VgaProvider getProvider(Cpu cpu) {
+    public static ScreenProvider getProvider(Cpu cpu) {
         return new AsciiProvider(cpu);
     }
 

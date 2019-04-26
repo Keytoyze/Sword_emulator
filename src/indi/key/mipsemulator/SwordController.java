@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import indi.key.mipsemulator.controller.KeyboardController;
 import indi.key.mipsemulator.controller.RegisterController;
+import indi.key.mipsemulator.controller.SlideSwitchController;
 import indi.key.mipsemulator.controller.VgaController;
 import indi.key.mipsemulator.core.controller.Cpu;
 import indi.key.mipsemulator.util.LogUtils;
@@ -34,11 +35,16 @@ public class SwordController implements Initializable {
     MenuItem debugSingleIMenu;
     @FXML
     ComboBox<String> registerModeComboBox;
+    @FXML
+    GridPane slideSwitchGrid;
+    @FXML
+    GridPane slideLabelGrid;
 
     private Cpu cpu;
     private RegisterController registerController;
     private KeyboardController keyboardController;
     private VgaController vgaController;
+    private SlideSwitchController slideSwitchController;
 
     @FXML
     Pane root;
@@ -53,6 +59,7 @@ public class SwordController implements Initializable {
         setUpRegisters();
         setUpMenu();
         setUpVGA();
+        setUpSlideSwitches();
     }
 
     private void setUpRegisters() {
@@ -91,6 +98,11 @@ public class SwordController implements Initializable {
             }
         });
         debugSingleIMenu.setOnAction(event -> cpu.singleStep());
+    }
+
+    private void setUpSlideSwitches() {
+        slideSwitchController = new SlideSwitchController(
+                slideSwitchGrid, slideLabelGrid);
     }
 
     public void setUpVGA() {

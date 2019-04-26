@@ -6,7 +6,7 @@ import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.MemoryType;
 import indi.key.mipsemulator.util.IoUtils;
 
-public class AsciiProvider extends VgaProvider {
+public class AsciiProvider extends ScreenProvider {
 
     private byte[] asciiStocks;
 

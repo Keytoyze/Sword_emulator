@@ -1,12 +1,14 @@
 package indi.key.mipsemulator.vga;
 
+import java.util.function.Supplier;
+
 import indi.key.mipsemulator.controller.VgaController;
 import indi.key.mipsemulator.core.controller.Cpu;
 import indi.key.mipsemulator.model.interfaces.MemoryListener;
 import indi.key.mipsemulator.model.interfaces.Resetable;
 import indi.key.mipsemulator.storage.MemoryType;
 
-public abstract class VgaProvider implements MemoryListener, Resetable {
+public abstract class ScreenProvider implements MemoryListener, Resetable, Supplier<byte[]> {
 
     /* Pixels in this format can be decoded using the following sample code:
      *     int i = rowstart + x * 4;
@@ -20,12 +22,13 @@ public abstract class VgaProvider implements MemoryListener, Resetable {
 
     protected abstract MemoryType getBindMemory();
 
-    public VgaProvider(Cpu cpu) {
+    public ScreenProvider(Cpu cpu) {
         cpu.getAddressRedirector().addListener(getBindMemory(), this);
         reset();
     }
 
-    public byte[] getRgbBytes() {
+    @Override
+    public byte[] get() {
         return rgbBytes;
     }
 

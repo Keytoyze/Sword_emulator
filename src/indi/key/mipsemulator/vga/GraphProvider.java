@@ -4,7 +4,7 @@ import indi.key.mipsemulator.core.controller.Cpu;
 import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.MemoryType;
 
-public class GraphProvider extends VgaProvider {
+public class GraphProvider extends ScreenProvider {
 
     @Override
     protected MemoryType getBindMemory() {

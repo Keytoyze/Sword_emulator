@@ -3,7 +3,7 @@ package indi.key.mipsemulator.controller;
 import indi.key.mipsemulator.core.controller.Cpu;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.util.TimingRenderer;
-import indi.key.mipsemulator.vga.VgaProvider;
+import indi.key.mipsemulator.vga.ScreenProvider;
 import indi.key.mipsemulator.vga.VgaConfigures;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
@@ -16,13 +16,13 @@ public class VgaController implements TickCallback {
 
     private WritableImage content;
 
-    private VgaProvider vgaProvider;
+    private ScreenProvider screenProvider;
 
     public VgaController(ImageView screen, Cpu cpu) {
         content = new WritableImage(WIDTH, HEIGHT);
 
         screen.setImage(content);
-        vgaProvider = VgaConfigures.getProvider(cpu);
+        screenProvider = VgaConfigures.getProvider(cpu);
 
         TimingRenderer.register(this);
     }
@@ -33,6 +33,6 @@ public class VgaController implements TickCallback {
             return;
         }
         content.getPixelWriter().setPixels(0, 0, WIDTH, HEIGHT, PixelFormat.getByteBgraPreInstance()
-                , vgaProvider.getRgbBytes(), 0, WIDTH * 4);
+                , screenProvider.get(), 0, WIDTH * 4);
     }
 }
