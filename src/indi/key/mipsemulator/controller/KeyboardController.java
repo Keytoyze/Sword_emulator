@@ -3,7 +3,7 @@ package indi.key.mipsemulator.controller;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import indi.key.mipsemulator.core.controller.Cpu;
+import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.info.PS2Key;
@@ -19,9 +19,9 @@ public class KeyboardController implements TickCallback {
     private Queue<Byte> keyQueue = new LinkedBlockingQueue<>();
     private Memory ps2Memory;
 
-    public KeyboardController(Cpu cpu) {
-        cpu.addCpuListener(this);
-        ps2Memory = cpu.getAddressRedirector().getMemory(MemoryType.PS2);
+    public KeyboardController(Machine machine) {
+        machine.addCpuListener(this);
+        ps2Memory = machine.getAddressRedirector().getMemory(MemoryType.PS2);
     }
 
     public void press(KeyCode keyCode) {

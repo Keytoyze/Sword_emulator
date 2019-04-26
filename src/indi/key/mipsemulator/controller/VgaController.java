@@ -1,6 +1,6 @@
 package indi.key.mipsemulator.controller;
 
-import indi.key.mipsemulator.core.controller.Cpu;
+import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.util.TimingRenderer;
 import indi.key.mipsemulator.vga.ScreenProvider;
@@ -18,11 +18,11 @@ public class VgaController implements TickCallback {
 
     private ScreenProvider screenProvider;
 
-    public VgaController(ImageView screen, Cpu cpu) {
+    public VgaController(ImageView screen, Machine machine) {
         content = new WritableImage(WIDTH, HEIGHT);
 
         screen.setImage(content);
-        screenProvider = VgaConfigures.getProvider(cpu);
+        screenProvider = VgaConfigures.getProvider(machine);
 
         TimingRenderer.register(this);
     }

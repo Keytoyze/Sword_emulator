@@ -1,13 +1,13 @@
 package indi.key.mipsemulator.vga;
 
-import indi.key.mipsemulator.core.controller.Cpu;
+import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.MemoryType;
 
 public class ChineseProvider extends ScreenProvider {
 
-    public ChineseProvider(Cpu cpu) {
-        super(cpu);
+    public ChineseProvider(Machine machine) {
+        super(machine);
     }
 
     @Override

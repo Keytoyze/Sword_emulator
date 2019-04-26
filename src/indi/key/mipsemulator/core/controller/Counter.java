@@ -11,14 +11,14 @@ import indi.key.mipsemulator.util.TimingRenderer;
 
 public class Counter implements TickCallback {
 
-    private Cpu cpu;
+    private Machine machine;
     private boolean ticking = false;
     private long timeStamp;
 
     private static final byte[] EMPTY = new byte[4];
 
-    public Counter(Cpu cpu) {
-        this.cpu = cpu;
+    public Counter(Machine machine) {
+        this.machine = machine;
     }
 
     public void ticks() {
@@ -34,7 +34,7 @@ public class Counter implements TickCallback {
     }
 
     public boolean getCounterOut() {
-        Memory memory = cpu.getAddressRedirector().getMemory(MemoryType.GPIO);
+        Memory memory = machine.getAddressRedirector().getMemory(MemoryType.GPIO);
         byte[] bytes = memory.load(0, 4);
         return Arrays.equals(bytes, EMPTY);
     }
@@ -48,8 +48,8 @@ public class Counter implements TickCallback {
 
     @Override
     public void onTick() {
-        Memory counterMem = cpu.getAddressRedirector().getMemory(MemoryType.COUNTER);
-        Memory gpioMem = cpu.getAddressRedirector().getMemory(MemoryType.GPIO);
+        Memory counterMem = machine.getAddressRedirector().getMemory(MemoryType.COUNTER);
+        Memory gpioMem = machine.getAddressRedirector().getMemory(MemoryType.GPIO);
         byte[] bytes = counterMem.load(0, 4);
         long currentTime = System.currentTimeMillis();
         long interval = currentTime - timeStamp;

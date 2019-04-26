@@ -1,6 +1,6 @@
 package indi.key.mipsemulator.vga;
 
-import indi.key.mipsemulator.core.controller.Cpu;
+import indi.key.mipsemulator.core.controller.Machine;
 
 public class VgaConfigures {
 
@@ -40,8 +40,8 @@ public class VgaConfigures {
         }
     }
 
-    public static ScreenProvider getProvider(Cpu cpu) {
-        return new AsciiProvider(cpu);
+    public static ScreenProvider getProvider(Machine machine) {
+        return new AsciiProvider(machine);
     }
 
     public static Font getFont() {

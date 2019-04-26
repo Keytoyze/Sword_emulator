@@ -1,6 +1,5 @@
 package indi.key.mipsemulator.storage;
 
-import indi.key.mipsemulator.core.controller.Cpu;
 import indi.key.mipsemulator.model.exception.EmulatorException;
 import indi.key.mipsemulator.model.exception.ModifyZeroException;
 import indi.key.mipsemulator.model.interfaces.Resetable;
@@ -9,12 +8,10 @@ public class Register implements Comparable<Register>, Resetable {
 
     private RegisterType registerType;
     private Integer value;
-    private Cpu cpu;
 
-    public Register(RegisterType registerType, Cpu cpu) {
+    public Register(RegisterType registerType) {
         this.registerType = registerType;
         this.value = 0;
-        this.cpu = cpu;
     }
 
     public void set(int value) throws EmulatorException {
@@ -29,7 +26,6 @@ public class Register implements Comparable<Register>, Resetable {
 
     private void setInternal(int value) {
         this.value = value;
-        cpu.notifyRegisterChange(this);
     }
 
     public int get() {

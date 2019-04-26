@@ -1,6 +1,6 @@
 package indi.key.mipsemulator.vga;
 
-import indi.key.mipsemulator.core.controller.Cpu;
+import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.MemoryType;
 
@@ -11,8 +11,8 @@ public class GraphProvider extends ScreenProvider {
         return MemoryType.VRAM_GRAPH;
     }
 
-    public GraphProvider(Cpu cpu) {
-        super(cpu);
+    public GraphProvider(Machine machine) {
+        super(machine);
     }
 
     /*

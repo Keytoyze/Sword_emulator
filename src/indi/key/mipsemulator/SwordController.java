@@ -8,7 +8,7 @@ import indi.key.mipsemulator.controller.KeyboardController;
 import indi.key.mipsemulator.controller.RegisterController;
 import indi.key.mipsemulator.controller.SlideSwitchController;
 import indi.key.mipsemulator.controller.VgaController;
-import indi.key.mipsemulator.core.controller.Cpu;
+import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.util.LogUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,7 +40,7 @@ public class SwordController implements Initializable {
     @FXML
     GridPane slideLabelGrid;
 
-    private Cpu cpu;
+    private Machine machine;
     private RegisterController registerController;
     private KeyboardController keyboardController;
     private VgaController vgaController;
@@ -54,7 +54,7 @@ public class SwordController implements Initializable {
         LogUtils.i(location, resources);
 
         String path = "G:\\code\\java\\mipsasm\\mipsasm\\test\\computer_MCPU.bin";
-        cpu = new Cpu(new File(path));
+        this.machine = new Machine(new File(path));
 
         setUpRegisters();
         setUpMenu();
@@ -63,7 +63,7 @@ public class SwordController implements Initializable {
     }
 
     private void setUpRegisters() {
-        registerController = new RegisterController(registerPane, cpu);
+        registerController = new RegisterController(registerPane, machine);
         ObservableList<String> options =
                 FXCollections.observableArrayList(
                         "十六进制",
@@ -89,15 +89,15 @@ public class SwordController implements Initializable {
 
     public void setUpMenu() {
         debugExecuteMenu.setOnAction(event -> {
-            if (cpu.isLooping()) {
-                LogUtils.i(cpu.exitLoop());
+            if (machine.getCpu().isLooping()) {
+                LogUtils.i(machine.exitLoop());
                 debugExecuteMenu.setText("运行");
             } else {
-                cpu.loop();
+                machine.loop();
                 debugExecuteMenu.setText("暂停");
             }
         });
-        debugSingleIMenu.setOnAction(event -> cpu.singleStep());
+        debugSingleIMenu.setOnAction(event -> machine.singleStep());
     }
 
     private void setUpSlideSwitches() {
@@ -106,8 +106,8 @@ public class SwordController implements Initializable {
     }
 
     public void setUpVGA() {
-        vgaController = new VgaController(vgaScreen, cpu);
-        keyboardController = new KeyboardController(cpu);
+        vgaController = new VgaController(vgaScreen, machine);
+        keyboardController = new KeyboardController(machine);
 
         root.setOnKeyPressed(event -> {
             keyboardController.press(event.getCode());

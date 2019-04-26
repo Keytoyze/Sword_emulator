@@ -3,7 +3,7 @@ package indi.key.mipsemulator.vga;
 import java.util.function.Supplier;
 
 import indi.key.mipsemulator.controller.VgaController;
-import indi.key.mipsemulator.core.controller.Cpu;
+import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.model.interfaces.MemoryListener;
 import indi.key.mipsemulator.model.interfaces.Resetable;
 import indi.key.mipsemulator.storage.MemoryType;
@@ -22,8 +22,8 @@ public abstract class ScreenProvider implements MemoryListener, Resetable, Suppl
 
     protected abstract MemoryType getBindMemory();
 
-    public ScreenProvider(Cpu cpu) {
-        cpu.getAddressRedirector().addListener(getBindMemory(), this);
+    public ScreenProvider(Machine machine) {
+        machine.getAddressRedirector().addListener(getBindMemory(), this);
         reset();
     }
 

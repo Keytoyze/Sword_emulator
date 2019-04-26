@@ -12,41 +12,41 @@ import indi.key.mipsemulator.util.IoUtils;
 
 @SuppressWarnings("unused")
 public enum Instruction {
-    ADD((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    ADD((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(checkOverflow(rs.getAsLong() + rt.getAsLong()));
     }),
-    ADDI((ITypeAction) (cpu, rs, rt, immediate) -> {
+    ADDI((ITypeAction) (m, rs, rt, immediate) -> {
         rt.set(checkOverflow(rs.getAsLong() + immediate.integerValue()));
     }),
-    ADDIU((ITypeAction) (cpu, rs, rt, immediate) -> {
+    ADDIU((ITypeAction) (m, rs, rt, immediate) -> {
         rt.setUnsigned(rs.getUnsigned() + immediate.value());
     }),
-    ADDU((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    ADDU((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.setUnsigned(rs.getUnsigned() + rt.getUnsigned());
     }),
-    AND((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    AND((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rs.get() & rt.get());
     }),
-    ANDI((ITypeAction) (cpu, rs, rt, immediate) -> {
+    ANDI((ITypeAction) (m, rs, rt, immediate) -> {
         rt.set(rs.get() & immediate.value());
     }),
     B,
     // BAL, BC1F, BC1FL, ... , BC2TL
-    BEQ((ConditionalAction) (cpu, rs, rt) -> rs.equals(rt)),
+    BEQ((ConditionalAction) (m, rs, rt) -> rs.equals(rt)),
     BEQL,
-    BGEZ((ConditionalAction) (cpu, rs, rt) -> rs.get() >= 0),
-    BGEZAL((ConditionalAction) (cpu, rs, rt) -> rs.get() >= 0, true),
+    BGEZ((ConditionalAction) (m, rs, rt) -> rs.get() >= 0),
+    BGEZAL((ConditionalAction) (m, rs, rt) -> rs.get() >= 0, true),
     BGEZALL,
     BGEZL,
-    BGTZ((ConditionalAction) (cpu, rs, rt) -> rs.get() > 0),
+    BGTZ((ConditionalAction) (m, rs, rt) -> rs.get() > 0),
     BGTZL,
-    BLEZ((ConditionalAction) (cpu, rs, rt) -> rs.get() <= 0),
+    BLEZ((ConditionalAction) (m, rs, rt) -> rs.get() <= 0),
     BLEZL,
-    BLTZ((ConditionalAction) (cpu, rs, rt) -> rs.get() < 0),
-    BLTZAL((ConditionalAction) (cpu, rs, rt) -> rs.get() < 0, true),
+    BLTZ((ConditionalAction) (m, rs, rt) -> rs.get() < 0),
+    BLTZAL((ConditionalAction) (m, rs, rt) -> rs.get() < 0, true),
     BLTZALL,
     BLTZL,
-    BNE((ConditionalAction) (cpu, rs, rt) -> !rs.equals(rt)),
+    BNE((ConditionalAction) (m, rs, rt) -> !rs.equals(rt)),
     BNEL,
     BREAK,
     // C, ... , CLZ
@@ -56,32 +56,32 @@ public enum Instruction {
     DIV,
     DIVU,
     ERET,
-    J((JumpAction) (cpu, statement) -> statement.getAddress() << 2),
-    JAL((JumpAction) (cpu, statement) -> statement.getAddress() << 2, true),
-    JALR((JumpAction) (cpu, statement) -> cpu.getRegister(statement.getRs()).get(), true),
-    JR((JumpAction) (cpu, statement) -> cpu.getRegister(statement.getRs()).get()),
+    J((JumpAction) (m, statement) -> statement.getAddress() << 2),
+    JAL((JumpAction) (m, statement) -> statement.getAddress() << 2, true),
+    JALR((JumpAction) (m, statement) -> m.getRegister(statement.getRs()).get(), true),
+    JR((JumpAction) (m, statement) -> m.getRegister(statement.getRs()).get()),
     LA,
-    LB((MemoryAction) (cpu, address, rt) -> {
-        rt.set(IoUtils.bytesToInt(cpu.loadMemory(address, 1)));
+    LB((MemoryAction) (m, address, rt) -> {
+        rt.set(IoUtils.bytesToInt(m.loadMemory(address, 1)));
     }),
-    LBU((MemoryAction) (cpu, address, rt) -> {
-        rt.set(IoUtils.bytesToUnsignedInt(cpu.loadMemory(address, 1)));
+    LBU((MemoryAction) (m, address, rt) -> {
+        rt.set(IoUtils.bytesToUnsignedInt(m.loadMemory(address, 1)));
     }),
     LDC1,
     LDC2,
-    LH((MemoryAction) (cpu, address, rt) -> {
-        rt.set(IoUtils.bytesToInt(cpu.loadMemory(address, 2)));
+    LH((MemoryAction) (m, address, rt) -> {
+        rt.set(IoUtils.bytesToInt(m.loadMemory(address, 2)));
     }),
-    LHU((MemoryAction) (cpu, address, rt) -> {
-        rt.set(IoUtils.bytesToUnsignedInt(cpu.loadMemory(address, 2)));
+    LHU((MemoryAction) (m, address, rt) -> {
+        rt.set(IoUtils.bytesToUnsignedInt(m.loadMemory(address, 2)));
     }),
     LI,
     LL,
-    LUI((ITypeAction) (cpu, rs, rt, immediate) -> {
+    LUI((ITypeAction) (m, rs, rt, immediate) -> {
         rt.set(immediate.value() << 16);
     }),
-    LW((MemoryAction) (cpu, address, rt) -> {
-        rt.set(cpu.loadInt(address));
+    LW((MemoryAction) (m, address, rt) -> {
+        rt.set(m.loadInt(address));
     }),
     LWC1,
     LWC2,
@@ -103,19 +103,19 @@ public enum Instruction {
     // MUL
     MULT,
     MULTU,
-    NOR((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    NOR((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(~(rs.get() | rd.get()));
     }),
     NOP(),
-    OR((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    OR((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rs.get() | rt.get());
     }),
-    ORI((ITypeAction) (cpu, rs, rt, immediate) -> {
+    ORI((ITypeAction) (m, rs, rt, immediate) -> {
         rt.set(rs.get() | immediate.value());
     }),
     PREF,
-    SB((MemoryAction) (cpu, address, rt) -> {
-        cpu.saveMemory(address, BitArray.ofValue(rt.get()).setLength(4).bytes());
+    SB((MemoryAction) (m, address, rt) -> {
+        m.saveMemory(address, BitArray.ofValue(rt.get()).setLength(4).bytes());
     }),
     SC,
     // SDBBP
@@ -123,48 +123,48 @@ public enum Instruction {
     SDC2,
     //    SDL,
 //    SDR,
-    SH((MemoryAction) (cpu, address, rt) -> {
-        cpu.saveMemory(address, BitArray.ofValue(rt.get()).setLength(8).bytes());
+    SH((MemoryAction) (m, address, rt) -> {
+        m.saveMemory(address, BitArray.ofValue(rt.get()).setLength(8).bytes());
     }),
-    SLL((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    SLL((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rt.get() << shamt);
     }),
-    SLLV((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    SLLV((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rt.get() << rs.get());
     }),
-    SLT((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    SLT((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rs.get() < rt.get() ? 1 : 0);
     }),
-    SLTI((ITypeAction) (cpu, rs, rt, immediate) -> {
+    SLTI((ITypeAction) (m, rs, rt, immediate) -> {
         rt.set(rs.get() < immediate.integerValue() ? 1 : 0);
     }),
-    SLTIU((ITypeAction) (cpu, rs, rt, immediate) -> {
+    SLTIU((ITypeAction) (m, rs, rt, immediate) -> {
         rt.set(rs.getUnsigned() < immediate.value() ? 1 : 0);
     }),
-    SLTU((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    SLTU((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rs.getUnsigned() < rt.getUnsigned() ? 1 : 0);
     }),
-    SRA((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    SRA((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rt.get() >> shamt);
     }),
-    SRAV((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    SRAV((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rt.get() >> rs.get());
     }),
-    SRL((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    SRL((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rt.get() >>> shamt);
     }),
-    SRLV((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    SRLV((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rt.get() >>> rs.get());
     }),
     // SSNOP
-    SUB((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    SUB((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(checkOverflow(rs.getAsLong() - rt.getAsLong()));
     }),
-    SUBU((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    SUBU((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.setUnsigned(rs.getUnsigned() - rt.getUnsigned());
     }),
-    SW((MemoryAction) (cpu, address, rt) -> {
-        cpu.saveInt(address, rt.get());
+    SW((MemoryAction) (m, address, rt) -> {
+        m.saveInt(address, rt.get());
     }),
     SWC1,
     SWC2,
@@ -178,10 +178,10 @@ public enum Instruction {
     // TEQ, ... , TNEI
     SYSCALL,
     WAIT,
-    XOR((RTypeAction) (cpu, rs, rt, rd, shamt) -> {
+    XOR((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rs.get() ^ rt.get());
     }),
-    XORI((ITypeAction) (cpu, rs, rt, immediate) -> {
+    XORI((ITypeAction) (m, rs, rt, immediate) -> {
         rt.set(rt.get() ^ immediate.value());
     }),
     UNKNOWN;

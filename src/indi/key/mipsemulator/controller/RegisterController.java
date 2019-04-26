@@ -2,7 +2,7 @@ package indi.key.mipsemulator.controller;
 
 import java.util.function.Function;
 
-import indi.key.mipsemulator.core.controller.Cpu;
+import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.model.interfaces.RegisterListener;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
@@ -26,14 +26,14 @@ public class RegisterController implements RegisterListener {
     }
 
     private GridPane registerPane;
-    private Cpu cpu;
+    private Machine machine;
     private Label[] registerLable = new Label[32];
     private DisplayMode displayMode = DisplayMode.HEXADECIMAL;
 
-    public RegisterController(GridPane registerPane, Cpu cpu) {
+    public RegisterController(GridPane registerPane, Machine machine) {
         this.registerPane = registerPane;
-        this.cpu = cpu;
-        cpu.addRegisterListener(this);
+        this.machine = machine;
+        machine.addRegisterListener(this);
         initView();
     }
 
@@ -45,7 +45,7 @@ public class RegisterController implements RegisterListener {
     private void updateAllRegisters() {
         for (int i = 0; i < 32; i++) {
             RegisterType registerType = getType(i);
-            updateRegisterValue(cpu.getRegister(registerType));
+            updateRegisterValue(machine.getRegister(registerType));
         }
     }
 
