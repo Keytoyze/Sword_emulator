@@ -2,7 +2,6 @@ package indi.key.mipsemulator.core.controller;
 
 import java.util.Arrays;
 
-import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.MemoryType;
@@ -34,7 +33,7 @@ public class Counter implements TickCallback {
     }
 
     public boolean getCounterOut() {
-        Memory memory = machine.getAddressRedirector().getMemory(MemoryType.GPIO);
+        Memory memory = machine.getAddressRedirector().getMemory(MemoryType.COUNTER);
         byte[] bytes = memory.load(0, 4);
         return Arrays.equals(bytes, EMPTY);
     }
@@ -49,7 +48,6 @@ public class Counter implements TickCallback {
     @Override
     public void onTick() {
         Memory counterMem = machine.getAddressRedirector().getMemory(MemoryType.COUNTER);
-        Memory gpioMem = machine.getAddressRedirector().getMemory(MemoryType.GPIO);
         byte[] bytes = counterMem.load(0, 4);
         long currentTime = System.currentTimeMillis();
         long interval = currentTime - timeStamp;
@@ -57,7 +55,5 @@ public class Counter implements TickCallback {
         if (ticks < 0) ticks = 0;
         timeStamp = currentTime;
         counterMem.save(0, IoUtils.intToBytes((int) ticks, 32));
-        BitArray bitArray = BitArray.ofLength(32).set(31, getCounterOut());
-        gpioMem.save(0, bitArray.bytes());
     }
 }

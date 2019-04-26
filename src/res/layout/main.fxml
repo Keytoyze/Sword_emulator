@@ -129,7 +129,6 @@
 
                 <GridPane
                     fx:id="registerPane"
-                    gridLinesVisible="true"
                     layoutX="673.0"
                     layoutY="47.0"
                     prefHeight="270.0"
@@ -206,7 +205,7 @@
                     fx:id="slideSwitchGrid"
                     hgap="4.0"
                     layoutX="674.0"
-                    layoutY="413.0"
+                    layoutY="429.0"
                     prefHeight="28.0"
                     prefWidth="394.0">
 
@@ -306,7 +305,7 @@
                     fx:id="slideLabelGrid"
                     hgap="4.0"
                     layoutX="674.0"
-                    layoutY="441.0"
+                    layoutY="457.0"
                     prefHeight="22.0"
                     prefWidth="394.0">
 
@@ -473,97 +472,113 @@
                 </GridPane>
 
                 <Canvas
-                    height="63.0"
+                    height="66.0"
                     layoutX="674.0"
                     layoutY="335.0"
-                    width="358.0" />
+                    width="394.0" />
 
                 <GridPane
-                    gridLinesVisible="true"
+                    fx:id="ledPane"
                     hgap="4.0"
                     layoutX="674.0"
-                    layoutY="477.0"
+                    layoutY="482.0"
                     prefHeight="22.0"
                     prefWidth="394.0">
 
                     <columnConstraints>
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />

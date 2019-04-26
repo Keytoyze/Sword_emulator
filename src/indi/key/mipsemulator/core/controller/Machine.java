@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import indi.key.mipsemulator.core.model.CpuStatistics;
+import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.interfaces.RegisterListener;
 import indi.key.mipsemulator.model.interfaces.Resetable;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
@@ -16,14 +17,31 @@ import javafx.application.Platform;
 
 public class Machine implements Resetable, TickCallback {
 
+    private static Machine instance;
+
     private Cpu cpu;
     private Register[] registers;
     private AddressRedirector addressRedirector;
     private Counter counter;
+    private BitArray switches;
+    private BitArray led;
 
     private Set<RegisterListener> registerListenerSet = new HashSet<>();
 
-    public Machine(File initFile) {
+    public static Machine getInstance(File initFile) {
+        if (instance == null) {
+            instance = new Machine(initFile);
+        } else {
+            instance.setInitFile(initFile);
+        }
+        return instance;
+    }
+
+    public static Machine getReference() {
+        return instance;
+    }
+
+    private Machine(File initFile) {
         this.addressRedirector = new AddressRedirector(initFile);
         registers = new Register[RegisterType.values().length];
         for (int i = 0; i < registers.length; i++) {
@@ -31,6 +49,11 @@ public class Machine implements Resetable, TickCallback {
         }
         counter = new Counter(this);
         cpu = new Cpu(this);
+        reset();
+    }
+
+    private void setInitFile(File initFile) {
+        this.addressRedirector = new AddressRedirector(initFile);
         reset();
     }
 
@@ -42,11 +65,13 @@ public class Machine implements Resetable, TickCallback {
     }
 
     public void loop() {
+        counter.beginTicking();
         TimingRenderer.register(this);
         cpu.loop();
     }
 
     public CpuStatistics exitLoop() {
+        counter.endTicking();
         TimingRenderer.unRegister(this);
         return cpu.exitLoop();
     }
@@ -86,6 +111,10 @@ public class Machine implements Resetable, TickCallback {
         return cpu;
     }
 
+    public Counter getCounter() {
+        return counter;
+    }
+
     public AddressRedirector getAddressRedirector() {
         return addressRedirector;
     }
@@ -108,6 +137,25 @@ public class Machine implements Resetable, TickCallback {
 
     public void ticks() {
         counter.ticks();
+    }
+
+    public BitArray getSwitches() {
+        return switches;
+    }
+
+    public void setLed(BitArray bitArray) {
+        this.led = bitArray;
+    }
+
+    public BitArray getLed() {
+        if (led == null) {
+            return BitArray.ofLength(16);
+        }
+        return led;
+    }
+
+    public void setSwitches(BitArray bitArray) {
+        this.switches = bitArray;
     }
 
     @Override

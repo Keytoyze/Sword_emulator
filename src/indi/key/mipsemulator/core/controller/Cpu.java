@@ -69,18 +69,18 @@ public class Cpu implements Resetable {
         //counter.beginTicking();
         new Thread(() -> {
             while (looping) {
-                int index = pc.get() / 4;
-                if (instructionCache[index] == null) {
-                    instructionCache[index] = getStatementRunnable(Cpu.this);
-                }
-                instructionCount++;
                 try {
+                    int index = pc.get() / 4;
+                    if (instructionCache[index] == null) {
+                        instructionCache[index] = getStatementRunnable(Cpu.this);
+                    }
+                    instructionCount++;
                     instructionCache[index].run();
                 } catch (Exception exception) {
                     errorCount++;
                     resentException = exception;
                 }
-                machine.ticks();
+                //machine.ticks();
             }
         }).start();
     }

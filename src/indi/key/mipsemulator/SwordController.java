@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import indi.key.mipsemulator.controller.KeyboardController;
+import indi.key.mipsemulator.controller.LedController;
 import indi.key.mipsemulator.controller.RegisterController;
 import indi.key.mipsemulator.controller.SlideSwitchController;
 import indi.key.mipsemulator.controller.VgaController;
@@ -39,12 +40,15 @@ public class SwordController implements Initializable {
     GridPane slideSwitchGrid;
     @FXML
     GridPane slideLabelGrid;
+    @FXML
+    GridPane ledPane;
 
     private Machine machine;
     private RegisterController registerController;
     private KeyboardController keyboardController;
     private VgaController vgaController;
     private SlideSwitchController slideSwitchController;
+    private LedController ledController;
 
     @FXML
     Pane root;
@@ -54,12 +58,13 @@ public class SwordController implements Initializable {
         LogUtils.i(location, resources);
 
         String path = "G:\\code\\java\\mipsasm\\mipsasm\\test\\computer_MCPU.bin";
-        this.machine = new Machine(new File(path));
+        this.machine = Machine.getInstance(new File(path));
 
         setUpRegisters();
         setUpMenu();
         setUpVGA();
         setUpSlideSwitches();
+        setUpLED();
     }
 
     private void setUpRegisters() {
@@ -102,7 +107,11 @@ public class SwordController implements Initializable {
 
     private void setUpSlideSwitches() {
         slideSwitchController = new SlideSwitchController(
-                slideSwitchGrid, slideLabelGrid);
+                slideSwitchGrid, slideLabelGrid, machine);
+    }
+
+    private void setUpLED() {
+        ledController = new LedController(ledPane, machine);
     }
 
     public void setUpVGA() {

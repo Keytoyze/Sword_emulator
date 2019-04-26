@@ -45,6 +45,10 @@ public class ByteArrayMemory implements Memory {
         return Arrays.copyOfRange(memory, (int) address, (int) address + bytesNum);
     }
 
+    byte[] getAll() {
+        return memory;
+    }
+
     //    void checkBounds(int address) throws MemoryOutOfBoundsException {
 ////        if (address >= storage.length) {
 ////            throw new MemoryOutOfBoundsException("Try to access address " + address
