@@ -1,21 +1,16 @@
 package indi.key.mipsemulator.core.controller;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 
 import indi.key.mipsemulator.core.model.CpuStatistics;
 import indi.key.mipsemulator.model.info.BitArray;
-import indi.key.mipsemulator.model.interfaces.RegisterListener;
 import indi.key.mipsemulator.model.interfaces.Resetable;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.AddressRedirector;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
-import indi.key.mipsemulator.util.TimingRenderer;
-import javafx.application.Platform;
 
-public class Machine implements Resetable, TickCallback {
+public class Machine implements Resetable {
 
     private static Machine instance;
 
@@ -25,8 +20,6 @@ public class Machine implements Resetable, TickCallback {
     private Counter counter;
     private BitArray switches;
     private BitArray led;
-
-    private Set<RegisterListener> registerListenerSet = new HashSet<>();
 
     public static Machine getInstance(File initFile) {
         if (instance == null) {
@@ -66,13 +59,11 @@ public class Machine implements Resetable, TickCallback {
 
     public void loop() {
         counter.beginTicking();
-        TimingRenderer.register(this);
         cpu.loop();
     }
 
     public CpuStatistics exitLoop() {
         counter.endTicking();
-        TimingRenderer.unRegister(this);
         return cpu.exitLoop();
     }
 
@@ -97,10 +88,6 @@ public class Machine implements Resetable, TickCallback {
 
     public Register getRegister(RegisterType registerType) {
         return registers[registerType.ordinal()];
-    }
-
-    public void addRegisterListener(RegisterListener registerListener) {
-        registerListenerSet.add(registerListener);
     }
 
     public void addCpuListener(TickCallback tickCallback) {
@@ -157,17 +144,5 @@ public class Machine implements Resetable, TickCallback {
     public void setSwitches(BitArray bitArray) {
         this.switches = bitArray;
     }
-
-    @Override
-    public void onTick() {
-        Platform.runLater(() -> {
-            for (RegisterListener listener : registerListenerSet) {
-                for (Register register : registers) {
-                    listener.onRegisterChange(register);
-                }
-            }
-        });
-    }
-
 
 }

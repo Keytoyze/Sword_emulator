@@ -3,13 +3,15 @@ package indi.key.mipsemulator.controller;
 import java.util.function.Function;
 
 import indi.key.mipsemulator.core.controller.Machine;
-import indi.key.mipsemulator.model.interfaces.RegisterListener;
+import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
+import indi.key.mipsemulator.util.TimingRenderer;
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-public class RegisterController implements RegisterListener {
+public class RegisterController implements TickCallback {
 
     public enum DisplayMode {
         HEXADECIMAL(integer -> "0x" + Integer.toHexString(integer)),
@@ -33,8 +35,9 @@ public class RegisterController implements RegisterListener {
     public RegisterController(GridPane registerPane, Machine machine) {
         this.registerPane = registerPane;
         this.machine = machine;
-        machine.addRegisterListener(this);
+        //machine.addRegisterListener(this);
         initView();
+        TimingRenderer.register(this);
     }
 
     public void setDisplayMode(DisplayMode displayMode) {
@@ -86,7 +89,7 @@ public class RegisterController implements RegisterListener {
     }
 
     @Override
-    public void onRegisterChange(Register register) {
-        updateRegisterValue(register);
+    public void onTick() {
+        Platform.runLater(this::updateAllRegisters);
     }
 }
