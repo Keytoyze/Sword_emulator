@@ -6,7 +6,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-public class SlideSwitchController {
+public class SwitchController {
 
     private GridPane gridPane;
     private GridPane labelPane;
@@ -14,7 +14,7 @@ public class SlideSwitchController {
     private Machine machine;
     private BitArray switches;
 
-    public SlideSwitchController(GridPane gridPane, GridPane labelPane, Machine machine) {
+    public SwitchController(GridPane gridPane, GridPane labelPane, Machine machine) {
         this.gridPane = gridPane;
         this.labelPane = labelPane;
         this.machine = machine;

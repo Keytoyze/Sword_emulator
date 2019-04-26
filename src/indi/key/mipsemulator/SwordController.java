@@ -4,10 +4,11 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import indi.key.mipsemulator.controller.ButtonController;
 import indi.key.mipsemulator.controller.KeyboardController;
 import indi.key.mipsemulator.controller.LedController;
 import indi.key.mipsemulator.controller.RegisterController;
-import indi.key.mipsemulator.controller.SlideSwitchController;
+import indi.key.mipsemulator.controller.SwitchController;
 import indi.key.mipsemulator.controller.VgaController;
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.util.LogUtils;
@@ -42,13 +43,16 @@ public class SwordController implements Initializable {
     GridPane slideLabelGrid;
     @FXML
     GridPane ledPane;
+    @FXML
+    GridPane buttonPane;
 
     private Machine machine;
     private RegisterController registerController;
     private KeyboardController keyboardController;
     private VgaController vgaController;
-    private SlideSwitchController slideSwitchController;
+    private SwitchController switchController;
     private LedController ledController;
+    private ButtonController buttonController;
 
     @FXML
     Pane root;
@@ -65,6 +69,7 @@ public class SwordController implements Initializable {
         setUpVGA();
         setUpSlideSwitches();
         setUpLED();
+        setUpButtons();
     }
 
     private void setUpRegisters() {
@@ -106,12 +111,16 @@ public class SwordController implements Initializable {
     }
 
     private void setUpSlideSwitches() {
-        slideSwitchController = new SlideSwitchController(
+        switchController = new SwitchController(
                 slideSwitchGrid, slideLabelGrid, machine);
     }
 
     private void setUpLED() {
         ledController = new LedController(ledPane, machine);
+    }
+
+    private void setUpButtons() {
+        buttonController = new ButtonController(buttonPane, machine);
     }
 
     public void setUpVGA() {

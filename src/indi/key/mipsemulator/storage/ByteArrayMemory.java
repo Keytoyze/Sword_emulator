@@ -45,7 +45,7 @@ public class ByteArrayMemory implements Memory {
         return Arrays.copyOfRange(memory, (int) address, (int) address + bytesNum);
     }
 
-    byte[] getAll() {
+    protected byte[] getAll() {
         return memory;
     }
 

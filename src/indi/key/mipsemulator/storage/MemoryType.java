@@ -2,6 +2,7 @@ package indi.key.mipsemulator.storage;
 
 import java.util.function.Function;
 
+import indi.key.mipsemulator.controller.ButtonController;
 import indi.key.mipsemulator.controller.KeyboardController;
 import indi.key.mipsemulator.model.info.Range;
 
@@ -14,7 +15,7 @@ public enum MemoryType {
     SEGMENT_COMPAT(0xE0000000L),
     GPIO(0xFFFFFF00L, GpioRegister::new),
     GPIO_COMPAT(0xF0000000L),
-    BUTTON(0xFFFFFC00L),
+    BUTTON(0xFFFFFC00L, ButtonController.ButtonMemory::new),
     BUTTON_COMPAT(0xC0000000L),
     COUNTER(0xFFFFFF04L),
     COUNTER_COMPAT(0xF0000004L),

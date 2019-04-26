@@ -3,7 +3,7 @@
 <?import javafx.scene.canvas.Canvas?><?import javafx.scene.control.ComboBox?><?import javafx.scene.control.Menu?><?import javafx.scene.control.MenuBar?><?import javafx.scene.control.MenuItem?><?import javafx.scene.control.RadioMenuItem?><?import javafx.scene.control.SeparatorMenuItem?><?import javafx.scene.image.ImageView?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="742.0"
-    prefWidth="1272.0"
+    prefWidth="1307.0"
     xmlns="http://javafx.com/javafx/8.0.201"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="indi.key.mipsemulator.SwordController">
@@ -117,7 +117,7 @@
             maxHeight="-1.0"
             maxWidth="-1.0"
             prefHeight="720.0"
-            prefWidth="1211.0"
+            prefWidth="1296.0"
             VBox.vgrow="ALWAYS">
 
             <children>
@@ -131,8 +131,8 @@
                     fx:id="registerPane"
                     layoutX="673.0"
                     layoutY="47.0"
-                    prefHeight="270.0"
-                    prefWidth="579.0">
+                    prefHeight="246.0"
+                    prefWidth="614.0">
 
                     <columnConstraints>
 
@@ -418,30 +418,42 @@
                 </GridPane>
 
                 <GridPane
-                    gridLinesVisible="true"
+                    fx:id="buttonPane"
                     layoutX="1087.0"
-                    layoutY="335.0"
-                    prefHeight="169.0"
-                    prefWidth="165.0">
+                    layoutY="308.0"
+                    prefHeight="196.0"
+                    hgap="2"
+                    vgap="2"
+                    prefWidth="199.0">
 
                     <columnConstraints>
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
 
                         <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+
+                        <ColumnConstraints
+                            halignment="CENTER"
                             hgrow="SOMETIMES"
                             minWidth="10.0"
                             prefWidth="100.0" />
@@ -452,21 +464,31 @@
                         <RowConstraints
                             minHeight="10.0"
                             prefHeight="30.0"
+                            valignment="CENTER"
                             vgrow="SOMETIMES" />
 
                         <RowConstraints
                             minHeight="10.0"
                             prefHeight="30.0"
+                            valignment="CENTER"
                             vgrow="SOMETIMES" />
 
                         <RowConstraints
                             minHeight="10.0"
                             prefHeight="30.0"
+                            valignment="CENTER"
                             vgrow="SOMETIMES" />
 
                         <RowConstraints
                             minHeight="10.0"
                             prefHeight="30.0"
+                            valignment="CENTER"
+                            vgrow="SOMETIMES" />
+
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            valignment="CENTER"
                             vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
@@ -595,7 +617,7 @@
 
                 <ComboBox
                     fx:id="registerModeComboBox"
-                    layoutX="1061.0"
+                    layoutX="1137.0"
                     layoutY="12.0"
                     prefWidth="150.0" />
                 <!--<ToggleButtonGroup layoutX="637.0" layoutY="632.0" prefHeight="32.0" prefWidth="47.0" selectionType="MULTIPLE">-->
