@@ -6,7 +6,7 @@ import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
-import indi.key.mipsemulator.util.TimingRenderer;
+import indi.key.mipsemulator.core.controller.TimingRenderer;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;

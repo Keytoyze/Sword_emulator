@@ -3,7 +3,7 @@ package indi.key.mipsemulator.controller;
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
-import indi.key.mipsemulator.util.TimingRenderer;
+import indi.key.mipsemulator.core.controller.TimingRenderer;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;

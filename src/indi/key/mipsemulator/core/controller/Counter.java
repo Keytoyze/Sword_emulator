@@ -6,7 +6,6 @@ import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.MemoryType;
 import indi.key.mipsemulator.util.IoUtils;
-import indi.key.mipsemulator.util.TimingRenderer;
 
 public class Counter implements TickCallback {
 

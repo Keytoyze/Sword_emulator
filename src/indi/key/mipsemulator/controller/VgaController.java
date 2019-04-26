@@ -2,7 +2,7 @@ package indi.key.mipsemulator.controller;
 
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
-import indi.key.mipsemulator.util.TimingRenderer;
+import indi.key.mipsemulator.core.controller.TimingRenderer;
 import indi.key.mipsemulator.vga.ScreenProvider;
 import indi.key.mipsemulator.vga.VgaConfigures;
 import javafx.scene.image.ImageView;

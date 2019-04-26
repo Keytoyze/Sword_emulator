@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.util;
+package indi.key.mipsemulator.core.controller;
 
 import java.util.HashSet;
 import java.util.Set;

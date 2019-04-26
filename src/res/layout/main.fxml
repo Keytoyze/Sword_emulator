@@ -494,6 +494,7 @@
                 </GridPane>
 
                 <Canvas
+                    fx:id="segmentCanvas"
                     height="66.0"
                     layoutX="674.0"
                     layoutY="335.0"

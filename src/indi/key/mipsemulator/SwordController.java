@@ -8,6 +8,7 @@ import indi.key.mipsemulator.controller.ButtonController;
 import indi.key.mipsemulator.controller.KeyboardController;
 import indi.key.mipsemulator.controller.LedController;
 import indi.key.mipsemulator.controller.RegisterController;
+import indi.key.mipsemulator.controller.SegmentController;
 import indi.key.mipsemulator.controller.SwitchController;
 import indi.key.mipsemulator.controller.VgaController;
 import indi.key.mipsemulator.core.controller.Machine;
@@ -18,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
@@ -45,6 +47,8 @@ public class SwordController implements Initializable {
     GridPane ledPane;
     @FXML
     GridPane buttonPane;
+    @FXML
+    Canvas segmentCanvas;
 
     private Machine machine;
     private RegisterController registerController;
@@ -53,6 +57,7 @@ public class SwordController implements Initializable {
     private SwitchController switchController;
     private LedController ledController;
     private ButtonController buttonController;
+    private SegmentController segmentController;
 
     @FXML
     Pane root;
@@ -70,6 +75,7 @@ public class SwordController implements Initializable {
         setUpSlideSwitches();
         setUpLED();
         setUpButtons();
+        setUpSegments();
     }
 
     private void setUpRegisters() {
@@ -121,6 +127,10 @@ public class SwordController implements Initializable {
 
     private void setUpButtons() {
         buttonController = new ButtonController(buttonPane, machine);
+    }
+
+    private void setUpSegments() {
+        segmentController = new SegmentController(segmentCanvas, machine);
     }
 
     public void setUpVGA() {
