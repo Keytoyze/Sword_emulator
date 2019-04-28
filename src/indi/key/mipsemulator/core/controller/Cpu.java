@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import indi.key.mipsemulator.core.action.Action;
-import indi.key.mipsemulator.core.action.ConditionalAction;
+import indi.key.mipsemulator.core.action.BranchAction;
 import indi.key.mipsemulator.core.action.ITypeAction;
 import indi.key.mipsemulator.core.action.JumpAction;
 import indi.key.mipsemulator.core.action.MemoryAction;
@@ -123,12 +123,12 @@ public class Cpu implements Resetable {
                 iTypeAction.execute(cpu.machine, rs, rt, immediate);
                 afterExcution(cpu);
             };
-        } else if (action instanceof ConditionalAction) {
-            ConditionalAction conditionalAction = (ConditionalAction) action;
+        } else if (action instanceof BranchAction) {
+            BranchAction branchAction = (BranchAction) action;
             return () -> {
                 cpu.track(index, statement);
                 beforeExcution(pc, ra, linkNext);
-                boolean check = conditionalAction.check(cpu.machine, rs, rt);
+                boolean check = branchAction.check(cpu.machine, rs, rt);
                 if (check) {
                     pc.set(pc.get() + statement.getOffset() * 4);
                 }

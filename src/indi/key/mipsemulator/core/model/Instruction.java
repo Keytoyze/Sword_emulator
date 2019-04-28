@@ -1,7 +1,7 @@
 package indi.key.mipsemulator.core.model;
 
 import indi.key.mipsemulator.core.action.Action;
-import indi.key.mipsemulator.core.action.ConditionalAction;
+import indi.key.mipsemulator.core.action.BranchAction;
 import indi.key.mipsemulator.core.action.ITypeAction;
 import indi.key.mipsemulator.core.action.JumpAction;
 import indi.key.mipsemulator.core.action.MemoryAction;
@@ -19,7 +19,7 @@ public enum Instruction {
         rt.set(checkOverflow(rs.getAsLong() + immediate.integerValue()));
     }),
     ADDIU((ITypeAction) (m, rs, rt, immediate) -> {
-        rt.setUnsigned(rs.getUnsigned() + immediate.value());
+        rt.setUnsigned(rs.getUnsigned() + immediate.integerValue());
     }),
     ADDU((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.setUnsigned(rs.getUnsigned() + rt.getUnsigned());
@@ -32,21 +32,21 @@ public enum Instruction {
     }),
     B,
     // BAL, BC1F, BC1FL, ... , BC2TL
-    BEQ((ConditionalAction) (m, rs, rt) -> rs.equals(rt)),
+    BEQ((BranchAction) (m, rs, rt) -> rs.equals(rt)),
     BEQL,
-    BGEZ((ConditionalAction) (m, rs, rt) -> rs.get() >= 0),
-    BGEZAL((ConditionalAction) (m, rs, rt) -> rs.get() >= 0, true),
+    BGEZ((BranchAction) (m, rs, rt) -> rs.get() >= 0),
+    BGEZAL((BranchAction) (m, rs, rt) -> rs.get() >= 0, true),
     BGEZALL,
     BGEZL,
-    BGTZ((ConditionalAction) (m, rs, rt) -> rs.get() > 0),
+    BGTZ((BranchAction) (m, rs, rt) -> rs.get() > 0),
     BGTZL,
-    BLEZ((ConditionalAction) (m, rs, rt) -> rs.get() <= 0),
+    BLEZ((BranchAction) (m, rs, rt) -> rs.get() <= 0),
     BLEZL,
-    BLTZ((ConditionalAction) (m, rs, rt) -> rs.get() < 0),
-    BLTZAL((ConditionalAction) (m, rs, rt) -> rs.get() < 0, true),
+    BLTZ((BranchAction) (m, rs, rt) -> rs.get() < 0),
+    BLTZAL((BranchAction) (m, rs, rt) -> rs.get() < 0, true),
     BLTZALL,
     BLTZL,
-    BNE((ConditionalAction) (m, rs, rt) -> !rs.equals(rt)),
+    BNE((BranchAction) (m, rs, rt) -> !rs.equals(rt)),
     BNEL,
     BREAK,
     // C, ... , CLZ
@@ -139,7 +139,7 @@ public enum Instruction {
         rt.set(rs.get() < immediate.integerValue() ? 1 : 0);
     }),
     SLTIU((ITypeAction) (m, rs, rt, immediate) -> {
-        rt.set(rs.getUnsigned() < immediate.value() ? 1 : 0);
+        rt.set(rs.getUnsigned() < immediate.integerValue() ? 1 : 0);
     }),
     SLTU((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rs.getUnsigned() < rt.getUnsigned() ? 1 : 0);

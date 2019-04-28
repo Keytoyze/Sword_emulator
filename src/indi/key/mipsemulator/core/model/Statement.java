@@ -1,7 +1,7 @@
 package indi.key.mipsemulator.core.model;
 
 import indi.key.mipsemulator.core.action.Action;
-import indi.key.mipsemulator.core.action.ConditionalAction;
+import indi.key.mipsemulator.core.action.BranchAction;
 import indi.key.mipsemulator.core.action.ITypeAction;
 import indi.key.mipsemulator.core.action.RTypeAction;
 import indi.key.mipsemulator.storage.RegisterType;
@@ -94,7 +94,7 @@ public class Statement {
             stringBuilder.append(" ").append(getRs().toString())
                     .append(" ").append(getRt().toString())
                     .append(" ").append(immediate.integerValue());
-        } else if (action instanceof ConditionalAction) {
+        } else if (action instanceof BranchAction) {
             stringBuilder.append(" ").append(getRs().toString())
                     .append(" ").append(getRt().toString())
                     .append(" ").append(getOffset());
