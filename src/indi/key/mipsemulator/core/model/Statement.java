@@ -1,10 +1,6 @@
 package indi.key.mipsemulator.core.model;
 
-import indi.key.mipsemulator.core.action.Action;
-import indi.key.mipsemulator.core.action.BranchAction;
-import indi.key.mipsemulator.core.action.ITypeAction;
-import indi.key.mipsemulator.core.action.RTypeAction;
-import indi.key.mipsemulator.storage.RegisterType;
+import indi.key.mipsemulator.disassemble.Dissambler;
 import indi.key.mipsemulator.model.info.BitArray;
 
 
@@ -44,20 +40,24 @@ public class Statement {
         return op;
     }
 
-    public RegisterType getRs() {
-        return RegisterType.of(rs.value());
+    public BitArray getRs() {
+        return rs;
     }
 
-    public RegisterType getRt() {
-        return RegisterType.of(rt.value());
+    public BitArray getRt() {
+        return rt;
     }
 
-    public RegisterType getRd() {
-        return RegisterType.of(rd.value());
+    public BitArray getRd() {
+        return rd;
     }
 
-    public int getShamt() {
-        return shamt.value();
+    public BitArray getCofun() {
+        return value.subArray(0, 25);
+    }
+
+    public BitArray getShamt() {
+        return shamt;
     }
 
     public BitArray getFunc() {
@@ -72,37 +72,20 @@ public class Statement {
         return immediate.integerValue();
     }
 
-    public int getAddress() {
-        return address.value();
+    public BitArray getAddress() {
+        return address;
     }
 
     public Instruction getInstruction() {
         return Operation.of(op, rs, rt, func).toInstruction();
     }
 
+    public Operation getOperation() {
+        return Operation.of(op, rs, rt, func);
+    }
+
     @Override
     public String toString() {
-        // TODO: translate to assembly language
-        Instruction instruction = getInstruction();
-        StringBuilder stringBuilder = new StringBuilder(instruction.toString());
-        Action action = instruction.getAction();
-        if (action instanceof RTypeAction) {
-            stringBuilder.append(" ").append(getRd().toString())
-                    .append(" ").append(getRs().toString())
-                    .append(" ").append(getRt().toString());
-        } else if (action instanceof ITypeAction) {
-            stringBuilder.append(" ").append(getRs().toString())
-                    .append(" ").append(getRt().toString())
-                    .append(" ").append(immediate.integerValue());
-        } else if (action instanceof BranchAction) {
-            stringBuilder.append(" ").append(getRs().toString())
-                    .append(" ").append(getRt().toString())
-                    .append(" ").append(getOffset());
-        } else {
-            stringBuilder.append(" ").append(getRd().toString())
-                    .append(" ").append(getRs().toString())
-                    .append(" ").append(getRt().toString());
-        }
-        return stringBuilder.toString();
+        return Dissambler.dissambleStatement(this);
     }
 }

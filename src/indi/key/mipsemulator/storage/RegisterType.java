@@ -1,5 +1,6 @@
 package indi.key.mipsemulator.storage;
 
+import indi.key.mipsemulator.model.info.BitArray;
 import javafx.scene.paint.Color;
 
 public enum RegisterType {
@@ -75,6 +76,10 @@ public enum RegisterType {
 
     public static RegisterType of(int index) {
         return values()[index];
+    }
+
+    public static RegisterType of(BitArray bitArray) {
+        return of(bitArray.value());
     }
 
     @Override

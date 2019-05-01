@@ -72,17 +72,17 @@ public class MemoryController implements TickCallback {
         next.setOnAction(event -> {
             long address = Math.min(
                     memoryListWrapper.getAddress() +
-                            getAddressPageRange(), 0xFFFFFFFL);
+                            getAddressPageRange(), 0xFFFFFFFFL);
             jumpTo(address);
         });
-        addressText.setText(formatAddress(0));
         typeBox.setItems(FXCollections.observableArrayList("十六进制", "二进制"));
         typeBox.getSelectionModel().select(0);
         typeBox.setOnAction(event -> {
             boolean binary = typeBox.getSelectionModel().getSelectedIndex() == 1;
             memoryListWrapper.setMemoryType(binary);
-            tableView.setItems(FXCollections.observableList(memoryListWrapper));
+            refresh();
         });
+        jumpTo(0);
     }
 
     private void jumpTo(long address) {
@@ -95,7 +95,6 @@ public class MemoryController implements TickCallback {
     public void onTick() {
         long pc = machine.getRegister(RegisterType.PC).getUnsigned();
         jumpTo(pc / getAddressPageRange() * getAddressPageRange());
-        refresh();
     }
 
     private static long parseAddress(String content) {
@@ -107,15 +106,13 @@ public class MemoryController implements TickCallback {
     }
 
     private void refresh() {
-        tableView.setItems(FXCollections.observableList(memoryListWrapper));
+        tableView.refresh();
         long pc = machine.getRegister(RegisterType.PC).getUnsigned();
         long index = (pc - memoryListWrapper.getAddress()) / (getAddressPageRange() / PAGE_NUM);
         if (0 <= index && index < PAGE_NUM) {
             tableView.getSelectionModel().select((int) index);
         }
     }
-
-
 
     private static String formatAddress(long address) {
         String content = Long.toHexString(address);

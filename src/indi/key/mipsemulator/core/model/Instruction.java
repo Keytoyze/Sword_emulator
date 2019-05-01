@@ -30,7 +30,6 @@ public enum Instruction {
     ANDI((ITypeAction) (m, rs, rt, immediate) -> {
         rt.set(rs.get() & immediate.value());
     }),
-    B,
     // BAL, BC1F, BC1FL, ... , BC2TL
     BEQ((BranchAction) (m, rs, rt) -> rs.equals(rt)),
     BEQL,
@@ -56,11 +55,10 @@ public enum Instruction {
     DIV,
     DIVU,
     ERET,
-    J((JumpAction) (m, statement) -> statement.getAddress() << 2),
-    JAL((JumpAction) (m, statement) -> statement.getAddress() << 2, true),
+    J((JumpAction) (m, statement) -> statement.getAddress().value() << 2),
+    JAL((JumpAction) (m, statement) -> statement.getAddress().value() << 2, true),
     JALR((JumpAction) (m, statement) -> m.getRegister(statement.getRs()).get(), true),
     JR((JumpAction) (m, statement) -> m.getRegister(statement.getRs()).get()),
-    LA,
     LB((MemoryAction) (m, address, rt) -> {
         rt.set(IoUtils.bytesToInt(m.loadMemory(address, 1)));
     }),
@@ -75,7 +73,6 @@ public enum Instruction {
     LHU((MemoryAction) (m, address, rt) -> {
         rt.set(IoUtils.bytesToUnsignedInt(m.loadMemory(address, 2)));
     }),
-    LI,
     LL,
     LUI((ITypeAction) (m, rs, rt, immediate) -> {
         rt.set(immediate.value() << 16);

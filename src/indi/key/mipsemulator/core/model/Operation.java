@@ -5,7 +5,7 @@
 
 package indi.key.mipsemulator.core.model;
 
-import indi.key.mipsemulator.model.exception.InternalException;
+import indi.key.mipsemulator.disassemble.InstructionInformation;
 import indi.key.mipsemulator.model.info.BitArray;
 
 // FIXME: In fact, Operation should not be abstracted like this. Due to some corner cases, we need dynamic abstractions,
@@ -18,7 +18,6 @@ public enum Operation {
     ADDU(Codes.SPECIAL, 0b100001),
     AND(Codes.SPECIAL, 0b100100),
     ANDI(0b001100),
-    B,
     // BAL, BC1F, BC1FL, ... , BC2TL
     BEQ(0b000100),
     BEQL(0b010100),
@@ -48,14 +47,12 @@ public enum Operation {
     JAL(0b000011),
     JALR(Codes.SPECIAL, 0b001001),
     JR(Codes.SPECIAL, 0b001000),
-    LA,
     LB(0b100000),
     LBU(0b100100),
     LDC1(0b110101),
     LDC2(0b110110),
     LH(0b100001),
     LHU(0b100101),
-    LI,
     LL(0b110000),
     LUI(0b001111),
     LW(0b100011),
@@ -182,34 +179,23 @@ public enum Operation {
         return Instruction.valueOf(name());
     }
 
+    public InstructionInformation toInstructionInformation() {
+        return InstructionInformation.valueOf(name());
+    }
+
     public BitArray getCode() {
-        if (code == null) {
-            throw new InternalException(new IllegalStateException("getCode() called on an Operation without a code"));
-        }
         return code;
     }
 
     public BitArray getSource() {
-        if (source == null) {
-            throw new InternalException(new IllegalStateException(
-                    "getSource() called on an Operation without a source"));
-        }
         return source;
     }
 
     public BitArray getSource2() {
-        if (source2 == null) {
-            throw new InternalException(new IllegalStateException(
-                    "getSource2() called on an Operation without a source2"));
-        }
         return source2;
     }
 
     public BitArray getFunction() {
-        if (function == null) {
-            throw new InternalException(new IllegalStateException(
-                    "getFunction() called on an Operation without a function"));
-        }
         return function;
     }
 }

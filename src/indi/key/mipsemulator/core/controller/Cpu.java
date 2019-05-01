@@ -114,7 +114,7 @@ public class Cpu implements Resetable {
         Register rd = cpu.machine.getRegister(statement.getRd());
         Register ra = cpu.machine.getRegister(RegisterType.RA);
         BitArray immediate = statement.getImmediate();
-        int shamt = statement.getShamt();
+        int shamt = statement.getShamt().value();
 
         if (action instanceof RTypeAction) {
             RTypeAction rTypeAction = (RTypeAction) action;

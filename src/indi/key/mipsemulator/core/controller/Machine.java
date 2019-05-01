@@ -77,17 +77,12 @@ public class Machine implements Resetable {
         cpu.reset();
     }
 
-    public Register getHI() {
-        return registers[RegisterType.HI.ordinal()];
-    }
-
-    public Register getLO() {
-        return registers[RegisterType.LO.ordinal()];
-    }
-
-
     public Register getRegister(RegisterType registerType) {
         return registers[registerType.ordinal()];
+    }
+
+    public Register getRegister(BitArray bitArray) {
+        return getRegister(RegisterType.of(bitArray));
     }
 
     public void addCpuListener(TickCallback tickCallback) {

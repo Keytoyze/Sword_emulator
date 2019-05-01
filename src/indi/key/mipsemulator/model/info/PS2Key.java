@@ -2,7 +2,6 @@ package indi.key.mipsemulator.model.info;
 
 import javafx.scene.input.KeyCode;
 
-@SuppressWarnings("unused")
 public enum PS2Key {
 
     A(KeyCode.A, 0x1C),
