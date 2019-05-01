@@ -6,6 +6,7 @@ import indi.key.mipsemulator.controller.ButtonController;
 import indi.key.mipsemulator.controller.KeyboardController;
 import indi.key.mipsemulator.model.info.Range;
 
+// TODO: use common properties to control addresses
 public enum MemoryType {
 
     RAM(new MemoryRange(0x00000000L, 0x0000FFFFL)),

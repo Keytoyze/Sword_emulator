@@ -9,7 +9,6 @@ import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.model.info.Range;
 import indi.key.mipsemulator.model.interfaces.MemoryListener;
 import indi.key.mipsemulator.util.IoUtils;
-import indi.key.mipsemulator.util.LogUtils;
 import indi.key.mipsemulator.vga.VgaConfigures;
 import javafx.util.Pair;
 
@@ -36,9 +35,6 @@ public class AddressRedirector implements Memory {
     public void save(long address, byte[] bytes) throws MemoryOutOfBoundsException {
         Pair<MemoryType, Integer> memoryPair = selectMemory(new Range<>(address, address + bytes.length - 1));
         Memory memory = memories[memoryPair.getKey().ordinal()];
-        if (memoryPair.getKey() == MemoryType.VRAM_GRAPH) {
-            LogUtils.i(Long.toHexString(address));
-        }
         memory.save(memoryPair.getValue(), bytes);
         for (MemoryListener listener : listeners.get(memoryPair.getKey().ordinal())) {
             listener.onMemoryChange(memory, memoryPair.getValue(), bytes.length);

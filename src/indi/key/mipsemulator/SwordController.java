@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import indi.key.mipsemulator.controller.ButtonController;
 import indi.key.mipsemulator.controller.KeyboardController;
 import indi.key.mipsemulator.controller.LedController;
+import indi.key.mipsemulator.controller.MemoryController;
 import indi.key.mipsemulator.controller.RegisterController;
 import indi.key.mipsemulator.controller.SegmentController;
 import indi.key.mipsemulator.controller.SwitchController;
@@ -20,8 +21,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -29,6 +34,20 @@ import javafx.stage.Stage;
 
 public class SwordController implements Initializable {
 
+    @FXML
+    TableView<MemoryController.MemoryBean> memoryTable;
+    @FXML
+    ComboBox<String> memroyTypeBox;
+    @FXML
+    TextField memoryAddressText;
+    @FXML
+    Button memoryJump;
+    @FXML
+    Button memoryLast;
+    @FXML
+    Button memoryNext;
+    @FXML
+    TextArea debugText;
     @FXML
     GridPane registerPane;
     @FXML
@@ -49,6 +68,8 @@ public class SwordController implements Initializable {
     GridPane buttonPane;
     @FXML
     Canvas segmentCanvas;
+    @FXML
+    Pane root;
 
     private Machine machine;
     private RegisterController registerController;
@@ -58,9 +79,7 @@ public class SwordController implements Initializable {
     private LedController ledController;
     private ButtonController buttonController;
     private SegmentController segmentController;
-
-    @FXML
-    Pane root;
+    private MemoryController memoryController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -76,6 +95,7 @@ public class SwordController implements Initializable {
         setUpLED();
         setUpButtons();
         setUpSegments();
+        setUpMemory();
     }
 
     private void setUpRegisters() {
@@ -133,6 +153,11 @@ public class SwordController implements Initializable {
         segmentController = new SegmentController(segmentCanvas, machine);
     }
 
+    private void setUpMemory() {
+        memoryController = new MemoryController(memoryTable, machine, memoryJump, memoryLast,
+                memoryNext, memroyTypeBox, memoryAddressText);
+    }
+
     public void setUpVGA() {
         vgaController = new VgaController(vgaScreen, machine);
         keyboardController = new KeyboardController(machine);
@@ -146,11 +171,12 @@ public class SwordController implements Initializable {
     }
 
     public static void run(Stage primaryStage) throws Exception {
-        LogUtils.i(primaryStage);
         primaryStage.setTitle("ZJUQS-II SWORD Emulator");
         Pane pane = FXMLLoader.load(SwordController.class.getResource(
                 "/res/layout/main.fxml"));
         Scene scene = new Scene(pane);
+        scene.getStylesheets().add(SwordController.class.getResource(
+                "/res/layout/main.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
