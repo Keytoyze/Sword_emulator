@@ -2,8 +2,10 @@ package indi.key.mipsemulator.controller;
 
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.core.controller.TimingRenderer;
+import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
+import indi.key.mipsemulator.storage.ByteArrayMemory;
 import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.MemoryType;
 import indi.key.mipsemulator.util.IoUtils;
@@ -16,7 +18,7 @@ public class SegmentController implements TickCallback {
     private Machine machine;
     private GraphicsContext gc;
     private double length, padding;
-    private Memory segmentMem;
+    private SegmentMemory segmentMem;
 
     private static final double LINE_WIDTH = 5;
     private static final Color RED = Color.RED;
@@ -50,7 +52,7 @@ public class SegmentController implements TickCallback {
         gc.setLineWidth(LINE_WIDTH);
         length = canvas.getWidth() / 16;
         padding = canvas.getHeight() / 2 - length;
-        segmentMem = machine.getAddressRedirector().getMemory(MemoryType.SEGMENT);
+        segmentMem = (SegmentMemory) machine.getAddressRedirector().getMemory(MemoryType.SEGMENT);
         TimingRenderer.register(this);
     }
 
@@ -146,11 +148,55 @@ public class SegmentController implements TickCallback {
     @Override
     public void onTick() {
         boolean text = machine.getSwitches().get(0);
-        int data = IoUtils.bytesToInt(segmentMem.load(0, 4));
         if (text) {
-            showText(data, (byte)~0);
+            showText(segmentMem.getText(), (byte) ~0);
         } else {
-            showGraph(data, data);
+            showGraph(segmentMem.getGraphLow(), segmentMem.getGraphHigh());
+        }
+    }
+
+    public static class SegmentMemory implements Memory {
+
+        private ByteArrayMemory highGraph, lowGraph, text;
+
+        public SegmentMemory(int depth) {
+            highGraph = new ByteArrayMemory(32);
+            lowGraph = new ByteArrayMemory(32);
+            text = new ByteArrayMemory(32);
+        }
+
+        @Override
+        public void save(long address, byte[] bytes) throws MemoryOutOfBoundsException {
+            text.save(0, bytes);
+            if ((address & 1) == 0) {
+                lowGraph.save(0, bytes);
+            } else {
+                highGraph.save(0, bytes);
+            }
+        }
+
+        @Override
+        public byte[] load(long address, int bytesNum) throws MemoryOutOfBoundsException {
+            return text.load(0, bytesNum);
+        }
+
+        int getText() {
+            return IoUtils.bytesToInt(text.load(0, 4));
+        }
+
+        int getGraphLow() {
+            return IoUtils.bytesToInt(lowGraph.load(0, 4));
+        }
+
+        int getGraphHigh() {
+            return IoUtils.bytesToInt(highGraph.load(0, 4));
+        }
+
+        @Override
+        public void reset() {
+            highGraph.reset();
+            lowGraph.reset();
+            text.reset();
         }
     }
 }

@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import indi.key.mipsemulator.controller.ButtonController;
 import indi.key.mipsemulator.controller.KeyboardController;
+import indi.key.mipsemulator.controller.SegmentController;
 import indi.key.mipsemulator.model.info.Range;
 
 // TODO: use common properties to control addresses
@@ -12,8 +13,9 @@ public enum MemoryType {
     RAM(new MemoryRange(0x00000000L, 0x0000FFFFL)),
     VRAM_TEXT(new MemoryRange(0x00000000L, 0x000012BFL)),
     VRAM_GRAPH(new MemoryRange(0x00002000L, 0x00097FFFL)),
-    SEGMENT(new MemoryRange(0xFFFFFE00L),
-            new MemoryRange(0xE0000000L)),
+    SEGMENT(SegmentController.SegmentMemory::new,
+            new MemoryRange(0xFFFFFE00L, 0xFFFFFEFFL),
+            new MemoryRange(0xE0000000L, 0xE00000FFL)),
     GPIO(GpioRegister::new,
             new MemoryRange(0xFFFFFF00L),
             new MemoryRange(0xF0000000L)),
