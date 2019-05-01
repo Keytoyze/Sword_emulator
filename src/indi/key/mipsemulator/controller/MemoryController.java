@@ -10,7 +10,9 @@ import indi.key.mipsemulator.core.model.Instruction;
 import indi.key.mipsemulator.core.model.Statement;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.model.info.BitArray;
+import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.Memory;
+import indi.key.mipsemulator.storage.RegisterType;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -19,13 +21,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class MemoryController {
+public class MemoryController implements TickCallback {
 
     private TableView<MemoryBean> tableView;
     private MemoryListWrapper memoryListWrapper;
     private Button jump, last, next;
     private ComboBox<String> typeBox;
     private TextField addressText;
+    private Machine machine;
 
     private static final int PAGE_NUM = 6;
 
@@ -34,6 +37,8 @@ public class MemoryController {
                             TextField addressText) {
         this.tableView = tableView;
         this.memoryListWrapper = new MemoryListWrapper(machine.getAddressRedirector());
+        this.machine = machine;
+        machine.addCpuListener(this);
         this.jump = jump;
         this.last = last;
         this.next = next;
@@ -50,9 +55,7 @@ public class MemoryController {
         jump.setOnAction(event -> {
             try {
                 long address = parseAddress(addressText.getText());
-                memoryListWrapper.setAddress(address);
-                tableView.setItems(FXCollections.observableList(memoryListWrapper));
-                addressText.setText(formatAddress(address));
+                jumpTo(address);
             } catch (Exception e) {
                 Alert information = new Alert(Alert.AlertType.ERROR);
                 information.setTitle("错误！");
@@ -63,18 +66,14 @@ public class MemoryController {
         last.setOnAction(event -> {
             long address = Math.max(
                     memoryListWrapper.getAddress() -
-                            getAddressPageRange(memoryListWrapper.getMemoryType()), 0);
-            memoryListWrapper.setAddress(address);
-            tableView.setItems(FXCollections.observableList(memoryListWrapper));
-            addressText.setText(formatAddress(address));
+                            getAddressPageRange(), 0);
+            jumpTo(address);
         });
         next.setOnAction(event -> {
             long address = Math.min(
                     memoryListWrapper.getAddress() +
-                            getAddressPageRange(memoryListWrapper.getMemoryType()), 0xFFFFFFFL);
-            memoryListWrapper.setAddress(address);
-            tableView.setItems(FXCollections.observableList(memoryListWrapper));
-            addressText.setText(formatAddress(address));
+                            getAddressPageRange(), 0xFFFFFFFL);
+            jumpTo(address);
         });
         addressText.setText(formatAddress(0));
         typeBox.setItems(FXCollections.observableArrayList("十六进制", "二进制"));
@@ -86,6 +85,19 @@ public class MemoryController {
         });
     }
 
+    private void jumpTo(long address) {
+        memoryListWrapper.setAddress(address);
+        refresh();
+        addressText.setText(formatAddress(address));
+    }
+
+    @Override
+    public void onTick() {
+        long pc = machine.getRegister(RegisterType.PC).getUnsigned();
+        jumpTo(pc / getAddressPageRange() * getAddressPageRange());
+        refresh();
+    }
+
     private static long parseAddress(String content) {
         long address = Long.valueOf(content, 16);
         if (address < 0 || address > 0xFFFFFFFFL) {
@@ -93,6 +105,17 @@ public class MemoryController {
         }
         return address;
     }
+
+    private void refresh() {
+        tableView.setItems(FXCollections.observableList(memoryListWrapper));
+        long pc = machine.getRegister(RegisterType.PC).getUnsigned();
+        long index = (pc - memoryListWrapper.getAddress()) / (getAddressPageRange() / PAGE_NUM);
+        if (0 <= index && index < PAGE_NUM) {
+            tableView.getSelectionModel().select((int) index);
+        }
+    }
+
+
 
     private static String formatAddress(long address) {
         String content = Long.toHexString(address);
@@ -103,8 +126,8 @@ public class MemoryController {
         return String.join("", Collections.nCopies(8 - data.length(), "0")) + data;
     }
 
-    private static long getAddressPageRange(boolean binary) {
-        return binary ? PAGE_NUM : PAGE_NUM * 4;
+    private long getAddressPageRange() {
+        return memoryListWrapper.getMemoryType() ? PAGE_NUM : PAGE_NUM * 4;
     }
 
     private static class MemoryListWrapper extends AbstractList<MemoryBean> implements RandomAccess {

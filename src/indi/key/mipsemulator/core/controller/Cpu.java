@@ -52,12 +52,19 @@ public class Cpu implements Resetable {
         callbackSet.add(tickCallback);
     }
 
+    private void notifyListeners() {
+        for (TickCallback callback : callbackSet) {
+            callback.onTick();
+        }
+    }
+
     public boolean isLooping() {
         return looping;
     }
 
     public void singleStep() {
         getStatementRunnable(this).run();
+        notifyListeners();
     }
 
     public void loop() {
@@ -91,6 +98,7 @@ public class Cpu implements Resetable {
         if (resentException != null) {
             resentException.printStackTrace();
         }
+        notifyListeners();
         return new CpuStatistics(System.currentTimeMillis() - startTime, instructionCount, errorCount);
     }
 
@@ -173,8 +181,6 @@ public class Cpu implements Resetable {
     }
 
     private static void afterExcution(Cpu cpu) {
-        for (TickCallback callback : cpu.callbackSet) {
-            callback.onTick();
-        }
+
     }
 }
