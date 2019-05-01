@@ -3,18 +3,19 @@ package indi.key.mipsemulator.controller;
 import java.util.function.Function;
 
 import indi.key.mipsemulator.core.controller.Machine;
+import indi.key.mipsemulator.core.controller.TimingRenderer;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
-import indi.key.mipsemulator.core.controller.TimingRenderer;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 
 public class RegisterController implements TickCallback {
 
     public enum DisplayMode {
-        HEXADECIMAL(integer -> "0x" + Integer.toHexString(integer)),
+        HEXADECIMAL(integer -> "0x" + Integer.toHexString(integer).toUpperCase()),
         SIGNED_DECIMAL(Object::toString),
         UNSIGNED_DECIMAL(integer -> {
             return String.valueOf(Integer.toUnsignedLong(integer));
@@ -58,6 +59,7 @@ public class RegisterController implements TickCallback {
                 int index = j * 8 + i;
                 RegisterType registerType = getType(index);
                 registerLable[index] = new Label("");
+//                registerLable[index].setFont(Font.font("Consolas", 16));
                 registerLable[index].setTextFill(registerType.getColor());
                 registerPane.add(registerLable[index], j, i);
             }

@@ -1,3 +1,7 @@
-.table-view .column-header .label{
+.table-view .column-header .label {
     -fx-alignment:LEFT
+}
+
+.table-view .table-cell {
+    -fx-font-family: Consolas;
 }

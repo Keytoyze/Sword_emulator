@@ -2,7 +2,6 @@ package indi.key.mipsemulator.controller;
 
 
 import java.util.AbstractList;
-import java.util.Collections;
 import java.util.RandomAccess;
 
 import indi.key.mipsemulator.core.controller.Machine;
@@ -13,6 +12,7 @@ import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.RegisterType;
+import indi.key.mipsemulator.util.IoUtils;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -115,12 +115,12 @@ public class MemoryController implements TickCallback {
     }
 
     private static String formatAddress(long address) {
-        String content = Long.toHexString(address);
-        return String.join("", Collections.nCopies(8 - content.length(), "0")) + content;
+        String content = Long.toHexString(address).toUpperCase();
+        return IoUtils.completeWithZero(content, 8);
     }
 
     private static String formatData(String data) {
-        return String.join("", Collections.nCopies(8 - data.length(), "0")) + data;
+        return IoUtils.completeWithZero(data, 8);
     }
 
     private long getAddressPageRange() {

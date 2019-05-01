@@ -70,4 +70,12 @@ public class IoUtils {
     public static byte[] intToBytes(int value, int length) {
         return BitArray.of(value, length).bytes();
     }
+
+    public static String completeWithZero(String content, int length) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < length - content.length(); i++) {
+            stringBuilder.append("0");
+        }
+        return stringBuilder.append(content).toString();
+    }
 }

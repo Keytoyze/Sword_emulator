@@ -13,7 +13,7 @@ public class Dissambler {
         Operation operation = statement.getOperation();
         InstructionInformation information = operation.toInstructionInformation();
         OperandPrototype[] prototypes = information.getOperandListPrototype();
-        StringBuilder stringBuilder = new StringBuilder(operation.toString().toLowerCase());
+        StringBuilder stringBuilder = new StringBuilder(operation.toString());
         for (int i = 0; i < prototypes.length; i++) {
             OperandPrototype prototype = prototypes[i];
             OperandType type = prototype.getType();
