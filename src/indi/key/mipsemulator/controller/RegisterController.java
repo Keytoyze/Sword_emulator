@@ -10,7 +10,6 @@ import indi.key.mipsemulator.storage.RegisterType;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
 
 public class RegisterController implements TickCallback {
 
