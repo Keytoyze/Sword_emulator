@@ -18,7 +18,7 @@ public class SwitchController {
         this.gridPane = gridPane;
         this.labelPane = labelPane;
         this.machine = machine;
-        this.switches = BitArray.ofLength(32);
+        this.switches = BitArray.ofLength(16);
         machine.setSwitches(switches);
         initView();
     }
