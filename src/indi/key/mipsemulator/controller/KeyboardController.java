@@ -58,7 +58,7 @@ public class KeyboardController {
             if (key != null) {
                 bytes[3] = 0b1000;
                 bytes[0] = key;
-                LogUtils.i(Integer.toHexString(Byte.toUnsignedInt(key)));
+                LogUtils.m("Send to PS2 memory: " + BitArray.of(bytes).toHexString());
             } else {
                 bytes = BitArray.of(bytes).set(31, false).bytes();
             }

@@ -1,8 +1,10 @@
 package indi.key.mipsemulator.storage;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Arrays;
 
+import indi.key.mipsemulator.disassemble.CoeReader;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.util.IoUtils;
 
@@ -26,7 +28,23 @@ public class ByteArrayMemory implements Memory {
     public void reset() {
         memory = new byte[depth];
         if (initFile != null) {
-            byte[] content = IoUtils.read(initFile);
+            String fileName = initFile.getName();
+            String suffix = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+            byte[] content;
+            switch (suffix) {
+                case "coe":
+                    try (FileInputStream fileInputStream = new FileInputStream(initFile)) {
+                        content = CoeReader.coeToBytes(fileInputStream);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                case "bin":
+                    content = IoUtils.read(initFile);
+                    break;
+                default:
+                    throw new RuntimeException("Unknown suffix: " + suffix);
+            }
             System.arraycopy(content, 0, memory, 0, content.length);
         }
     }

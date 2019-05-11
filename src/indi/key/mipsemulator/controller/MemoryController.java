@@ -174,6 +174,14 @@ public class MemoryController implements TickCallback {
                 }
                 return new MemoryBean(address, data, s);
             } catch (MemoryOutOfBoundsException e) {
+                if (binary) {
+                    try {
+                        byte[] bytes = memory.load(address, 1);
+                        return new MemoryBean(address,
+                                BitArray.of(bytes).toString().substring(2, 10), "");
+                    } catch (MemoryOutOfBoundsException ignored) {
+                    }
+                }
                 return new MemoryBean(address, "--------", "");
             }
         }

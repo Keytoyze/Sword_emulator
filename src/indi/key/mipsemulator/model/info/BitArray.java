@@ -101,7 +101,17 @@ public class BitArray {
             value <<= 8;
             value |= b & 0xFF;
         }
-        return of(value, bytes.length * 8);
+        return of(value, bytes.length * 8);/*
+        if (bytes.length > 4) {
+            throw new IllegalArgumentException("Bytes length > 4");
+        }
+        int value = 0;
+        int shamt = 0;
+        for (byte b : bytes) {
+            value |= (b & 0xFF) << shamt;
+            shamt += 8;
+        }
+        return of(value, bytes.length * 8);*/
     }
 
     public static BitArray ofInteger(int value, int length) {
@@ -233,7 +243,7 @@ public class BitArray {
     public byte[] bytes() {
         byte[] result = new byte[(int) Math.ceil(length / 8.0)];
         for (int i = 0; i < length; i += 8) {
-            result[i / 8] = (byte) subArray(i, i + Math.min(8, length - i)).value;
+            result[result.length - i / 8 - 1] = (byte) subArray(i, i + Math.min(8, length - i)).value;
         }
         return result;
     }

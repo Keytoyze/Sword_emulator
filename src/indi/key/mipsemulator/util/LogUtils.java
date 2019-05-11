@@ -2,7 +2,15 @@ package indi.key.mipsemulator.util;
 
 import java.util.Arrays;
 
+import javafx.scene.control.TextArea;
+
 public class LogUtils {
+
+    private static TextArea mLogText = null;
+
+    public static void setLogText(TextArea logText) {
+        mLogText = logText;
+    }
 
     public static void i(Object... object) {
         String message;
@@ -12,6 +20,10 @@ public class LogUtils {
             message = Arrays.toString(object);
         }
         System.out.println(buildMessage(message));
+    }
+
+    public static void m(String string) {
+        //mLogText.setText(mLogText.getText() + string + "\n");
     }
 
     private static String buildMessage(String rawMessage) {

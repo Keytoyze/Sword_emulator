@@ -122,6 +122,7 @@ public class Cpu implements Resetable {
                 cpu.track(index, statement);
                 beforeExcution(pc, ra, linkNext);
                 rTypeAction.execute(cpu.machine, rs, rt, rd, shamt);
+                afterExcution(cpu);
             };
         } else if (action instanceof ITypeAction) {
             ITypeAction iTypeAction = (ITypeAction) action;

@@ -50,23 +50,19 @@ public class TextProvider extends ScreenProvider {
                         fb, fg, fr, bb, bg, br, 8);
             }
         } else {
-            try {
-                for (int i = address - address % 2; i < address + length; i += 2) {
-                    byte[] bytes = memory.load(i, 2);
-                    int offset = (94 * (bytes[0] + 0x60 - 1) + (bytes[1] + 0x60 - 1)) * 32;
-                    int fb = 255;
-                    int fg = 255;
-                    int fr = 255;
-                    int bb = 0;
-                    int bg = 0;
-                    int br = 0;
-                    drawCharacter(fontWidth, fontHeight, i, gbkStocks, offset,
-                            fb, fg, fr, bb, bg, br, 16);
-                }
-            } catch (Exception ignored) {
+            for (int i = address - address % 2; i < address + length; i += 2) {
+                byte[] bytes = memory.load(i, 2);
+                int offset = (94 * (bytes[0] + 0x60 - 1) + (bytes[1] + 0x60 - 1)) * 32;
+                int fb = 255;
+                int fg = 255;
+                int fr = 255;
+                int bb = 0;
+                int bg = 0;
+                int br = 0;
+                drawCharacter(fontWidth, fontHeight, i, gbkStocks, offset,
+                        fb, fg, fr, bb, bg, br, 16);
             }
         }
-
     }
 
     private void drawCharacter(int fontWidth, int fontHeight, int index, byte[] wordStocks,

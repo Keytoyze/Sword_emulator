@@ -14,8 +14,6 @@ import indi.key.mipsemulator.controller.SwitchController;
 import indi.key.mipsemulator.controller.VgaController;
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.util.LogUtils;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,6 +26,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -85,42 +85,12 @@ public class SwordController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         LogUtils.i(location, resources);
 
-        String path = "G:\\code\\java\\mipsasm\\mipsasm\\test\\computer_MCPU.bin";
+        String path = "G:\\code\\java\\mips_emulator\\test\\mem.coe";
+        LogUtils.setLogText(debugText);
         this.machine = Machine.getInstance(new File(path));
 
-        setUpRegisters();
+        setUpControllers();
         setUpMenu();
-        setUpVGA();
-        setUpSlideSwitches();
-        setUpLED();
-        setUpButtons();
-        setUpSegments();
-        setUpMemory();
-    }
-
-    private void setUpRegisters() {
-        registerController = new RegisterController(registerPane, machine);
-        ObservableList<String> options =
-                FXCollections.observableArrayList(
-                        "十六进制",
-                        "有符号十进制",
-                        "无符号十进制"
-                );
-        registerModeComboBox.setItems(options);
-        registerModeComboBox.setOnAction(event -> {
-            switch (registerModeComboBox.getSelectionModel().getSelectedIndex()) {
-                case 0:
-                    registerController.setDisplayMode(RegisterController.DisplayMode.HEXADECIMAL);
-                    break;
-                case 1:
-                    registerController.setDisplayMode(RegisterController.DisplayMode.SIGNED_DECIMAL);
-                    break;
-                case 2:
-                    registerController.setDisplayMode(RegisterController.DisplayMode.UNSIGNED_DECIMAL);
-                    break;
-            }
-        });
-        registerModeComboBox.setValue(registerModeComboBox.getItems().get(0));
     }
 
     public void setUpMenu() {
@@ -134,34 +104,19 @@ public class SwordController implements Initializable {
             }
         });
         debugSingleIMenu.setOnAction(event -> machine.singleStep());
+        debugSingleIMenu.setAccelerator(new KeyCodeCombination(KeyCode.F5));
     }
 
-    private void setUpSlideSwitches() {
-        switchController = new SwitchController(
-                slideSwitchGrid, slideLabelGrid, machine);
-    }
-
-    private void setUpLED() {
+    private void setUpControllers() {
+        registerController = new RegisterController(registerPane, registerModeComboBox, machine);
+        switchController = new SwitchController(slideSwitchGrid, slideLabelGrid, machine);
         ledController = new LedController(ledPane, machine);
-    }
-
-    private void setUpButtons() {
         buttonController = new ButtonController(buttonPane, machine);
-    }
-
-    private void setUpSegments() {
         segmentController = new SegmentController(segmentCanvas, machine);
-    }
-
-    private void setUpMemory() {
         memoryController = new MemoryController(memoryTable, machine, memoryJump, memoryLast,
                 memoryNext, memroyTypeBox, memoryAddressText);
-    }
-
-    public void setUpVGA() {
         vgaController = new VgaController(vgaScreen, machine);
         keyboardController = new KeyboardController(machine);
-
         root.setOnKeyPressed(event -> {
             keyboardController.press(event.getCode());
         });

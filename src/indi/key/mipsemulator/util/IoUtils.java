@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import indi.key.mipsemulator.model.info.BitArray;
 
@@ -25,6 +27,17 @@ public class IoUtils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String readAsString(InputStream inputStream) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+        char[] buffer = new char[4096];
+        int length;
+        while ((length = reader.read(buffer)) != -1) {
+            builder.append(buffer, 0, length);
+        }
+        return builder.toString();
     }
 
     private static byte[] read(InputStream inputStream) {

@@ -8,39 +8,45 @@ import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 public class RegisterController implements TickCallback {
 
     public enum DisplayMode {
-        HEXADECIMAL(integer -> "0x" + Integer.toHexString(integer).toUpperCase()),
-        SIGNED_DECIMAL(Object::toString),
-        UNSIGNED_DECIMAL(integer -> {
-            return String.valueOf(Integer.toUnsignedLong(integer));
-        });
+        HEXADECIMAL("十六进制", integer -> "0x" + Integer.toHexString(integer).toUpperCase()),
+        SIGNED_DECIMAL("有符号十进制", Object::toString),
+        UNSIGNED_DECIMAL("无符号十进制", integer -> String.valueOf(Integer.toUnsignedLong(integer)));
+
 
         Function<Integer, String> convertFunc;
+        String name;
 
-        DisplayMode(Function<Integer, String> convertFunc) {
+        DisplayMode(String name, Function<Integer, String> convertFunc) {
+            this.name = name;
             this.convertFunc = convertFunc;
         }
     }
 
     private GridPane registerPane;
+    private ComboBox<String> registerModeBox;
     private Machine machine;
     private Label[] registerLable = new Label[32];
     private DisplayMode displayMode = DisplayMode.HEXADECIMAL;
 
-    public RegisterController(GridPane registerPane, Machine machine) {
+    public RegisterController(GridPane registerPane, ComboBox<String> registerModeBox, Machine machine) {
         this.registerPane = registerPane;
         this.machine = machine;
+        this.registerModeBox = registerModeBox;
         //machine.addRegisterListener(this);
         initView();
         TimingRenderer.register(this);
     }
 
-    public void setDisplayMode(DisplayMode displayMode) {
+    private void setDisplayMode(DisplayMode displayMode) {
         this.displayMode = displayMode;
         updateAllRegisters();
     }
@@ -53,6 +59,14 @@ public class RegisterController implements TickCallback {
     }
 
     private void initView() {
+        ObservableList<String> options = FXCollections.observableArrayList();
+        for (DisplayMode mode : DisplayMode.values()) {
+            options.add(mode.name);
+        }
+        registerModeBox.setItems(options);
+        registerModeBox.setOnAction(event ->
+                setDisplayMode(DisplayMode.values()[registerModeBox.getSelectionModel().getSelectedIndex()]));
+        registerModeBox.getSelectionModel().select(0);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 4; j++) {
                 int index = j * 8 + i;

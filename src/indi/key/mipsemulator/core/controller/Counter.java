@@ -50,7 +50,8 @@ public class Counter implements TickCallback {
         byte[] bytes = counterMem.load(0, 4);
         long currentTime = System.currentTimeMillis();
         long interval = currentTime - timeStamp;
-        long ticks = Integer.toUnsignedLong(IoUtils.bytesToInt(bytes)) - interval * 250000;
+        long ticks = Integer.toUnsignedLong(IoUtils.bytesToInt(bytes)) - interval * 256;
+        //LogUtils.i(Integer.toUnsignedLong(IoUtils.bytesToInt(IoUtils.intToBytes((int) ticks, 32))), Integer.toUnsignedLong((int) ticks));
         if (ticks < 0) ticks = 0;
         timeStamp = currentTime;
         counterMem.save(0, IoUtils.intToBytes((int) ticks, 32));

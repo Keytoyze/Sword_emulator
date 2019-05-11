@@ -28,7 +28,10 @@ public class GpioRegister implements Memory {
     public byte[] load(long address, int bytesNum) throws MemoryOutOfBoundsException {
         Machine machine = Machine.getReference();
         BitArray bitArray = BitArray.of(readRegister.getAll());
-        bitArray.set(31, machine.getCounter().getCounterOut());
+        boolean counterOut = machine.getCounter().getCounterOut();
+        bitArray.set(31, counterOut);
+        bitArray.set(30, counterOut);
+        bitArray.set(29, counterOut);
         bitArray.setTo(0, machine.getSwitches());
         readRegister.save(0, bitArray.bytes());
         return readRegister.load(address, bytesNum);

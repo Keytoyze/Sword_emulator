@@ -49,6 +49,10 @@ public class Register implements Comparable<Register>, Resetable {
         return Integer.toUnsignedLong(value);
     }
 
+    public String getHex() {
+        return Integer.toHexString(value);
+    }
+
     private void checkZero(int value) {
         if (registerType == RegisterType.ZERO && value != 0) {
             throw new ModifyZeroException("You cannot modify ZERO registerType! ");
