@@ -24,6 +24,10 @@ public class AddressRedirector implements Memory {
             memories[memoryType.ordinal()] = memoryType.generateStorage();
             listeners.add(memoryType.ordinal(), new LinkedList<>());
         }
+        setInitFile(initFile);
+    }
+
+    public void setInitFile(File initFile) {
         ((ByteArrayMemory) memories[MemoryType.RAM.ordinal()]).setInitFile(initFile);
     }
 
@@ -74,7 +78,7 @@ public class AddressRedirector implements Memory {
                 }
             }
         }
-        throw new MemoryOutOfBoundsException("Cannot assess the address " + dataRange.toString());
+        throw new MemoryOutOfBoundsException("Cannot access the address " + dataRange.toString());
     }
 
     @Override

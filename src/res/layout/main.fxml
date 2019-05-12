@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?><?import javafx.scene.control.Button?><?import javafx.scene.control.ComboBox?><?import javafx.scene.control.Menu?><?import javafx.scene.control.MenuBar?><?import javafx.scene.control.MenuItem?><?import javafx.scene.control.RadioMenuItem?><?import javafx.scene.control.SeparatorMenuItem?><?import javafx.scene.control.TableColumn?><?import javafx.scene.control.TableView?><?import javafx.scene.control.TextArea?><?import javafx.scene.control.TextField?><?import javafx.scene.image.ImageView?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.VBox?>
+<?import javafx.scene.canvas.Canvas?><?import javafx.scene.control.Button?><?import javafx.scene.control.ComboBox?><?import javafx.scene.control.Menu?><?import javafx.scene.control.MenuBar?><?import javafx.scene.control.MenuItem?><?import javafx.scene.control.RadioMenuItem?><?import javafx.scene.control.SeparatorMenuItem?><?import javafx.scene.control.TableColumn?><?import javafx.scene.control.TableView?><?import javafx.scene.control.TextArea?><?import javafx.scene.control.TextField?><?import javafx.scene.image.ImageView?><?import javafx.scene.input.KeyCodeCombination?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="828.0"
     prefWidth="1307.0"
@@ -22,19 +22,74 @@
 
                         <MenuItem
                             mnemonicParsing="false"
-                            text="加载初始化文件…" />
+                            onAction="#onOpenFile"
+                            text="加载初始化文件…">
+
+                            <accelerator>
+
+                                <KeyCodeCombination
+                                    alt="UP"
+                                    code="O"
+                                    control="DOWN"
+                                    meta="UP"
+                                    shift="UP"
+                                    shortcut="UP" />
+                            </accelerator>
+
+                        </MenuItem>
 
                         <MenuItem
                             mnemonicParsing="false"
-                            text="复位" />
+                            onAction="#onReset"
+                            text="复位">
+
+                            <accelerator>
+
+                                <KeyCodeCombination
+                                    alt="UP"
+                                    code="R"
+                                    control="DOWN"
+                                    meta="UP"
+                                    shift="UP"
+                                    shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
 
                         <MenuItem
                             mnemonicParsing="false"
-                            text="载入状态…" />
+                            onAction="#onSaveMemory"
+                            text="保存内存状态">
+
+                            <accelerator>
+
+                                <KeyCodeCombination
+                                    alt="UP"
+                                    code="S"
+                                    control="DOWN"
+                                    meta="UP"
+                                    shift="UP"
+                                    shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
+
+                        <SeparatorMenuItem />
 
                         <MenuItem
                             mnemonicParsing="false"
-                            text="保存状态…" />
+                            onAction="#onExit"
+                            text="退出">
+
+                            <accelerator>
+
+                                <KeyCodeCombination
+                                    alt="UP"
+                                    code="E"
+                                    control="DOWN"
+                                    meta="UP"
+                                    shift="UP"
+                                    shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
                     </items>
                 </Menu>
 
@@ -47,20 +102,54 @@
                         <MenuItem
                             fx:id="debugExecuteMenu"
                             mnemonicParsing="false"
-                            text="执行" />
+                            onAction="#onExecute"
+                            text="运行">
+
+                            <accelerator>
+
+                                <KeyCodeCombination
+                                    alt="UP"
+                                    code="F5"
+                                    control="UP"
+                                    meta="UP"
+                                    shift="DOWN"
+                                    shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
 
                         <MenuItem
+                            fx:id="debugStopMenu"
                             mnemonicParsing="false"
-                            text="执行到" />
+                            text="暂停"
+                            onAction="#onPause">
+
+                            <accelerator>
+
+                                <KeyCodeCombination
+                                    alt="UP"
+                                    code="F2"
+                                    control="DOWN"
+                                    meta="UP"
+                                    shift="UP"
+                                    shortcut="UP" />
+                            </accelerator>
+                        </MenuItem>
+
+                        <SeparatorMenuItem />
 
                         <MenuItem
-                            fx:id="debugSingleIMenu"
+                            fx:id="debugSingleMenu"
                             mnemonicParsing="false"
-                            text="单步I" />
+                            onAction="#onSingle"
+                            accelerator="F5"
+                            text="单步执行" />
 
                         <MenuItem
+                            fx:id="debugSingleWithoutJalMenu"
                             mnemonicParsing="false"
-                            text="单步P" />
+                            onAction="#onSingleNotJal"
+                            accelerator="F4"
+                            text="单步执行（跳过Jump）" />
                     </items>
                 </Menu>
 
@@ -633,7 +722,6 @@
                     <columns>
 
                         <TableColumn
-
                             editable="false"
                             minWidth="75.0"
                             prefWidth="100.0"
@@ -693,6 +781,7 @@
 
                 <TextArea
                     fx:id="debugText"
+                    editable="false"
                     layoutX="674.0"
                     layoutY="521.0"
                     prefHeight="263.0"

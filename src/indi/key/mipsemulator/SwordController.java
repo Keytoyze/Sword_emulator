@@ -14,6 +14,7 @@ import indi.key.mipsemulator.controller.SwitchController;
 import indi.key.mipsemulator.controller.VgaController;
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.util.LogUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,14 +27,19 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class SwordController implements Initializable {
 
+    @FXML
+    MenuItem debugStopMenu;
+    @FXML
+    MenuItem debugSingleMenu;
+    @FXML
+    MenuItem debugSingleWithoutJalMenu;
     @FXML
     TableView<MemoryController.MemoryBean> memoryTable;
     @FXML
@@ -54,8 +60,6 @@ public class SwordController implements Initializable {
     ImageView vgaScreen;
     @FXML
     MenuItem debugExecuteMenu;
-    @FXML
-    MenuItem debugSingleIMenu;
     @FXML
     ComboBox<String> registerModeComboBox;
     @FXML
@@ -81,30 +85,42 @@ public class SwordController implements Initializable {
     private SegmentController segmentController;
     private MemoryController memoryController;
 
+    private static Stage primaryStage;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LogUtils.i(location, resources);
 
-        String path = "G:\\code\\java\\mips_emulator\\test\\mem.coe";
         LogUtils.setLogText(debugText);
-        this.machine = Machine.getInstance(new File(path));
+        this.machine = Machine.getInstance(null);
 
         setUpControllers();
         setUpMenu();
+
+        primaryStage.setOnCloseRequest(event -> {
+            Machine machine = Machine.getReference();
+            if (machine != null && machine.isLooping()) {
+                machine.exitLoop();
+            }
+        });
+        //String path = "G:\\QQFile\\WeChat Files\\Key6968698\\FileStorage\\File\\2019-05\\memCursor.coe";
     }
 
     public void setUpMenu() {
+        debugStopMenu.setDisable(true);/*
         debugExecuteMenu.setOnAction(event -> {
             if (machine.getCpu().isLooping()) {
-                LogUtils.i(machine.exitLoop());
+                machine.exitLoop().print();
                 debugExecuteMenu.setText("运行");
             } else {
                 machine.loop();
                 debugExecuteMenu.setText("暂停");
             }
         });
+        debugExecuteMenu.setAccelerator(new KeyCodeCombination(KeyCode.F4));
         debugSingleIMenu.setOnAction(event -> machine.singleStep());
         debugSingleIMenu.setAccelerator(new KeyCodeCombination(KeyCode.F5));
+    */
     }
 
     private void setUpControllers() {
@@ -126,6 +142,7 @@ public class SwordController implements Initializable {
     }
 
     public static void run(Stage primaryStage) throws Exception {
+        SwordController.primaryStage = primaryStage;
         primaryStage.setTitle("ZJUQS-II SWORD Emulator");
         Pane pane = FXMLLoader.load(SwordController.class.getResource(
                 "/res/layout/main.fxml"));
@@ -134,5 +151,53 @@ public class SwordController implements Initializable {
                 "/res/layout/main.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public void onOpenFile(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("COE文件", "*.coe"),
+                new FileChooser.ExtensionFilter("BIN文件", "*.bin")
+        );
+        File file = fileChooser.showOpenDialog(primaryStage);
+        if (file != null) {
+            machine = Machine.getInstance(file);
+        }
+    }
+
+    public void onReset(ActionEvent actionEvent) {
+        machine.reset();
+    }
+
+    public void onSaveMemory(ActionEvent actionEvent) {
+
+    }
+
+    public void onExit(ActionEvent actionEvent) {
+
+    }
+
+    public void onExecute(ActionEvent actionEvent) {
+        debugSingleMenu.setDisable(true);
+        debugSingleWithoutJalMenu.setDisable(true);
+        debugStopMenu.setDisable(false);
+        debugExecuteMenu.setDisable(true);
+        machine.loop();
+    }
+
+    public void onSingle(ActionEvent actionEvent) {
+        machine.singleStep();
+    }
+
+    public void onSingleNotJal(ActionEvent actionEvent) {
+        machine.singleStepWithoutJal();
+    }
+
+    public void onPause(ActionEvent actionEvent) {
+        debugSingleMenu.setDisable(false);
+        debugSingleWithoutJalMenu.setDisable(false);
+        debugStopMenu.setDisable(true);
+        debugExecuteMenu.setDisable(false);
+        machine.exitLoop().print();
     }
 }

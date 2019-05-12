@@ -45,6 +45,7 @@ public class Cpu implements Resetable {
 
     @Override
     public void reset() {
+        looping = false;
         instructionCache = new Runnable[MemoryType.RAM.getLength() / 4 + 1];
     }
 
@@ -62,8 +63,23 @@ public class Cpu implements Resetable {
         return looping;
     }
 
+    private void single() {
+        try {
+            getStatementRunnable(this).run();
+        } catch (Exception e) {
+            LogUtils.m(e.getMessage());
+        }
+    }
+
     public void singleStep() {
-        getStatementRunnable(this).run();
+        single();
+        notifyListeners();
+    }
+
+    public void singleStepWithoutJal() {
+        int pcValue = pc.get();
+        single();
+        pc.set(pcValue + 4);
         notifyListeners();
     }
 
@@ -99,7 +115,8 @@ public class Cpu implements Resetable {
             resentException.printStackTrace();
         }
         notifyListeners();
-        return new CpuStatistics(System.currentTimeMillis() - startTime, instructionCount, errorCount);
+        return new CpuStatistics(System.currentTimeMillis() - startTime, instructionCount,
+                errorCount, resentException);
     }
 
     private static Runnable getStatementRunnable(Cpu cpu) {

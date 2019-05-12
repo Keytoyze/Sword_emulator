@@ -23,7 +23,8 @@ public class LogUtils {
     }
 
     public static void m(String string) {
-        //mLogText.setText(mLogText.getText() + string + "\n");
+        mLogText.setText(mLogText.getText() + string + "\n");
+        mLogText.setScrollTop(Double.MAX_VALUE);
     }
 
     private static String buildMessage(String rawMessage) {

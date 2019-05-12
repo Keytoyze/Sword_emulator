@@ -46,7 +46,7 @@ public class Machine implements Resetable {
     }
 
     private void setInitFile(File initFile) {
-        this.addressRedirector = new AddressRedirector(initFile);
+        this.addressRedirector.setInitFile(initFile);
         reset();
     }
 
@@ -55,6 +55,17 @@ public class Machine implements Resetable {
             cpu.singleStep();
             ticks();
         }
+    }
+
+    public void singleStepWithoutJal() {
+        if (!cpu.isLooping()) {
+            cpu.singleStepWithoutJal();
+            ticks();
+        }
+    }
+
+    public boolean isLooping() {
+        return cpu.isLooping();
     }
 
     public void loop() {

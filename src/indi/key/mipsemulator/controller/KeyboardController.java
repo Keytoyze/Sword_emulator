@@ -23,7 +23,6 @@ public class KeyboardController {
 
     public void press(KeyCode keyCode) {
         PS2Key ps2Key = PS2Key.of(keyCode);
-        LogUtils.i(ps2Key);
         byte[] pressCode = ps2Key.getPressCode();
         for (byte b : pressCode) {
             ps2Memory.push(b);
