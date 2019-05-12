@@ -55,23 +55,6 @@
                             </accelerator>
                         </MenuItem>
 
-                        <MenuItem
-                            mnemonicParsing="false"
-                            onAction="#onSaveMemory"
-                            text="保存内存状态">
-
-                            <accelerator>
-
-                                <KeyCodeCombination
-                                    alt="UP"
-                                    code="S"
-                                    control="DOWN"
-                                    meta="UP"
-                                    shift="UP"
-                                    shortcut="UP" />
-                            </accelerator>
-                        </MenuItem>
-
                         <SeparatorMenuItem />
 
                         <MenuItem

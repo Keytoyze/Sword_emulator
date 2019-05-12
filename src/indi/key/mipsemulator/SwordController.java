@@ -89,7 +89,6 @@ public class SwordController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        LogUtils.i(location, resources);
 
         LogUtils.setLogText(debugText);
         this.machine = Machine.getInstance(null);
@@ -103,7 +102,6 @@ public class SwordController implements Initializable {
                 machine.exitLoop();
             }
         });
-        //String path = "G:\\QQFile\\WeChat Files\\Key6968698\\FileStorage\\File\\2019-05\\memCursor.coe";
     }
 
     public void setUpMenu() {

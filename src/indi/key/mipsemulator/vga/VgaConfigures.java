@@ -59,6 +59,6 @@ public class VgaConfigures {
     }
 
     public static int getAddressOffset() {
-        return 0x000C3F00;
+        return 0x000C0000;
     }
 }

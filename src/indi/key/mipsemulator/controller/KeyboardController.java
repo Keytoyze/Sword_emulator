@@ -9,7 +9,6 @@ import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.info.PS2Key;
 import indi.key.mipsemulator.storage.ByteArrayMemory;
 import indi.key.mipsemulator.storage.MemoryType;
-import indi.key.mipsemulator.util.LogUtils;
 import javafx.scene.input.KeyCode;
 
 public class KeyboardController {
@@ -31,7 +30,6 @@ public class KeyboardController {
 
     public void release(KeyCode keyCode) {
         PS2Key ps2Key = PS2Key.of(keyCode);
-        LogUtils.i(ps2Key);
         byte[] releaseCode = ps2Key.getReleaseCode();
         for (byte b : releaseCode) {
             ps2Memory.push(b);
@@ -57,7 +55,6 @@ public class KeyboardController {
             if (key != null) {
                 bytes[3] = 0b1000;
                 bytes[0] = key;
-                LogUtils.m("Send to PS2 memory: " + BitArray.of(bytes).toHexString());
             } else {
                 bytes = BitArray.of(bytes).set(31, false).bytes();
             }

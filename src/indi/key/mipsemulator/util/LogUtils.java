@@ -23,7 +23,12 @@ public class LogUtils {
     }
 
     public static void m(String string) {
-        mLogText.setText(mLogText.getText() + string + "\n");
+        String text = mLogText.getText();
+        if (text.length() > 512) {
+            // Text is too long. Remove the first line.
+            text = text.replaceFirst("^.*\n", "");
+        }
+        mLogText.setText(text + string + "\n");
         mLogText.setScrollTop(Double.MAX_VALUE);
     }
 

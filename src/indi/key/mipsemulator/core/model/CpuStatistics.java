@@ -16,16 +16,14 @@ public class CpuStatistics {
     }
 
     public void print() {
-        StringBuilder sb = new StringBuilder("=====Running Statistics=====").append("\n");
-        sb.append("Duration: ").append(time).append(" ms\n");
-        sb.append("Instructions: ").append(instructionCount).append("\n");
-        sb.append("MIPS (Million Instructions Per Second): ").append(instructionCount / 1000000.0 / (time / 1000.0))
-                .append("\n");
-        sb.append("Error count: ").append(errorCount).append("\n");
+        LogUtils.m("=====Running Statistics=====");
+        LogUtils.m("Duration: " + time + " ms");
+        LogUtils.m("Instructions: " + instructionCount);
+        LogUtils.m("MIPS (Million Instructions Per Second): " + instructionCount / 1000000.0 / (time / 1000.0));
+        LogUtils.m("Error count: " + errorCount);
         if (resentException != null) {
-            sb.append("Resent Error: ").append(resentException.getMessage());
+            LogUtils.m("Resent Error: " + resentException.getMessage());
         }
-        LogUtils.m(sb.toString());
     }
 
     @Override

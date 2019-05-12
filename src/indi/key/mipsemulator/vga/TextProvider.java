@@ -38,8 +38,8 @@ public class TextProvider extends ScreenProvider {
         if (font.isEN()) {
             for (int i = address - address % 2; i < address + length; i += 2) {
                 byte[] bytes = memory.load(i, 2);
-                int wordAddr = bytes[0] * 8;
-                BitArray colorBits = BitArray.of(bytes[1], 8);
+                int wordAddr = bytes[1] * 8;
+                BitArray colorBits = BitArray.of(bytes[0], 8);
                 int fb = colorBits.get(0) ? 255 : 0;
                 int fg = colorBits.get(1) ? 255 : 0;
                 int fr = colorBits.get(2) ? 255 : 0;

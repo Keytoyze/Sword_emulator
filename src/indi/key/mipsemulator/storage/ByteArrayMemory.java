@@ -55,12 +55,20 @@ public class ByteArrayMemory implements Memory {
 
     @Override
     public void save(long address, byte[] bytes) throws MemoryOutOfBoundsException {
-        System.arraycopy(bytes, 0, memory, (int) address, bytes.length);
+        try {
+            System.arraycopy(bytes, 0, memory, (int) address, bytes.length);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new MemoryOutOfBoundsException(e);
+        }
     }
 
     @Override
     public byte[] load(long address, int bytesNum) throws MemoryOutOfBoundsException {
-        return Arrays.copyOfRange(memory, (int) address, (int) address + bytesNum);
+        try {
+            return Arrays.copyOfRange(memory, (int) address, (int) address + bytesNum);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new MemoryOutOfBoundsException(e);
+        }
     }
 
     protected byte[] getAll() {
