@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import indi.key.mipsemulator.controller.AboutController;
 import indi.key.mipsemulator.controller.ButtonController;
 import indi.key.mipsemulator.controller.InputDialogController;
 import indi.key.mipsemulator.controller.KeyboardController;
@@ -31,6 +32,7 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -107,6 +109,9 @@ public class SwordController implements Initializable {
 
         primaryStage.setMaximized(false);
         primaryStage.setResizable(false);
+        primaryStage.getIcons().add(new Image(
+                SwordController.class.getResourceAsStream("/res/drawable/sword_128.png")));
+
 
         primaryStage.setOnCloseRequest(event -> {
             Machine machine = Machine.getReference();
@@ -152,7 +157,7 @@ public class SwordController implements Initializable {
 
     public static void run(Stage primaryStage) throws Exception {
         SwordController.primaryStage = primaryStage;
-        primaryStage.setTitle("ZJUQS-II SWORD Emulator");
+        primaryStage.setTitle("ZJUQS-II SWORD版模拟器");
         Pane pane = FXMLLoader.load(SwordController.class.getResource(
                 "/res/layout/main.fxml"));
         Scene scene = new Scene(pane);
@@ -240,5 +245,9 @@ public class SwordController implements Initializable {
                 LogUtils.m("Error occurs when modify VRAM offset register: " + e.getMessage());
             }
         }, "修改VRAM起始地址");
+    }
+
+    public void onAbout(ActionEvent actionEvent) {
+        AboutController.run();
     }
 }
