@@ -8,14 +8,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="344.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/8.0.131"
-    xmlns:fx="http://javafx.com/fxml/1" fx:controller="indi.key.mipsemulator.controller.AboutController">
+<VBox prefHeight="372.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="indi.key.mipsemulator.controller.AboutController">
 
     <children>
 
-        <AnchorPane prefHeight="355.0" prefWidth="371.0">
+        <AnchorPane prefHeight="377.0" prefWidth="383.0">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="111.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="119.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../drawable/sword_128.png" />
                </image>
@@ -28,6 +27,11 @@
             <Label layoutX="174.0" layoutY="218.0" text="1.0.0" />
             <Label layoutX="86.0" layoutY="250.0" text="浙江大学计算机科学与技术学院" />
             <Hyperlink fx:id="githubLink" layoutX="110.0" layoutY="281.0" text="在GitHub上浏览本项目" />
+            <Label layoutX="40.0" layoutY="318.0" text="欢迎通过提交Issues、PR等方式参与项目贡献">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
          </children>
         </AnchorPane>
     </children>
