@@ -11,6 +11,8 @@ import java.nio.charset.StandardCharsets;
 
 import indi.key.mipsemulator.model.info.BitArray;
 
+import static java.lang.Integer.parseUnsignedInt;
+
 public class IoUtils {
 
     public static byte[] read(String resName) {
@@ -90,5 +92,36 @@ public class IoUtils {
             stringBuilder.append("0");
         }
         return stringBuilder.append(content).toString();
+    }
+
+    public static int parseUnsignedInteger(String string) {
+
+        if (string.length() == 0) {
+            throw new NumberFormatException("Zero length string");
+        }
+
+        int index = 0;
+        int radix = 10;
+
+        // Handle radix specifier, if present
+        if (string.startsWith("0x", index) || string.startsWith("0X", index)) {
+            index += 2;
+            radix = 16;
+        } else if (string.startsWith("0b", index) || string.startsWith("0B", index)) {
+            index += 2;
+            radix = 2;
+        } else if (string.startsWith("#", index)) {
+            ++index;
+            radix = 16;
+        } else if (string.startsWith("0", index) && string.length() > 1 + index) {
+            ++index;
+            radix = 8;
+        }
+
+        if (string.startsWith("-", index) || string.startsWith("+", index)) {
+            throw new NumberFormatException("Illegal sign character found");
+        }
+
+        return parseUnsignedInt(string.substring(index), radix);
     }
 }

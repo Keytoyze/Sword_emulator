@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="114.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="indi.key.mipsemulator.controller.InputDialogController">
+
+    <children>
+
+        <AnchorPane prefHeight="200.0" prefWidth="315.0">
+
+            <children>
+
+                <TextField fx:id="inputText" layoutX="30.0" layoutY="21.0" prefHeight="30.0" prefWidth="361.0" />
+
+                <Button fx:id="okButton" layoutX="100.0" layoutY="66.0" mnemonicParsing="false" text="修改" />
+
+                <Button fx:id="cancelButton" layoutX="286.0" layoutY="66.0" mnemonicParsing="false" text="取消" />
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

@@ -143,28 +143,33 @@
                     <items>
 
                         <RadioMenuItem
+                            fx:id="vgaEnglishMenu"
+                            onAction="#onEnglishMode"
                             mnemonicParsing="false"
                             text="文本模式（8×8西文）" />
 
                         <RadioMenuItem
+                            fx:id="vgaChineseMenu"
+                            onAction="#onChineseMode"
                             mnemonicParsing="false"
                             text="文本模式（16×16汉字）" />
 
                         <RadioMenuItem
+                            selected="true"
+                            fx:id="vgaGraphMenu"
+                            onAction="#onGraphMode"
                             mnemonicParsing="false"
                             text="图形模式" />
 
                         <SeparatorMenuItem mnemonicParsing="false" />
 
                         <MenuItem
+                            onAction="#onVgaModeControl"
                             mnemonicParsing="false"
                             text="模式控制寄存器…" />
 
                         <MenuItem
-                            mnemonicParsing="false"
-                            text="文本VRAM字符显示格式寄存器…" />
-
-                        <MenuItem
+                            onAction="#onVgaOffsetControl"
                             mnemonicParsing="false"
                             text="VRAM起始地址寄存器…" />
                     </items>

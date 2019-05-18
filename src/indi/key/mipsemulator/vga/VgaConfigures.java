@@ -1,6 +1,6 @@
 package indi.key.mipsemulator.vga;
 
-import indi.key.mipsemulator.core.controller.Machine;
+import indi.key.mipsemulator.model.info.BitArray;
 
 public class VgaConfigures {
 
@@ -19,6 +19,16 @@ public class VgaConfigures {
             this.height = height;
             this.width = width;
             this.en = isEN;
+        }
+
+        public static Font parse(BitArray code) {
+            for (Font font : values()) {
+                if (font.b == code.value()) {
+                    return font;
+                }
+            }
+            throw new IllegalArgumentException("Cannot parse font code: " +
+                    code);
         }
 
         public int getHeight() {
@@ -44,21 +54,78 @@ public class VgaConfigures {
         Resolution(int b) {
             this.b = (byte) b;
         }
+
+        public static Resolution parse(BitArray code) {
+            for (Resolution resolution : values()) {
+                if (resolution.b == code.value()) {
+                    return resolution;
+                }
+            }
+            throw new IllegalArgumentException("Cannot parse resolotion code: " +
+                    code);
+        }
     }
 
-    public static ScreenProvider getProvider(Machine machine) {
-        return new TextProvider(machine);
+    private static boolean mTextMode = false;
+    private static Font mFont = Font.EN_8_8;
+    private static Resolution mResolution = Resolution.RE_640_480;
+    private static int mAddressOffset = 0x000C0000;
+    private static Runnable onFontChangedCallback = null;
+
+    public static void setModeRegister(BitArray bitArray) {
+        mTextMode = !bitArray.get(31);
+        mFont = Font.parse(bitArray.subArray(4, 7));
+        mResolution = Resolution.parse(bitArray.subArray(0, 4));
+    }
+
+    public static BitArray getModeRegister() {
+        BitArray bitArray = BitArray.ofLength(32);
+        bitArray.set(31, !mTextMode);
+        bitArray.set(30, true);
+        bitArray.setTo(0, BitArray.of(mResolution.b, 4));
+        bitArray.setTo(4, BitArray.of(mFont.b, 4));
+        return bitArray;
+    }
+
+    public static boolean isTextMode() {
+        return mTextMode;
+    }
+
+    public static void setTextMode(boolean textMode) {
+        mTextMode = textMode;
+        if (onFontChangedCallback != null) {
+            onFontChangedCallback.run();
+        }
     }
 
     public static Font getFont() {
-        return Font.EN_8_8;
+        return mFont;
+    }
+
+    public static void setFont(Font font) {
+        mFont = font;
+        if (mTextMode && onFontChangedCallback != null) {
+            onFontChangedCallback.run();
+        }
+    }
+
+    public static void setOnFontChangedCallback(Runnable callback) {
+        onFontChangedCallback = callback;
     }
 
     public static Resolution getResolution() {
-        return Resolution.RE_640_480;
+        return mResolution;
+    }
+
+    public static void setAddressOffsetRegister(BitArray bitArray) {
+        mAddressOffset = bitArray.value();
+    }
+
+    public static BitArray getAddressOffsetRegister() {
+        return BitArray.of(mAddressOffset, 32);
     }
 
     public static int getAddressOffset() {
-        return 0x000C0000;
+        return mAddressOffset;
     }
 }

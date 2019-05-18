@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import indi.key.mipsemulator.controller.ButtonController;
+import indi.key.mipsemulator.controller.InputDialogController;
 import indi.key.mipsemulator.controller.KeyboardController;
 import indi.key.mipsemulator.controller.LedController;
 import indi.key.mipsemulator.controller.MemoryController;
@@ -13,7 +14,10 @@ import indi.key.mipsemulator.controller.SegmentController;
 import indi.key.mipsemulator.controller.SwitchController;
 import indi.key.mipsemulator.controller.VgaController;
 import indi.key.mipsemulator.core.controller.Machine;
+import indi.key.mipsemulator.model.info.BitArray;
+import indi.key.mipsemulator.util.IoUtils;
 import indi.key.mipsemulator.util.LogUtils;
+import indi.key.mipsemulator.vga.VgaConfigures;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +27,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -34,6 +39,9 @@ import javafx.stage.Stage;
 
 public class SwordController implements Initializable {
 
+    public RadioMenuItem vgaEnglishMenu;
+    public RadioMenuItem vgaChineseMenu;
+    public RadioMenuItem vgaGraphMenu;
     @FXML
     MenuItem debugStopMenu;
     @FXML
@@ -90,11 +98,15 @@ public class SwordController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        debugText.setWrapText(true);
         LogUtils.setLogText(debugText);
         this.machine = Machine.getInstance(null);
 
         setUpControllers();
         setUpMenu();
+
+        primaryStage.setMaximized(false);
+        primaryStage.setResizable(false);
 
         primaryStage.setOnCloseRequest(event -> {
             Machine machine = Machine.getReference();
@@ -105,20 +117,19 @@ public class SwordController implements Initializable {
     }
 
     public void setUpMenu() {
-        debugStopMenu.setDisable(true);/*
-        debugExecuteMenu.setOnAction(event -> {
-            if (machine.getCpu().isLooping()) {
-                machine.exitLoop().print();
-                debugExecuteMenu.setText("运行");
+        debugStopMenu.setDisable(true);
+        VgaConfigures.setOnFontChangedCallback(() -> {
+            if (VgaConfigures.isTextMode()) {
+                VgaConfigures.Font font = VgaConfigures.getFont();
+                vgaChineseMenu.setSelected(font == VgaConfigures.Font.ZH_16_16);
+                vgaEnglishMenu.setSelected(font == VgaConfigures.Font.EN_8_8);
+                vgaGraphMenu.setSelected(false);
             } else {
-                machine.loop();
-                debugExecuteMenu.setText("暂停");
+                vgaGraphMenu.setSelected(true);
+                vgaChineseMenu.setSelected(false);
+                vgaEnglishMenu.setSelected(false);
             }
         });
-        debugExecuteMenu.setAccelerator(new KeyCodeCombination(KeyCode.F4));
-        debugSingleIMenu.setOnAction(event -> machine.singleStep());
-        debugSingleIMenu.setAccelerator(new KeyCodeCombination(KeyCode.F5));
-    */
     }
 
     private void setUpControllers() {
@@ -167,12 +178,8 @@ public class SwordController implements Initializable {
         machine.reset();
     }
 
-    public void onSaveMemory(ActionEvent actionEvent) {
-
-    }
-
     public void onExit(ActionEvent actionEvent) {
-
+        primaryStage.close();
     }
 
     public void onExecute(ActionEvent actionEvent) {
@@ -197,5 +204,41 @@ public class SwordController implements Initializable {
         debugStopMenu.setDisable(true);
         debugExecuteMenu.setDisable(false);
         machine.exitLoop().print();
+    }
+
+    public void onEnglishMode(ActionEvent actionEvent) {
+        VgaConfigures.setFont(VgaConfigures.Font.EN_8_8);
+        VgaConfigures.setTextMode(true);
+    }
+
+    public void onChineseMode(ActionEvent actionEvent) {
+        VgaConfigures.setFont(VgaConfigures.Font.ZH_16_16);
+        VgaConfigures.setTextMode(true);
+    }
+
+    public void onGraphMode(ActionEvent actionEvent) {
+        VgaConfigures.setTextMode(false);
+    }
+
+    public void onVgaModeControl(ActionEvent actionEvent) {
+        InputDialogController.run(VgaConfigures.getModeRegister().toString(), s -> {
+            try {
+                BitArray bitArray = BitArray.of(IoUtils.parseUnsignedInteger(s), 32);
+                VgaConfigures.setModeRegister(bitArray);
+            } catch (Exception e) {
+                LogUtils.m("Error occurs when modify VGA mode register: " + e.getMessage());
+            }
+        }, "修改VGA模式控制寄存器");
+    }
+
+    public void onVgaOffsetControl(ActionEvent actionEvent) {
+        InputDialogController.run(VgaConfigures.getAddressOffsetRegister().toHexString(), s -> {
+            try {
+                BitArray bitArray = BitArray.of(IoUtils.parseUnsignedInteger(s), 32);
+                VgaConfigures.setAddressOffsetRegister(bitArray);
+            } catch (Exception e) {
+                LogUtils.m("Error occurs when modify VRAM offset register: " + e.getMessage());
+            }
+        }, "修改VRAM起始地址");
     }
 }

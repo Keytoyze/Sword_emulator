@@ -13,6 +13,7 @@ public class LogUtils {
     }
 
     public static void i(Object... object) {
+
         String message;
         if (object.length == 1) {
             message = String.valueOf(object[0]);
@@ -27,9 +28,9 @@ public class LogUtils {
         if (text.length() > 512) {
             // Text is too long. Remove the first line.
             text = text.replaceFirst("^.*\n", "");
+            mLogText.setText(text);
         }
-        mLogText.setText(text + string + "\n");
-        mLogText.setScrollTop(Double.MAX_VALUE);
+        mLogText.appendText(string + "\n");
     }
 
     private static String buildMessage(String rawMessage) {
