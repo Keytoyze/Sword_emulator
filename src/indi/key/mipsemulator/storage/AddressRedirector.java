@@ -16,6 +16,7 @@ public class AddressRedirector implements Memory {
 
     private Memory[] memories;
     private ArrayList<List<MemoryListener>> listeners;
+    private boolean init = false;
 
     public AddressRedirector(File initFile) {
         memories = new Memory[MemoryType.values().length];
@@ -27,8 +28,13 @@ public class AddressRedirector implements Memory {
         setInitFile(initFile);
     }
 
+    public boolean hasInit() {
+        return init;
+    }
+
     public void setInitFile(File initFile) {
         ((ByteArrayMemory) memories[MemoryType.RAM.ordinal()]).setInitFile(initFile);
+        init = initFile != null;
     }
 
     public void addListener(MemoryType listenTo, MemoryListener listener) {

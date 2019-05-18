@@ -9,6 +9,7 @@ import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.AddressRedirector;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
+import indi.key.mipsemulator.util.LogUtils;
 
 public class Machine implements Resetable {
 
@@ -52,15 +53,23 @@ public class Machine implements Resetable {
 
     public void singleStep() {
         if (!cpu.isLooping()) {
-            cpu.singleStep();
-            ticks();
+            if (addressRedirector.hasInit()) {
+                cpu.singleStep();
+                ticks();
+            } else {
+                LogUtils.m("Machine hasn't loaded any initializing file.");
+            }
         }
     }
 
     public void singleStepWithoutJal() {
         if (!cpu.isLooping()) {
-            cpu.singleStepWithoutJal();
-            ticks();
+            if (addressRedirector.hasInit()) {
+                cpu.singleStepWithoutJal();
+                ticks();
+            } else {
+                LogUtils.m("Machine hasn't loaded any initializing file.");
+            }
         }
     }
 
@@ -68,9 +77,15 @@ public class Machine implements Resetable {
         return cpu.isLooping();
     }
 
-    public void loop() {
-        counter.beginTicking();
-        cpu.loop();
+    public boolean loop() {
+        if (addressRedirector.hasInit()) {
+            counter.beginTicking();
+            cpu.loop();
+            return true;
+        } else {
+            LogUtils.m("Machine hasn't loaded any initializing file.");
+            return false;
+        }
     }
 
     public CpuStatistics exitLoop() {

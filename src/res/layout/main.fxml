@@ -86,36 +86,16 @@
                             fx:id="debugExecuteMenu"
                             mnemonicParsing="false"
                             onAction="#onExecute"
+                            accelerator="F5"
                             text="运行">
-
-                            <accelerator>
-
-                                <KeyCodeCombination
-                                    alt="UP"
-                                    code="F5"
-                                    control="UP"
-                                    meta="UP"
-                                    shift="DOWN"
-                                    shortcut="UP" />
-                            </accelerator>
                         </MenuItem>
 
                         <MenuItem
                             fx:id="debugStopMenu"
                             mnemonicParsing="false"
                             text="暂停"
+                            accelerator="F4"
                             onAction="#onPause">
-
-                            <accelerator>
-
-                                <KeyCodeCombination
-                                    alt="UP"
-                                    code="F2"
-                                    control="DOWN"
-                                    meta="UP"
-                                    shift="UP"
-                                    shortcut="UP" />
-                            </accelerator>
                         </MenuItem>
 
                         <SeparatorMenuItem />
@@ -124,14 +104,14 @@
                             fx:id="debugSingleMenu"
                             mnemonicParsing="false"
                             onAction="#onSingle"
-                            accelerator="F5"
+                            accelerator="F7"
                             text="单步执行" />
 
                         <MenuItem
                             fx:id="debugSingleWithoutJalMenu"
                             mnemonicParsing="false"
                             onAction="#onSingleNotJal"
-                            accelerator="F4"
+                            accelerator="F8"
                             text="单步执行（跳过Jump）" />
                     </items>
                 </Menu>
@@ -146,18 +126,21 @@
                             fx:id="vgaEnglishMenu"
                             onAction="#onEnglishMode"
                             mnemonicParsing="false"
+                            accelerator="F9"
                             text="文本模式（8×8西文）" />
 
                         <RadioMenuItem
                             fx:id="vgaChineseMenu"
                             onAction="#onChineseMode"
                             mnemonicParsing="false"
+                            accelerator="F10"
                             text="文本模式（16×16汉字）" />
 
                         <RadioMenuItem
                             selected="true"
                             fx:id="vgaGraphMenu"
                             onAction="#onGraphMode"
+                            accelerator="F11"
                             mnemonicParsing="false"
                             text="图形模式" />
 

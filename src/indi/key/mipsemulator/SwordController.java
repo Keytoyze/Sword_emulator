@@ -19,6 +19,7 @@ import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.util.IoUtils;
 import indi.key.mipsemulator.util.LogUtils;
 import indi.key.mipsemulator.vga.VgaConfigures;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -101,6 +102,7 @@ public class SwordController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         debugText.setWrapText(true);
+        Platform.runLater(() -> debugText.requestFocus());
         LogUtils.setLogText(debugText);
         this.machine = Machine.getInstance(null);
 
@@ -176,6 +178,7 @@ public class SwordController implements Initializable {
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
             machine = Machine.getInstance(file);
+            memoryController.refresh();
         }
     }
 
@@ -188,11 +191,12 @@ public class SwordController implements Initializable {
     }
 
     public void onExecute(ActionEvent actionEvent) {
-        debugSingleMenu.setDisable(true);
-        debugSingleWithoutJalMenu.setDisable(true);
-        debugStopMenu.setDisable(false);
-        debugExecuteMenu.setDisable(true);
-        machine.loop();
+        if (machine.loop()) {
+            debugSingleMenu.setDisable(true);
+            debugSingleWithoutJalMenu.setDisable(true);
+            debugStopMenu.setDisable(false);
+            debugExecuteMenu.setDisable(true);
+        }
     }
 
     public void onSingle(ActionEvent actionEvent) {

@@ -105,7 +105,7 @@ public class MemoryController implements TickCallback {
         return address;
     }
 
-    private void refresh() {
+    public void refresh() {
         tableView.refresh();
         long pc = machine.getRegister(RegisterType.PC).getUnsigned();
         long index = (pc - memoryListWrapper.getAddress()) / (getAddressPageRange() / PAGE_NUM);
