@@ -29,3 +29,4 @@ The project support simulating the following devices.
 - Allow modifying addresses of the devices.
 - Support more custom preferences, such as clock frequencies.
 - Support more instructions simulation.
+- Support multy languages.
