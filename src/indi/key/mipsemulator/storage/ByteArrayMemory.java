@@ -58,7 +58,7 @@ public class ByteArrayMemory implements Memory {
         try {
             System.arraycopy(bytes, 0, memory, (int) address, bytes.length);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new MemoryOutOfBoundsException(e);
+            throw new MemoryOutOfBoundsException("Cannot save address: " + Long.toHexString(address));
         }
     }
 
@@ -72,7 +72,7 @@ public class ByteArrayMemory implements Memory {
         try {
             return Arrays.copyOfRange(memory, (int) address, (int) address + bytesNum);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new MemoryOutOfBoundsException(e);
+            throw new MemoryOutOfBoundsException("Cannot load address: " + Long.toHexString(address));
         }
     }
 

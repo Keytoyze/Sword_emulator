@@ -316,6 +316,7 @@
                         <TableColumn editable="false" minWidth="-Infinity" prefWidth="120.0" sortable="false" text="数据" />
 
                         <TableColumn editable="false" minWidth="-Infinity" prefWidth="250.0" sortable="false" text="汇编指令" />
+                  <TableColumn editable="false" minWidth="-Infinity" prefWidth="160.0" sortable="false" text="ASCII码" />
                     </columns>
                 </TableView>
 

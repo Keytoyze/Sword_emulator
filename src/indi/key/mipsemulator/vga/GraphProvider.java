@@ -2,14 +2,8 @@ package indi.key.mipsemulator.vga;
 
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.storage.Memory;
-import indi.key.mipsemulator.storage.MemoryType;
 
 public class GraphProvider extends ScreenProvider {
-
-    @Override
-    protected MemoryType getBindMemory() {
-        return MemoryType.VRAM_GRAPH;
-    }
 
     public GraphProvider(Machine machine) {
         super(machine);
@@ -20,6 +14,10 @@ public class GraphProvider extends ScreenProvider {
      */
     @Override
     public void onMemoryChange(Memory memory, int address, int length) {
+        address = address - VgaConfigures.getAddressOffset();
+        if (address < 0) {
+            return;
+        }
         int initAddr = address - address % 2;
         for (int i = initAddr; i < address + length; i += 2) {
             byte[] bytes = memory.load(i, 2);

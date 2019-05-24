@@ -8,6 +8,7 @@ import indi.key.mipsemulator.vga.GraphProvider;
 import indi.key.mipsemulator.vga.ScreenProvider;
 import indi.key.mipsemulator.vga.TextProvider;
 import indi.key.mipsemulator.vga.VgaConfigures;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
@@ -41,15 +42,18 @@ public class VgaController implements TickCallback, Resetable {
 
     @Override
     public void onTick() {
-        if (VgaConfigures.getResolution() == VgaConfigures.Resolution.CLOSE) {
-            return;
-        }
-        if (machine.isLooping() && screen.getImage() != content) {
-            screen.setImage(content);
-        }
-        ScreenProvider currentProvider = VgaConfigures.isTextMode() ? textProvider : graphProvider;
-        content.getPixelWriter().setPixels(0, 0, WIDTH, HEIGHT, PixelFormat.getByteBgraPreInstance()
-                , currentProvider.get(), 0, WIDTH * 4);
+        Platform.runLater(() -> {
+            if (VgaConfigures.getResolution() == VgaConfigures.Resolution.CLOSE) {
+                return;
+            }
+            if (machine.isLooping() && screen.getImage() != content) {
+                screen.setImage(content);
+            }
+            ScreenProvider currentProvider = VgaConfigures.isTextMode() ? textProvider : graphProvider;
+            content.getPixelWriter().setPixels(0, 0, WIDTH, HEIGHT, PixelFormat.getByteBgraPreInstance()
+                    , currentProvider.get(), 0, WIDTH * 4);
+        });
+
     }
 
     @Override

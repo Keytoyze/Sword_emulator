@@ -18,26 +18,22 @@ public class TextProvider extends ScreenProvider {
         gbkStocks = IoUtils.read("/res/font/HZK_16.bin");
     }
 
-    @Override
-    protected MemoryType getBindMemory() {
-        return MemoryType.VRAM_TEXT;
-    }
-
     private VgaConfigures.Font preFont = VgaConfigures.Font.EN_8_8;
 
     @Override
     public void onMemoryChange(Memory memory, int address, int length) {
         VgaConfigures.Font font = VgaConfigures.getFont();
         if (preFont != font) {
+            reset();
             preFont = font;
-            onMemoryChange(memory, 0, MemoryType.VRAM_TEXT.getLength());
+            onMemoryChange(memory, 0, MemoryType.VRAM.getLength());
             return;
         }
         int fontWidth = font.getWidth();
         int fontHeight = font.getHeight();
         if (font.isEN()) {
-            for (int i = address - address % 2; i < address + length; i += 2) {
-                byte[] bytes = memory.load(i, 2);
+            for (int i = address - address % 2; i < address + length; i += 4) {
+                byte[] bytes = memory.load(i + 2, 2);
                 int wordAddr = bytes[1] * 8;
                 BitArray colorBits = BitArray.of(bytes[0], 8);
                 int fb = colorBits.get(0) ? 255 : 0;
@@ -50,8 +46,8 @@ public class TextProvider extends ScreenProvider {
                         fb, fg, fr, bb, bg, br, 8);
             }
         } else {
-            for (int i = address - address % 2; i < address + length; i += 2) {
-                byte[] bytes = memory.load(i, 2);
+            for (int i = address - address % 4; i < address + length; i += 4) {
+                byte[] bytes = memory.load(i, 4);
                 int offset = (94 * (bytes[0] + 0x60 - 1) + (bytes[1] + 0x60 - 1)) * 32;
                 int fb = 255;
                 int fg = 255;
@@ -68,8 +64,8 @@ public class TextProvider extends ScreenProvider {
     private void drawCharacter(int fontWidth, int fontHeight, int index, byte[] wordStocks,
                                int address, int fb, int fg, int fr, int bb, int bg, int br, int rawWidth) {
         int numberPerLine = VgaController.WIDTH / fontWidth;
-        int indexX = index / 2 % numberPerLine;
-        int indexY = index / 2 / numberPerLine;
+        int indexX = index / 4 % numberPerLine;
+        int indexY = index / 4 / numberPerLine;
         int foldX = fontWidth / rawWidth;
         int foldY = fontHeight / rawWidth;
         int marginX = indexX * fontWidth;

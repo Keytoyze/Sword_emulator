@@ -147,14 +147,35 @@ public class SwordController implements Initializable {
                 memoryNext, memroyTypeBox, memoryAddressText);
         vgaController = new VgaController(vgaScreen, machine);
         keyboardController = new KeyboardController(machine);
+        memoryAddressText.setOnKeyPressed(event -> {
+            LogUtils.i(event);
+            switch (event.getCode()) {
+                case ENTER:
+                    memoryJump.fire();
+                    break;
+                case PAGE_DOWN:
+                    memoryNext.fire();
+                    break;
+                case PAGE_UP:
+                    memoryLast.fire();
+                    break;
+                default:
+                    root.fireEvent(event);
+                    break;
+            }
+        });
         debugText.setOnKeyPressed(event -> {
             if (machine.isLooping() && debugText.isFocused()) {
                 keyboardController.press(event.getCode());
+            } else {
+                root.fireEvent(event);
             }
         });
         debugText.setOnKeyReleased(event -> {
             if (machine.isLooping() && debugText.isFocused()) {
                 keyboardController.release(event.getCode());
+            } else {
+                root.fireEvent(event);
             }
         });
         debugText.focusedProperty().addListener((observable, oldValue, newValue) -> {

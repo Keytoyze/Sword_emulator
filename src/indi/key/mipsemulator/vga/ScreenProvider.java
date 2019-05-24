@@ -20,10 +20,9 @@ public abstract class ScreenProvider implements MemoryListener, Resetable, Suppl
      */
     byte[] rgbBytes = new byte[VgaController.HEIGHT * VgaController.WIDTH * 4];
 
-    protected abstract MemoryType getBindMemory();
 
     public ScreenProvider(Machine machine) {
-        machine.getAddressRedirector().addListener(getBindMemory(), this);
+        machine.getAddressRedirector().addListener(MemoryType.VRAM, this);
         reset();
     }
 
@@ -34,6 +33,9 @@ public abstract class ScreenProvider implements MemoryListener, Resetable, Suppl
 
     void setRgb(int y, int x, int r, int g, int b) {
         int index = (y * VgaController.WIDTH + x) * 4;
+        if (index + 3 >= rgbBytes.length) {
+            return;
+        }
         rgbBytes[index] = (byte) b;
         rgbBytes[index + 1] = (byte) g;
         rgbBytes[index + 2] = (byte) r;

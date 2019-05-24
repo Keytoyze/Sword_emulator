@@ -1,6 +1,7 @@
 package indi.key.mipsemulator.controller;
 
 
+import java.nio.charset.Charset;
 import java.util.AbstractList;
 import java.util.RandomAccess;
 
@@ -51,6 +52,7 @@ public class MemoryController implements TickCallback {
         tableView.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("address"));
         tableView.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("data"));
         tableView.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("instruction"));
+        tableView.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("ascii"));
         tableView.setItems(FXCollections.observableList(memoryListWrapper));
         jump.setOnAction(event -> {
             try {
@@ -172,17 +174,17 @@ public class MemoryController implements TickCallback {
                 } else {
                     s = statement.toString();
                 }
-                return new MemoryBean(address, data, s);
+                return new MemoryBean(address, data, s, binary ? new byte[]{bytes[0]} : bytes);
             } catch (MemoryOutOfBoundsException e) {
                 if (binary) {
                     try {
                         byte[] bytes = memory.load(address, 1);
                         return new MemoryBean(address,
-                                BitArray.of(bytes).toString().substring(2, 10), "");
+                                BitArray.of(bytes).toString().substring(2, 10), "", bytes);
                     } catch (MemoryOutOfBoundsException ignored) {
                     }
                 }
-                return new MemoryBean(address, "--------", "");
+                return new MemoryBean(address, "--------", "", new byte[1]);
             }
         }
 
@@ -195,9 +197,9 @@ public class MemoryController implements TickCallback {
     @SuppressWarnings("unused")
     public static class MemoryBean {
 
-        private String address, data, instruction;
+        private String address, data, instruction, ascii;
 
-        MemoryBean(long address, String data, String instruction) {
+        MemoryBean(long address, String data, String instruction, byte[] bytes) {
             this.address = formatAddress(address);
             StringBuilder dataString = new StringBuilder();
             String completeData = formatData(data);
@@ -208,6 +210,15 @@ public class MemoryController implements TickCallback {
                 }
             }
             this.data = dataString.toString();
+            StringBuilder stringBuilder = new StringBuilder();
+            for (byte b : bytes) {
+                if (b >= 0x20 && b <= 0x7E) {
+                    stringBuilder.append(new String(new byte[]{b}, Charset.forName("ascii")));
+                } else {
+                    stringBuilder.append("-");
+                }
+            }
+            this.ascii = stringBuilder.toString();
             this.instruction = instruction;
         }
 
@@ -221,6 +232,10 @@ public class MemoryController implements TickCallback {
 
         public String getInstruction() {
             return instruction;
+        }
+
+        public String getAscii() {
+            return ascii;
         }
 
         @Override
