@@ -8,7 +8,7 @@ Thanks to Zhanghai for his awesome project [mipsasm](https://github.com/zhanghai
 See [here](https://github.com/Keytoyze/Sword_emulator/blob/master/src/indi/key/mipsemulator/core/model/Instruction.java).
 
 ## Devices
-The project support simulating the following devices.
+The project supports simulating the following devices.
 
 ### Input
 - Buttons
@@ -26,7 +26,8 @@ The project support simulating the following devices.
 - Memory viewer
 
 ## TODO
+- Split memory viewer into a new stage.
 - Allow modifying addresses of the devices.
 - Support more custom preferences, such as clock frequencies.
 - Support more instructions simulation.
-- Support multy languages.
+- Support multilingual environment.
