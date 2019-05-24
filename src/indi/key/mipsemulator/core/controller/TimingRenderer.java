@@ -12,7 +12,7 @@ import javafx.util.Duration;
 public class TimingRenderer {
 
     private static ScheduledService<Void> scheduledService;
-
+    private static long ticks = 0;
     static {
         scheduledService = new ScheduledService<Void>() {
             @Override
@@ -22,11 +22,12 @@ public class TimingRenderer {
                     protected Void call() {
                         for (TickCallback tickCallback : callbackSet) {
                             try {
-                                tickCallback.onTick();
+                                tickCallback.onTick(ticks);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
+                        ticks++;
                         return null;
                     }
                 };

@@ -20,7 +20,7 @@ public class Counter implements TickCallback {
     }
 
     public void ticks() {
-        onTick();
+        onTick(0);
     }
 
     public void beginTicking() {
@@ -45,7 +45,7 @@ public class Counter implements TickCallback {
     }
 
     @Override
-    public void onTick() {
+    public void onTick(long t) {
         Memory counterMem = machine.getAddressRedirector().getMemory(MemoryType.COUNTER);
         byte[] bytes = counterMem.load(0, 4);
         long currentTime = System.currentTimeMillis();

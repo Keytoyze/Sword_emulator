@@ -6,12 +6,15 @@ import java.util.AbstractList;
 import java.util.RandomAccess;
 
 import indi.key.mipsemulator.core.controller.Machine;
+import indi.key.mipsemulator.core.controller.TimingRenderer;
 import indi.key.mipsemulator.core.model.Instruction;
 import indi.key.mipsemulator.core.model.Statement;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.model.info.BitArray;
+import indi.key.mipsemulator.model.interfaces.CpuCallback;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.Memory;
+import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
 import indi.key.mipsemulator.util.IoUtils;
 import javafx.collections.FXCollections;
@@ -22,7 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class MemoryController implements TickCallback {
+public class MemoryController implements CpuCallback, TickCallback {
 
     private TableView<MemoryBean> tableView;
     private MemoryListWrapper memoryListWrapper;
@@ -40,6 +43,7 @@ public class MemoryController implements TickCallback {
         this.memoryListWrapper = new MemoryListWrapper(machine.getAddressRedirector());
         this.machine = machine;
         machine.addCpuListener(this);
+        TimingRenderer.register(this);
         this.jump = jump;
         this.last = last;
         this.next = next;
@@ -94,9 +98,16 @@ public class MemoryController implements TickCallback {
     }
 
     @Override
-    public void onTick() {
-        long pc = machine.getRegister(RegisterType.PC).getUnsigned();
-        jumpTo(pc / getAddressPageRange() * getAddressPageRange());
+    public void onCpuNext(Register pc) {
+        long pcValue = pc.getUnsigned();
+        jumpTo(pcValue / getAddressPageRange() * getAddressPageRange());
+    }
+
+    @Override
+    public void onTick(long ticks) {
+        if (ticks % 5 == 0) {
+            tableView.refresh();
+        }
     }
 
     private static long parseAddress(String content) {

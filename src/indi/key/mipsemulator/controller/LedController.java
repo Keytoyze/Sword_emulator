@@ -24,7 +24,7 @@ public class LedController implements TickCallback {
     }
 
     @Override
-    public void onTick() {
+    public void onTick(long ticks) {
         BitArray led = machine.getLed();
         assert led.length() == 16;
         int leds = led.value();

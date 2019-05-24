@@ -41,7 +41,7 @@ public class VgaController implements TickCallback, Resetable {
     }
 
     @Override
-    public void onTick() {
+    public void onTick(long ticks) {
         Platform.runLater(() -> {
             if (VgaConfigures.getResolution() == VgaConfigures.Resolution.CLOSE) {
                 return;

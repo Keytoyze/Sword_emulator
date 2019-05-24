@@ -14,8 +14,8 @@ import indi.key.mipsemulator.core.model.Instruction;
 import indi.key.mipsemulator.core.model.Statement;
 import indi.key.mipsemulator.model.exception.NotImplementedException;
 import indi.key.mipsemulator.model.info.BitArray;
+import indi.key.mipsemulator.model.interfaces.CpuCallback;
 import indi.key.mipsemulator.model.interfaces.Resetable;
-import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.MemoryType;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
@@ -23,7 +23,7 @@ import indi.key.mipsemulator.util.LogUtils;
 
 public class Cpu implements Resetable {
 
-    private Set<TickCallback> callbackSet = new HashSet<>();
+    private Set<CpuCallback> callbackSet = new HashSet<>();
     private Register pc;
     private Machine machine;
 
@@ -49,13 +49,13 @@ public class Cpu implements Resetable {
         instructionCache = new Runnable[MemoryType.RAM.getLength() / 4 + 1];
     }
 
-    public void addCpuListener(TickCallback tickCallback) {
-        callbackSet.add(tickCallback);
+    public void addCpuListener(CpuCallback callback) {
+        callbackSet.add(callback);
     }
 
     private void notifyListeners() {
-        for (TickCallback callback : callbackSet) {
-            callback.onTick();
+        for (CpuCallback callback : callbackSet) {
+            callback.onCpuNext(pc);
         }
     }
 

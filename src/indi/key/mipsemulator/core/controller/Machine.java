@@ -4,8 +4,8 @@ import java.io.File;
 
 import indi.key.mipsemulator.core.model.CpuStatistics;
 import indi.key.mipsemulator.model.info.BitArray;
+import indi.key.mipsemulator.model.interfaces.CpuCallback;
 import indi.key.mipsemulator.model.interfaces.Resetable;
-import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.AddressRedirector;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
@@ -114,8 +114,8 @@ public class Machine implements Resetable {
         return getRegister(RegisterType.of(bitArray));
     }
 
-    public void addCpuListener(TickCallback tickCallback) {
-        cpu.addCpuListener(tickCallback);
+    public void addCpuListener(CpuCallback callback) {
+        cpu.addCpuListener(callback);
     }
 
     public Cpu getCpu() {

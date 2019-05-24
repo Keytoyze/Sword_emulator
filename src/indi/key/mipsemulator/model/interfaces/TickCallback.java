@@ -1,5 +1,5 @@
 package indi.key.mipsemulator.model.interfaces;
 
 public interface TickCallback {
-    void onTick();
+    void onTick(long ticks);
 }

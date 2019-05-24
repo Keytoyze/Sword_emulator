@@ -106,7 +106,7 @@ public class RegisterController implements TickCallback {
     }
 
     @Override
-    public void onTick() {
+    public void onTick(long ticks) {
         Platform.runLater(this::updateAllRegisters);
     }
 }

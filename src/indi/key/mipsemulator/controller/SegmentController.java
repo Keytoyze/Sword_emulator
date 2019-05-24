@@ -152,7 +152,7 @@ public class SegmentController implements TickCallback {
     }
 
     @Override
-    public void onTick() {
+    public void onTick(long ticks) {
         boolean text = machine.getSwitches().get(0);
         if (text) {
             showText(segmentMem.getText(), (byte) ~0);
