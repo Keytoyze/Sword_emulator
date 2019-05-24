@@ -1,19 +1,17 @@
-package indi.key.mipsemulator;
+package indi.key.mipsemulator.controller.stage;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import indi.key.mipsemulator.controller.AboutController;
-import indi.key.mipsemulator.controller.ButtonController;
-import indi.key.mipsemulator.controller.InputDialogController;
-import indi.key.mipsemulator.controller.KeyboardController;
-import indi.key.mipsemulator.controller.LedController;
-import indi.key.mipsemulator.controller.MemoryController;
-import indi.key.mipsemulator.controller.RegisterController;
-import indi.key.mipsemulator.controller.SegmentController;
-import indi.key.mipsemulator.controller.SwitchController;
-import indi.key.mipsemulator.controller.VgaController;
+import indi.key.mipsemulator.controller.component.ButtonController;
+import indi.key.mipsemulator.controller.component.KeyboardController;
+import indi.key.mipsemulator.controller.component.LedController;
+import indi.key.mipsemulator.controller.component.MemoryController;
+import indi.key.mipsemulator.controller.component.RegisterController;
+import indi.key.mipsemulator.controller.component.SegmentController;
+import indi.key.mipsemulator.controller.component.SwitchController;
+import indi.key.mipsemulator.controller.component.VgaController;
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.util.IoUtils;

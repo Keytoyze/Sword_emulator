@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.controller;
+package indi.key.mipsemulator.controller.component;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;

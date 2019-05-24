@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="828.0" prefWidth="1317.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="indi.key.mipsemulator.SwordController">
+<VBox prefHeight="828.0" prefWidth="1317.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="indi.key.mipsemulator.controller.stage.SwordController">
 
     <children>
 

@@ -2,9 +2,9 @@ package indi.key.mipsemulator.storage;
 
 import java.util.function.Function;
 
-import indi.key.mipsemulator.controller.ButtonController;
-import indi.key.mipsemulator.controller.KeyboardController;
-import indi.key.mipsemulator.controller.SegmentController;
+import indi.key.mipsemulator.controller.component.ButtonController;
+import indi.key.mipsemulator.controller.component.KeyboardController;
+import indi.key.mipsemulator.controller.component.SegmentController;
 import indi.key.mipsemulator.model.info.Range;
 
 // TODO: use common properties to control addresses

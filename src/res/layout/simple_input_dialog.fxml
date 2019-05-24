@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="114.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="indi.key.mipsemulator.controller.InputDialogController">
+<VBox prefHeight="114.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="indi.key.mipsemulator.controller.stage.InputDialogController">
 
     <children>
 

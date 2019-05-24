@@ -1,6 +1,6 @@
 package indi.key.mipsemulator.vga;
 
-import indi.key.mipsemulator.controller.VgaController;
+import indi.key.mipsemulator.controller.component.VgaController;
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.storage.Memory;

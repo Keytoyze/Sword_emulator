@@ -2,7 +2,7 @@ package indi.key.mipsemulator.vga;
 
 import java.util.function.Supplier;
 
-import indi.key.mipsemulator.controller.VgaController;
+import indi.key.mipsemulator.controller.component.VgaController;
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.model.interfaces.MemoryListener;
 import indi.key.mipsemulator.model.interfaces.Resetable;

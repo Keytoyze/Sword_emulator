@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.controller;
+package indi.key.mipsemulator.controller.stage;
 
 import java.awt.Desktop;
 import java.net.URI;

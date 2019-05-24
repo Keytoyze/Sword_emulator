@@ -1,4 +1,4 @@
-package indi.key.mipsemulator.controller;
+package indi.key.mipsemulator.controller.component;
 
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
