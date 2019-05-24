@@ -102,15 +102,13 @@ public class SwordController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         debugText.setWrapText(true);
-        Platform.runLater(() -> debugText.requestFocus());
+        Platform.runLater(() -> memoryAddressText.requestFocus());
         LogUtils.setLogText(debugText);
         this.machine = Machine.getInstance(null);
 
         setUpControllers();
         setUpMenu();
 
-        primaryStage.setMaximized(false);
-        primaryStage.setResizable(false);
         primaryStage.getIcons().add(new Image(
                 SwordController.class.getResourceAsStream("/res/drawable/sword_128.png")));
 
@@ -150,13 +148,18 @@ public class SwordController implements Initializable {
         vgaController = new VgaController(vgaScreen, machine);
         keyboardController = new KeyboardController(machine);
         debugText.setOnKeyPressed(event -> {
-            if (machine.isLooping()) {
+            if (machine.isLooping() && debugText.isFocused()) {
                 keyboardController.press(event.getCode());
             }
         });
         debugText.setOnKeyReleased(event -> {
-            if (machine.isLooping()) {
+            if (machine.isLooping() && debugText.isFocused()) {
                 keyboardController.release(event.getCode());
+            }
+        });
+        debugText.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != oldValue) {
+                LogUtils.m(newValue ? "Begin simulating the PS2 keyboard." : "Exit simulating the PS2 keyboard.");
             }
         });
     }

@@ -31,8 +31,8 @@ public class Cpu implements Resetable {
     private boolean looping;
     private Exception resentException;
     private long startTime;
-    private int instructionCount;
-    private int errorCount;
+    private long instructionCount;
+    private long errorCount;
 
     // Use cache to speed loop
     private Runnable[] instructionCache;

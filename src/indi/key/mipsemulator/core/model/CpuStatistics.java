@@ -3,12 +3,12 @@ package indi.key.mipsemulator.core.model;
 import indi.key.mipsemulator.util.LogUtils;
 
 public class CpuStatistics {
-    public long time;
-    public int instructionCount;
-    public int errorCount;
-    public Exception resentException;
+    private long time;
+    private long instructionCount;
+    private long errorCount;
+    private Exception resentException;
 
-    public CpuStatistics(long time, int instructionCount, int errorCount, Exception resentException) {
+    public CpuStatistics(long time, long instructionCount, long errorCount, Exception resentException) {
         this.time = time;
         this.instructionCount = instructionCount;
         this.errorCount = errorCount;
@@ -22,8 +22,7 @@ public class CpuStatistics {
         LogUtils.m("MIPS (Million Instructions Per Second): " + instructionCount / 1000000.0 / (time / 1000.0));
         LogUtils.m("Error count: " + errorCount);
         if (resentException != null) {
-            String[] reasons = resentException.getMessage().split(":");
-            LogUtils.m("Resent Error: " + resentException.getClass().getSimpleName() + ": " + reasons[reasons.length - 1]);
+            LogUtils.m("Resent Error: " + resentException.toString());
         }
         LogUtils.m("=====================");
     }

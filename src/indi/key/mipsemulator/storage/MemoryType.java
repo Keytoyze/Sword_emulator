@@ -11,7 +11,7 @@ import indi.key.mipsemulator.model.info.Range;
 public enum MemoryType {
 
     RAM(new MemoryRange(0x00000000L, 0x0000FFFFL)),
-    VRAM_TEXT(new MemoryRange(0x00000000L, 0x000012BFL)),
+    VRAM_TEXT(new MemoryRange(0x00000000L, 0x00001FFFL)),
     VRAM_GRAPH(new MemoryRange(0x00002000L, 0x00097FFFL)),
     SEGMENT(SegmentController.SegmentMemory::new,
             new MemoryRange(0xFFFFFE00L, 0xFFFFFEFFL),
