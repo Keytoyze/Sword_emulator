@@ -95,6 +95,9 @@ public class Machine implements Resetable {
 
     @Override
     public void reset() {
+        if (cpu.isLooping()) {
+            cpu.exitLoop();
+        }
         for (Register register : registers) {
             register.reset();
         }

@@ -9,6 +9,7 @@ import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.info.PS2Key;
 import indi.key.mipsemulator.storage.ByteArrayMemory;
 import indi.key.mipsemulator.storage.MemoryType;
+import indi.key.mipsemulator.util.LogUtils;
 import javafx.scene.input.KeyCode;
 
 public class KeyboardController {
@@ -53,8 +54,10 @@ public class KeyboardController {
             Byte key = keyQueue.poll();
             byte[] bytes = super.load(0, 4);
             if (key != null) {
-                bytes[3] = 0b1000;
-                bytes[0] = key;
+                bytes[0] = (byte) 0b10000000;
+                bytes[3] = key;
+                BitArray bitArray = BitArray.of(bytes);
+                LogUtils.m("read PS2 data: " + bitArray.toHexString() + " (" + bitArray.toString() + ")");
             } else {
                 bytes = BitArray.of(bytes).set(31, false).bytes();
             }

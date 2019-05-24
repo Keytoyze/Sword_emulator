@@ -149,11 +149,15 @@ public class SwordController implements Initializable {
                 memoryNext, memroyTypeBox, memoryAddressText);
         vgaController = new VgaController(vgaScreen, machine);
         keyboardController = new KeyboardController(machine);
-        root.setOnKeyPressed(event -> {
-            keyboardController.press(event.getCode());
+        debugText.setOnKeyPressed(event -> {
+            if (machine.isLooping()) {
+                keyboardController.press(event.getCode());
+            }
         });
-        root.setOnKeyReleased(event -> {
-            keyboardController.release(event.getCode());
+        debugText.setOnKeyReleased(event -> {
+            if (machine.isLooping()) {
+                keyboardController.release(event.getCode());
+            }
         });
     }
 
@@ -177,13 +181,29 @@ public class SwordController implements Initializable {
         );
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
-            machine = Machine.getInstance(file);
+            if (machine.isLooping()) {
+                onPause(actionEvent);
+            }
+            try {
+                machine = Machine.getInstance(file);
+                LogUtils.m("Load file: " + file.getName());
+            } catch (Exception e) {
+                String[] reasons = e.getMessage().split(":");
+                LogUtils.m("Fail to load file: " + file.getName() + ", reason: " +
+                        reasons[reasons.length - 1]);
+                machine = Machine.getInstance(null);
+            }
             memoryController.refresh();
         }
     }
 
     public void onReset(ActionEvent actionEvent) {
+        if (machine.isLooping()) {
+            onPause(actionEvent);
+        }
         machine.reset();
+        vgaController.reset();
+        memoryController.jumpTo(0);
     }
 
     public void onExit(ActionEvent actionEvent) {

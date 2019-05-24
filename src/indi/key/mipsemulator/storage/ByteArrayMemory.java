@@ -64,6 +64,11 @@ public class ByteArrayMemory implements Memory {
 
     @Override
     public byte[] load(long address, int bytesNum) throws MemoryOutOfBoundsException {
+        return loadConstantly(address, bytesNum);
+    }
+
+    @Override
+    public byte[] loadConstantly(long address, int bytesNum) throws MemoryOutOfBoundsException {
         try {
             return Arrays.copyOfRange(memory, (int) address, (int) address + bytesNum);
         } catch (ArrayIndexOutOfBoundsException e) {

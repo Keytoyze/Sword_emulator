@@ -2,6 +2,7 @@ package indi.key.mipsemulator.util;
 
 import java.util.Arrays;
 
+import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
 public class LogUtils {
@@ -23,14 +24,27 @@ public class LogUtils {
         System.out.println(buildMessage(message));
     }
 
+    private static int linesNum = 0;
     public static void m(String string) {
-        String text = mLogText.getText();
-        if (text.length() > 512) {
-            // Text is too long. Remove the first line.
-            text = text.replaceFirst("^.*\n", "");
-            mLogText.setText(text);
-        }
-        mLogText.appendText(string + "\n");
+        Platform.runLater(() -> {
+            try {
+                linesNum++;
+                if (linesNum >= 50) {
+                    linesNum--;
+                    String text = mLogText.getText();
+                    if (text.length() > 512) {
+                        // Text is too long. Remove the first line.
+                        text = text.replaceFirst("^.*\n", "");
+                        mLogText.setText(text);
+                    }
+                }
+                mLogText.appendText(string + "\n");
+                mLogText.setScrollTop(Double.MAX_VALUE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     private static String buildMessage(String rawMessage) {

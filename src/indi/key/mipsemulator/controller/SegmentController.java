@@ -186,6 +186,11 @@ public class SegmentController implements TickCallback {
             return text.load(0, bytesNum);
         }
 
+        @Override
+        public byte[] loadConstantly(long address, int bytesNum) throws MemoryOutOfBoundsException {
+            return load(address, bytesNum);
+        }
+
         int getText() {
             return IoUtils.bytesToInt(text.load(0, 4));
         }

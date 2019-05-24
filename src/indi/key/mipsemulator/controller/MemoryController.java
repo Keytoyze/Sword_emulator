@@ -85,7 +85,7 @@ public class MemoryController implements TickCallback {
         jumpTo(0);
     }
 
-    private void jumpTo(long address) {
+    public void jumpTo(long address) {
         memoryListWrapper.setAddress(address);
         refresh();
         addressText.setText(formatAddress(address));
@@ -159,7 +159,7 @@ public class MemoryController implements TickCallback {
                     beginAddress + index :
                     beginAddress + index * 4;
             try {
-                byte[] bytes = memory.load(address, 4);
+                byte[] bytes = memory.loadConstantly(address, 4);
                 BitArray bitArray = BitArray.of(bytes);
                 String data = binary ?
                         bitArray.toString().substring(2, 10) :

@@ -38,6 +38,11 @@ public class GpioRegister implements Memory {
     }
 
     @Override
+    public byte[] loadConstantly(long address, int bytesNum) throws MemoryOutOfBoundsException {
+        return readRegister.load(address, bytesNum);
+    }
+
+    @Override
     public void reset() {
         readRegister.reset();
         writeRegister.reset();

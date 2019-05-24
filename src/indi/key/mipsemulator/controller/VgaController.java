@@ -1,6 +1,7 @@
 package indi.key.mipsemulator.controller;
 
 import indi.key.mipsemulator.core.controller.Machine;
+import indi.key.mipsemulator.model.interfaces.Resetable;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.core.controller.TimingRenderer;
 import indi.key.mipsemulator.vga.GraphProvider;
@@ -11,7 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
 
-public class VgaController implements TickCallback {
+public class VgaController implements TickCallback, Resetable {
 
     public static final int WIDTH = 640;
     public static final int HEIGHT = 480;
@@ -39,5 +40,11 @@ public class VgaController implements TickCallback {
         ScreenProvider currentProvider = VgaConfigures.isTextMode() ? textProvider : graphProvider;
         content.getPixelWriter().setPixels(0, 0, WIDTH, HEIGHT, PixelFormat.getByteBgraPreInstance()
                 , currentProvider.get(), 0, WIDTH * 4);
+    }
+
+    @Override
+    public void reset() {
+        graphProvider.reset();
+        textProvider.reset();
     }
 }

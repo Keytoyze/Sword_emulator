@@ -66,6 +66,13 @@ public class AddressRedirector implements Memory {
         return IoUtils.bytesToInt(load(address, 4));
     }
 
+    @Override
+    public byte[] loadConstantly(long address, int bytesNum) throws MemoryOutOfBoundsException {
+        Pair<MemoryType, Integer> memoryPair = selectMemory(new Range<>(address, address + bytesNum - 1));
+        Memory memory = memories[memoryPair.getKey().ordinal()];
+        return memory.loadConstantly(memoryPair.getValue(), bytesNum);
+    }
+
     public Memory getMemory(MemoryType type) {
         return memories[type.ordinal()];
     }
