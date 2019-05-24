@@ -7,17 +7,19 @@ import indi.key.mipsemulator.core.controller.TimingRenderer;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
+import indi.key.mipsemulator.util.IoUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 
 public class RegisterController implements TickCallback {
 
     public enum DisplayMode {
-        HEXADECIMAL("十六进制", integer -> "0x" + Integer.toHexString(integer).toUpperCase()),
+        HEXADECIMAL("十六进制", integer -> "0x" + IoUtils.completeWithZero(Integer.toHexString(integer).toUpperCase(), 8)),
         SIGNED_DECIMAL("有符号十进制", Object::toString),
         UNSIGNED_DECIMAL("无符号十进制", integer -> String.valueOf(Integer.toUnsignedLong(integer)));
 
@@ -72,7 +74,7 @@ public class RegisterController implements TickCallback {
                 int index = j * 8 + i;
                 RegisterType registerType = getType(index);
                 registerLable[index] = new Label("");
-//                registerLable[index].setFont(Font.font("Consolas", 16));
+                registerLable[index].setFont(Font.font("Consolas", 16));
                 registerLable[index].setTextFill(registerType.getColor());
                 registerPane.add(registerLable[index], j, i);
             }

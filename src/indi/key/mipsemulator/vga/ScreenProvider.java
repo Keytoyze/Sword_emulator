@@ -41,8 +41,8 @@ public abstract class ScreenProvider implements MemoryListener, Resetable, Suppl
 
     @Override
     public void reset() {
-        for (int i = 0; i < rgbBytes.length; i++) {
-            rgbBytes[i] = i % 4 == 3 ? (byte) 255 : 0;
+        for (int i = 3; i < rgbBytes.length; i += 4) {
+            rgbBytes[i] = (byte) 0xff;
         }
     }
 }

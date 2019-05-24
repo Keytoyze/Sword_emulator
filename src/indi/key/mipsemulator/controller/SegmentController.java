@@ -20,9 +20,9 @@ public class SegmentController implements TickCallback {
     private double length, padding;
     private SegmentMemory segmentMem;
 
-    private static final double LINE_WIDTH = 5;
+    private static final double LINE_WIDTH = 4.5;
     private static final Color RED = Color.RED;
-    private static final Color GRAY = Color.rgb(200, 200, 200);
+    private static final Color GRAY = Color.rgb(220, 220, 220);
     private static final int[] SEG_MAP_2 = new int[]{
             0, 4, 16, 25, 17, 5, 12, 24,
             1, 6, 18, 27, 19, 7, 13, 26,
