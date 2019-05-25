@@ -14,6 +14,7 @@ import indi.key.mipsemulator.controller.component.SwitchController;
 import indi.key.mipsemulator.controller.component.VgaController;
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.model.info.BitArray;
+import indi.key.mipsemulator.util.FxUtils;
 import indi.key.mipsemulator.util.IoUtils;
 import indi.key.mipsemulator.util.LogUtils;
 import indi.key.mipsemulator.vga.VgaConfigures;
@@ -21,9 +22,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -32,7 +31,6 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -41,9 +39,12 @@ import javafx.stage.Stage;
 
 public class SwordController implements Initializable {
 
-    public RadioMenuItem vgaEnglishMenu;
-    public RadioMenuItem vgaChineseMenu;
-    public RadioMenuItem vgaGraphMenu;
+    @FXML
+    RadioMenuItem vgaEnglishMenu;
+    @FXML
+    RadioMenuItem vgaChineseMenu;
+    @FXML
+    RadioMenuItem vgaGraphMenu;
     @FXML
     MenuItem debugStopMenu;
     @FXML
@@ -62,6 +63,8 @@ public class SwordController implements Initializable {
     Button memoryLast;
     @FXML
     Button memoryNext;
+    @FXML
+    Button memoryBig;
     @FXML
     TextArea debugText;
     @FXML
@@ -94,11 +97,15 @@ public class SwordController implements Initializable {
     private ButtonController buttonController;
     private SegmentController segmentController;
     private MemoryController memoryController;
+    private MemoryStageController memoryStageController;
 
     private static Stage primaryStage;
+    private static Stage memoryStage;
+    private static SwordController instance;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        instance = this;
 
         debugText.setWrapText(true);
         Platform.runLater(() -> memoryAddressText.requestFocus());
@@ -108,16 +115,25 @@ public class SwordController implements Initializable {
         setUpControllers();
         setUpMenu();
 
-        primaryStage.getIcons().add(new Image(
-                SwordController.class.getResourceAsStream("/res/drawable/sword_128.png")));
-
-
         primaryStage.setOnCloseRequest(event -> {
+            instance = null;
+            primaryStage = null;
+            if (memoryStage != null && memoryStage.isShowing()) {
+                memoryStage.close();
+            }
             Machine machine = Machine.getReference();
             if (machine != null && machine.isLooping()) {
                 machine.exitLoop();
             }
         });
+    }
+
+    public static SwordController getInstance() {
+        return instance;
+    }
+
+    public Machine getMachine() {
+        return machine;
     }
 
     public void setUpMenu() {
@@ -143,11 +159,18 @@ public class SwordController implements Initializable {
         buttonController = new ButtonController(buttonPane, machine);
         segmentController = new SegmentController(segmentCanvas, machine);
         memoryController = new MemoryController(memoryTable, machine, memoryJump, memoryLast,
-                memoryNext, memroyTypeBox, memoryAddressText);
+                memoryNext, memroyTypeBox, memoryAddressText, 6);
         vgaController = new VgaController(vgaScreen, machine);
         keyboardController = new KeyboardController(machine);
+        memoryBig.setOnAction(event -> {
+            if (memoryStage == null) {
+                memoryStage = FxUtils.newStage(null, "内存查看",
+                        "memory.fxml", "main.css");
+            }
+            memoryStage.show();
+            memoryStage.toFront();
+        });
         memoryAddressText.setOnKeyPressed(event -> {
-            LogUtils.i(event);
             switch (event.getCode()) {
                 case ENTER:
                     memoryJump.fire();
@@ -184,15 +207,10 @@ public class SwordController implements Initializable {
         });
     }
 
-    public static void run(Stage primaryStage) throws Exception {
+    public static void run(Stage primaryStage) {
         SwordController.primaryStage = primaryStage;
-        primaryStage.setTitle("ZJUQS-II SWORD版模拟器");
-        Pane pane = FXMLLoader.load(SwordController.class.getResource(
-                "/res/layout/main.fxml"));
-        Scene scene = new Scene(pane);
-        scene.getStylesheets().add(SwordController.class.getResource(
-                "/res/layout/main.css").toExternalForm());
-        primaryStage.setScene(scene);
+        FxUtils.newStage(primaryStage, "ZJUQS-II SWORD版模拟器",
+                "main.fxml", "main.css");
         primaryStage.show();
     }
 
@@ -204,6 +222,8 @@ public class SwordController implements Initializable {
         );
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
+            memoryBig.fire();
+            memoryStage.toBack();
             if (machine.isLooping()) {
                 onPause(actionEvent);
             }
@@ -217,7 +237,14 @@ public class SwordController implements Initializable {
                 machine = Machine.getInstance(null);
             }
             memoryController.refresh();
+            if (memoryStageController != null) {
+                memoryStageController.refresh();
+            }
         }
+    }
+
+    public void setMemoryStageController(MemoryStageController memoryStageController) {
+        this.memoryStageController = memoryStageController;
     }
 
     public void onReset(ActionEvent actionEvent) {
@@ -227,6 +254,9 @@ public class SwordController implements Initializable {
         machine.reset();
         vgaController.reset();
         memoryController.jumpTo(0);
+        if (memoryStageController != null) {
+            memoryStageController.jumpTo(0);
+        }
     }
 
     public void onExit(ActionEvent actionEvent) {

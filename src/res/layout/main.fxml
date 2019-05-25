@@ -187,6 +187,11 @@
                     layoutX="14.0"
                     layoutY="26.0" />
 
+                <Label
+                    layoutX="675.0"
+                    layoutY="22.0"
+                    text="寄存器组：" />
+
                 <GridPane
                     fx:id="registerPane"
                     layoutX="673.0"
@@ -262,6 +267,13 @@
                             vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
+
+                <ComboBox
+                    fx:id="registerModeComboBox"
+                    layoutX="1137.0"
+                    layoutY="12.0"
+                    prefWidth="150.0"
+                    AnchorPane.rightAnchor="12.0" />
 
                 <GridPane
                     fx:id="slideSwitchGrid"
@@ -679,13 +691,6 @@
                     </rowConstraints>
                 </GridPane>
 
-                <ComboBox
-                    fx:id="registerModeComboBox"
-                    layoutX="1137.0"
-                    layoutY="12.0"
-                    prefWidth="150.0"
-                    AnchorPane.rightAnchor="12.0" />
-
                 <TableView
                     fx:id="memoryTable"
                     layoutX="14.0"
@@ -751,17 +756,24 @@
 
                 <Button
                     fx:id="memoryLast"
-                    layoutX="259.0"
+                    layoutX="255.0"
                     layoutY="521.0"
                     mnemonicParsing="false"
                     text="上一页" />
 
                 <Button
                     fx:id="memoryNext"
-                    layoutX="333.0"
+                    layoutX="323.0"
                     layoutY="521.0"
                     mnemonicParsing="false"
                     text="下一页" />
+
+                <Button
+                    fx:id="memoryBig"
+                    layoutX="448.0"
+                    layoutY="522.0"
+                    mnemonicParsing="false"
+                    text="大窗口" />
 
                 <TextArea
                     fx:id="debugText"
@@ -774,11 +786,6 @@
                     AnchorPane.leftAnchor="682.0"
                     AnchorPane.rightAnchor="21.0"
                     AnchorPane.topAnchor="522.0" />
-
-                <Label
-                    layoutX="675.0"
-                    layoutY="22.0"
-                    text="寄存器组：" />
                 <!--<ToggleButtonGroup layoutX="637.0" layoutY="632.0" prefHeight="32.0" prefWidth="47.0" selectionType="MULTIPLE">-->
                 <!--<toggles>-->
                 <!--<ToggleButton mnemonicParsing="false" selected="true" text="2" />-->
