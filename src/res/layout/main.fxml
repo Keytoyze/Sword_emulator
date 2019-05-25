@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?><?import javafx.scene.control.Button?><?import javafx.scene.control.ComboBox?><?import javafx.scene.control.Label?><?import javafx.scene.control.Menu?><?import javafx.scene.control.MenuBar?><?import javafx.scene.control.MenuItem?><?import javafx.scene.control.RadioMenuItem?><?import javafx.scene.control.Separator?><?import javafx.scene.control.SeparatorMenuItem?><?import javafx.scene.control.TableColumn?><?import javafx.scene.control.TableView?><?import javafx.scene.control.TextArea?><?import javafx.scene.control.TextField?><?import javafx.scene.control.ToolBar?><?import javafx.scene.image.Image?><?import javafx.scene.image.ImageView?><?import javafx.scene.input.KeyCodeCombination?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.VBox?>
+<?import javafx.scene.canvas.Canvas?><?import javafx.scene.control.Button?><?import javafx.scene.control.ComboBox?><?import javafx.scene.control.Label?><?import javafx.scene.control.Menu?><?import javafx.scene.control.MenuBar?><?import javafx.scene.control.MenuItem?><?import javafx.scene.control.RadioMenuItem?><?import javafx.scene.control.SeparatorMenuItem?><?import javafx.scene.control.TableColumn?><?import javafx.scene.control.TableView?><?import javafx.scene.control.TextArea?><?import javafx.scene.control.TextField?><?import javafx.scene.image.ImageView?><?import javafx.scene.input.KeyCodeCombination?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="828.0"
     prefWidth="1317.0"
@@ -192,7 +192,9 @@
                     layoutX="673.0"
                     layoutY="47.0"
                     prefHeight="215.0"
-                    prefWidth="633.0">
+                    prefWidth="633.0"
+                    AnchorPane.leftAnchor="672.0"
+                    AnchorPane.rightAnchor="12.0">
 
                     <columnConstraints>
 
@@ -484,7 +486,8 @@
                     layoutY="274.0"
                     prefHeight="223.0"
                     prefWidth="213.0"
-                    vgap="2">
+                    vgap="2"
+                    AnchorPane.rightAnchor="12.0">
 
                     <columnConstraints>
 
@@ -680,7 +683,8 @@
                     fx:id="registerModeComboBox"
                     layoutX="1137.0"
                     layoutY="12.0"
-                    prefWidth="150.0" />
+                    prefWidth="150.0"
+                    AnchorPane.rightAnchor="12.0" />
 
                 <TableView
                     fx:id="memoryTable"
@@ -688,7 +692,9 @@
                     layoutY="562.0"
                     prefHeight="223.0"
                     prefWidth="643.0"
-                    style="-fx-alignment: LEFT;">
+                    style="-fx-alignment: LEFT;"
+                    AnchorPane.bottomAnchor="16.0"
+                    AnchorPane.topAnchor="567.0">
 
                     <columns>
 
@@ -760,10 +766,14 @@
                 <TextArea
                     fx:id="debugText"
                     editable="false"
-                    layoutX="674.0"
-                    layoutY="521.0"
+                    layoutX="682.0"
+                    layoutY="522.0"
                     prefHeight="263.0"
-                    prefWidth="614.0" />
+                    prefWidth="614.0"
+                    AnchorPane.bottomAnchor="21.0"
+                    AnchorPane.leftAnchor="682.0"
+                    AnchorPane.rightAnchor="21.0"
+                    AnchorPane.topAnchor="522.0" />
 
                 <Label
                     layoutX="675.0"
