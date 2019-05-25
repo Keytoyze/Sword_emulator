@@ -9,6 +9,7 @@ import indi.key.mipsemulator.storage.ByteArrayMemory;
 import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.MemoryType;
 import indi.key.mipsemulator.util.IoUtils;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -153,12 +154,14 @@ public class SegmentController implements TickCallback {
 
     @Override
     public void onTick(long ticks) {
-        boolean text = machine.getSwitches().get(0);
-        if (text) {
-            showText(segmentMem.getText(), (byte) ~0);
-        } else {
-            showGraph(segmentMem.getGraphLow(), segmentMem.getGraphHigh());
-        }
+        Platform.runLater(() -> {
+            boolean text = machine.getSwitches().get(0);
+            if (text) {
+                showText(segmentMem.getText(), (byte) ~0);
+            } else {
+                showGraph(segmentMem.getGraphLow(), segmentMem.getGraphHigh());
+            }
+        });
     }
 
     public static class SegmentMemory implements Memory {

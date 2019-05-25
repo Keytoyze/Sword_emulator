@@ -19,6 +19,7 @@ import indi.key.mipsemulator.util.LogUtils;
 import indi.key.mipsemulator.vga.VgaConfigures;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -232,7 +233,7 @@ public class SwordController implements Initializable {
         primaryStage.close();
     }
 
-    public void onExecute(ActionEvent actionEvent) {
+    public void onExecute(Event actionEvent) {
         if (machine.loop()) {
             debugSingleMenu.setDisable(true);
             debugSingleWithoutJalMenu.setDisable(true);
