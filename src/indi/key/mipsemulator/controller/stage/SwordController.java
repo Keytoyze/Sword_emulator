@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 import indi.key.mipsemulator.controller.component.ButtonController;
 import indi.key.mipsemulator.controller.component.KeyboardController;
 import indi.key.mipsemulator.controller.component.LedController;
-import indi.key.mipsemulator.controller.component.MemoryController;
 import indi.key.mipsemulator.controller.component.RegisterController;
 import indi.key.mipsemulator.controller.component.SegmentController;
 import indi.key.mipsemulator.controller.component.SwitchController;
@@ -27,10 +26,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.RadioMenuItem;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -39,6 +37,12 @@ import javafx.stage.Stage;
 
 public class SwordController implements Initializable {
 
+    @FXML RadioButton graphModeButton;
+    @FXML RadioButton chineseModeButton;
+    @FXML RadioButton englishModeButton;
+    @FXML Button pauseButton;
+    @FXML Button singleButton;
+    @FXML Button executeButton;
     @FXML
     RadioMenuItem vgaEnglishMenu;
     @FXML
@@ -51,20 +55,6 @@ public class SwordController implements Initializable {
     MenuItem debugSingleMenu;
     @FXML
     MenuItem debugSingleWithoutJalMenu;
-    @FXML
-    TableView<MemoryController.MemoryBean> memoryTable;
-    @FXML
-    ComboBox<String> memroyTypeBox;
-    @FXML
-    TextField memoryAddressText;
-    @FXML
-    Button memoryJump;
-    @FXML
-    Button memoryLast;
-    @FXML
-    Button memoryNext;
-    @FXML
-    Button memoryBig;
     @FXML
     TextArea debugText;
     @FXML
@@ -96,7 +86,6 @@ public class SwordController implements Initializable {
     private LedController ledController;
     private ButtonController buttonController;
     private SegmentController segmentController;
-    private MemoryController memoryController;
     private MemoryStageController memoryStageController;
 
     private static Stage primaryStage;
@@ -108,7 +97,7 @@ public class SwordController implements Initializable {
         instance = this;
 
         debugText.setWrapText(true);
-        Platform.runLater(() -> memoryAddressText.requestFocus());
+        Platform.runLater(() -> registerModeComboBox.requestFocus());
         LogUtils.setLogText(debugText);
         this.machine = Machine.getInstance(null);
 
@@ -138,16 +127,23 @@ public class SwordController implements Initializable {
 
     public void setUpMenu() {
         debugStopMenu.setDisable(true);
+        pauseButton.setDisable(true);
         VgaConfigures.setOnFontChangedCallback(() -> {
             if (VgaConfigures.isTextMode()) {
                 VgaConfigures.Font font = VgaConfigures.getFont();
                 vgaChineseMenu.setSelected(font == VgaConfigures.Font.ZH_16_16);
                 vgaEnglishMenu.setSelected(font == VgaConfigures.Font.EN_8_8);
                 vgaGraphMenu.setSelected(false);
+                chineseModeButton.setSelected(font == VgaConfigures.Font.ZH_16_16);
+                englishModeButton.setSelected(font == VgaConfigures.Font.EN_8_8);
+                graphModeButton.setSelected(false);
             } else {
                 vgaGraphMenu.setSelected(true);
                 vgaChineseMenu.setSelected(false);
                 vgaEnglishMenu.setSelected(false);
+                graphModeButton.setSelected(true);
+                chineseModeButton.setSelected(false);
+                englishModeButton.setSelected(false);
             }
         });
     }
@@ -158,34 +154,26 @@ public class SwordController implements Initializable {
         ledController = new LedController(ledPane, machine);
         buttonController = new ButtonController(buttonPane, machine);
         segmentController = new SegmentController(segmentCanvas, machine);
-        memoryController = new MemoryController(memoryTable, machine, memoryJump, memoryLast,
-                memoryNext, memroyTypeBox, memoryAddressText, 6);
+//        memoryController = new MemoryController(memoryTable, machine, memoryJump, memoryLast,
+//                memoryNext, memroyTypeBox, memoryAddressText, 6);
         vgaController = new VgaController(vgaScreen, machine);
         keyboardController = new KeyboardController(machine);
-        memoryBig.setOnAction(event -> {
-            if (memoryStage == null) {
-                memoryStage = FxUtils.newStage(null, "内存查看",
-                        "memory.fxml", "main.css");
-            }
-            memoryStage.show();
-            memoryStage.toFront();
-        });
-        memoryAddressText.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-                case ENTER:
-                    memoryJump.fire();
-                    break;
-                case PAGE_DOWN:
-                    memoryNext.fire();
-                    break;
-                case PAGE_UP:
-                    memoryLast.fire();
-                    break;
-                default:
-                    root.fireEvent(event);
-                    break;
-            }
-        });
+//        memoryAddressText.setOnKeyPressed(event -> {
+//            switch (event.getCode()) {
+//                case ENTER:
+//                    memoryJump.fire();
+//                    break;
+//                case PAGE_DOWN:
+//                    memoryNext.fire();
+//                    break;
+//                case PAGE_UP:
+//                    memoryLast.fire();
+//                    break;
+//                default:
+//                    root.fireEvent(event);
+//                    break;
+//            }
+//        });
         debugText.setOnKeyPressed(event -> {
             if (machine.isLooping() && debugText.isFocused()) {
                 keyboardController.press(event.getCode());
@@ -222,7 +210,7 @@ public class SwordController implements Initializable {
         );
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
-            memoryBig.fire();
+            onViewMemory(null);
             memoryStage.toBack();
             if (machine.isLooping()) {
                 onPause(actionEvent);
@@ -236,7 +224,6 @@ public class SwordController implements Initializable {
                         reasons[reasons.length - 1]);
                 machine = Machine.getInstance(null);
             }
-            memoryController.refresh();
             if (memoryStageController != null) {
                 memoryStageController.refresh();
             }
@@ -253,7 +240,6 @@ public class SwordController implements Initializable {
         }
         machine.reset();
         vgaController.reset();
-        memoryController.jumpTo(0);
         if (memoryStageController != null) {
             memoryStageController.jumpTo(0);
         }
@@ -269,7 +255,19 @@ public class SwordController implements Initializable {
             debugSingleWithoutJalMenu.setDisable(true);
             debugStopMenu.setDisable(false);
             debugExecuteMenu.setDisable(true);
+            singleButton.setDisable(true);
+            pauseButton.setDisable(false);
+            executeButton.setDisable(true);
         }
+    }
+
+    public void onViewMemory(Event event) {
+        if (memoryStage == null) {
+            memoryStage = FxUtils.newStage(null, "内存查看",
+                    "memory.fxml", "main.css");
+        }
+        memoryStage.show();
+        memoryStage.toFront();
     }
 
     public void onSingle(ActionEvent actionEvent) {
@@ -285,6 +283,9 @@ public class SwordController implements Initializable {
         debugSingleWithoutJalMenu.setDisable(false);
         debugStopMenu.setDisable(true);
         debugExecuteMenu.setDisable(false);
+        singleButton.setDisable(false);
+        pauseButton.setDisable(true);
+        executeButton.setDisable(false);
         machine.exitLoop().print();
     }
 
