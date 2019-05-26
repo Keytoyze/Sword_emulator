@@ -214,6 +214,7 @@ public class SwordController implements Initializable {
         );
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
+            onReset(null);
             onViewMemory(null);
             if (machine.isLooping()) {
                 onPause(actionEvent);
@@ -279,6 +280,7 @@ public class SwordController implements Initializable {
 
     public void onSingle(ActionEvent actionEvent) {
         machine.singleStep();
+        memoryStageController.refresh();
     }
 
     public void onSingleNotJal(ActionEvent actionEvent) {
