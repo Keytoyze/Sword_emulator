@@ -14,16 +14,16 @@ public class GraphProvider extends ScreenProvider {
      */
     @Override
     public void onMemoryChange(Memory memory, int address, int length) {
-        address = address - VgaConfigures.getAddressOffset();
+        address = address - 0x2000;
         if (address < 0) {
             return;
         }
         int initAddr = address - address % 2;
         for (int i = initAddr; i < address + length; i += 2) {
-            byte[] bytes = memory.load(i, 2);
-            int index = i / 2;
+            byte[] bytes = memory.load(i + 0x2000, 2);
+            int index = i * 2;
             byte b = (byte) (bytes[1] & 0xf);
-            byte g = (byte) (bytes[1] >>> 4);
+            byte g = (byte) ((bytes[1] & 0xf0) >>> 4);
             byte r = (byte) (bytes[0] & 0xf);
             rgbBytes[index] = (byte) (b << 4 | b);
             rgbBytes[index + 1] = (byte) (g << 4 | g);

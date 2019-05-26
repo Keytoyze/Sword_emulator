@@ -14,6 +14,8 @@ import javafx.scene.control.TextField;
 public class MemoryStageController implements Initializable {
 
     @FXML
+    Button jumpPcButton;
+    @FXML
     TableView<MemoryController.MemoryBean> memoryTable;
     @FXML
     ComboBox<String> memroyTypeBox;
@@ -48,6 +50,9 @@ public class MemoryStageController implements Initializable {
                         memoryLast.fire();
                         break;
                 }
+            });
+            jumpPcButton.setOnAction(event -> {
+                memoryController.jumpToPc();
             });
         }
     }

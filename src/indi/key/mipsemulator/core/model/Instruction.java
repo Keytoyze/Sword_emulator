@@ -112,7 +112,7 @@ public enum Instruction {
     }),
     PREF,
     SB((MemoryAction) (m, address, rt) -> {
-        m.saveMemory(address, BitArray.ofValue(rt.get()).setLength(4).bytes());
+        m.saveMemory(address, BitArray.ofValue(rt.get()).setLength(8).bytes());
     }),
     SC,
     // SDBBP
@@ -121,7 +121,7 @@ public enum Instruction {
     //    SDL,
 //    SDR,
     SH((MemoryAction) (m, address, rt) -> {
-        m.saveMemory(address, BitArray.ofValue(rt.get()).setLength(8).bytes());
+        m.saveMemory(address, BitArray.ofValue(rt.get()).setLength(16).bytes());
     }),
     SLL((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rt.get() << shamt);

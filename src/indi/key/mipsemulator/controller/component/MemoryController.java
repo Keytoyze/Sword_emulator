@@ -100,7 +100,13 @@ public class MemoryController implements CpuCallback, TickCallback {
 
     @Override
     public void onCpuNext(Register pc) {
-        long pcValue = pc.getUnsigned();
+//        long pcValue = pc.getUnsigned();
+//        jumpTo(pcValue / getAddressPageRange() * getAddressPageRange());
+        refresh();
+    }
+
+    public void jumpToPc() {
+        long pcValue = machine.getRegister(RegisterType.PC).getUnsigned();
         jumpTo(pcValue / getAddressPageRange() * getAddressPageRange());
     }
 

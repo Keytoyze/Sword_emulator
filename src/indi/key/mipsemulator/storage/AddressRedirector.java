@@ -2,6 +2,7 @@ package indi.key.mipsemulator.storage;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,9 +46,15 @@ public class AddressRedirector implements Memory {
     public void save(long address, byte[] bytes) throws MemoryOutOfBoundsException {
         Pair<MemoryType, Integer> memoryPair = selectMemory(new Range<>(address, address + bytes.length - 1));
         Memory memory = memories[memoryPair.getKey().ordinal()];
+        boolean notify = false;
+        if (!Arrays.equals(memory.loadConstantly(memoryPair.getValue(), bytes.length), bytes)) {
+            notify = true;
+        }
         memory.save(memoryPair.getValue(), bytes);
-        for (MemoryListener listener : listeners.get(memoryPair.getKey().ordinal())) {
-            listener.onMemoryChange(memory, memoryPair.getValue(), bytes.length);
+        if (notify) {
+            for (MemoryListener listener : listeners.get(memoryPair.getKey().ordinal())) {
+                listener.onMemoryChange(memory, memoryPair.getValue(), bytes.length);
+            }
         }
     }
 

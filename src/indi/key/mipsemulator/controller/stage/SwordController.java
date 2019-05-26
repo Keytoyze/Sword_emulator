@@ -243,9 +243,6 @@ public class SwordController implements Initializable {
         }
         machine.reset();
         vgaController.reset();
-        if (memoryStageController != null) {
-            memoryStageController.jumpTo(0);
-        }
     }
 
     public void onExit(ActionEvent actionEvent) {

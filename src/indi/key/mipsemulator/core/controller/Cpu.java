@@ -94,9 +94,10 @@ public class Cpu implements Resetable {
             while (looping) {
                 try {
                     int index = pc.get() / 4;
-                    if (instructionCache[index] == null) {
+                    if (index >= instructionCache.length || instructionCache[index] == null) {
                         instructionCache[index] = getStatementRunnable(Cpu.this);
                     }
+
                     instructionCount++;
                     instructionCache[index].run();
                 } catch (Exception exception) {
