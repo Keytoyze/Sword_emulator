@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import indi.key.mipsemulator.util.FxUtils;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -15,7 +16,7 @@ import javafx.stage.Stage;
 
 public class InputDialogController implements Initializable {
 
-    private static String mDefaultString;
+    private static Map<Stage, String> defaultStrings = new HashMap<>();
     private static Map<Stage, Consumer<String>> callbacks = new HashMap<>();
     @FXML
     TextField inputText;
@@ -24,25 +25,32 @@ public class InputDialogController implements Initializable {
     @FXML
     Button cancelButton;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        inputText.setText(mDefaultString);
+        Platform.runLater(() -> {
+            Stage stage = FxUtils.getStage(inputText);
+            inputText.setText(defaultStrings.get(stage));
+            inputText.selectAll();
+            stage.setOnCloseRequest(event -> {
+                defaultStrings.remove(stage);
+                callbacks.remove(stage);
+            });
+        });
         okButton.setOnAction(event -> {
-            Stage stage = (Stage) okButton.getScene().getWindow();
+            Stage stage = FxUtils.getStage(okButton);
             callbacks.get(stage).accept(inputText.getText());
             stage.close();
         });
         cancelButton.setOnAction(event -> {
-            Stage stage = (Stage) okButton.getScene().getWindow();
+            Stage stage = FxUtils.getStage(cancelButton);
             stage.close();
         });
     }
 
     public static void run(String defaultString, Consumer<String> returnCallback, String title) {
         Stage stage = FxUtils.newStage(null, title, "simple_input_dialog.fxml", null);
-        mDefaultString = defaultString;
+        defaultStrings.put(stage, defaultString);
         callbacks.put(stage, returnCallback);
         stage.show();
     }

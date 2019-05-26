@@ -5,6 +5,7 @@ import com.sun.istack.internal.Nullable;
 import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
@@ -37,5 +38,9 @@ public class FxUtils {
             e.printStackTrace();
             return old;
         }
+    }
+
+    public static Stage getStage(Node node) {
+        return (Stage) node.getScene().getWindow();
     }
 }

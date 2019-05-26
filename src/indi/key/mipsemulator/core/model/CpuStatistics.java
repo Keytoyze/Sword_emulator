@@ -24,7 +24,7 @@ public class CpuStatistics {
         if (resentException != null) {
             LogUtils.m("Resent Error: " + resentException.toString());
         }
-        LogUtils.m("=====================");
+        LogUtils.m("============================");
     }
 
     @Override
