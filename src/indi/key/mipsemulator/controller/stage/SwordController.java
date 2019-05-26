@@ -1,7 +1,5 @@
 package indi.key.mipsemulator.controller.stage;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -216,6 +214,7 @@ public class SwordController implements Initializable {
         if (file != null) {
             onReset(null);
             onViewMemory(null);
+            memoryStage.toBack();
             if (machine.isLooping()) {
                 onPause(actionEvent);
             }
@@ -267,20 +266,13 @@ public class SwordController implements Initializable {
             memoryStage = FxUtils.newStage(null, "内存查看",
                     "memory.fxml", "main.css");
         }
-        double x = primaryStage.getX() + primaryStage.getWidth();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        if (x > screenSize.width - 200) {
-            x -= 200;
-        }
-        memoryStage.setX(x);
-        memoryStage.setY(primaryStage.getY());
         memoryStage.show();
         memoryStage.toFront();
     }
 
     public void onSingle(ActionEvent actionEvent) {
         machine.singleStep();
-        memoryStageController.refresh();
+        memoryStageController.jumpPcButton.fire();
     }
 
     public void onSingleNotJal(ActionEvent actionEvent) {
