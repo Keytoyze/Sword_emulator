@@ -13,8 +13,8 @@ import indi.key.mipsemulator.util.IoUtils;
 @SuppressWarnings("unused")
 public enum Instruction {
     ADD((RTypeAction) (m, rs, rt, rd, shamt) -> {
-        //rd.set(checkOverflow(rs.getAsLong() + rt.getAsLong()));
-        rd.setUnsigned(rs.getUnsigned() + rt.getUnsigned());
+        rd.set(checkOverflow(rs.getAsLong() + rt.getAsLong()));
+        //rd.setUnsigned(rs.getUnsigned() + rt.getUnsigned());
     }),
     ADDI((ITypeAction) (m, rs, rt, immediate) -> {
         rt.set(checkOverflow(rs.getAsLong() + immediate.integerValue()));

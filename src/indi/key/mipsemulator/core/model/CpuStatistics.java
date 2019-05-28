@@ -7,12 +7,15 @@ public class CpuStatistics {
     private long instructionCount;
     private long errorCount;
     private Exception resentException;
+    private long exceptionAddress;
 
-    public CpuStatistics(long time, long instructionCount, long errorCount, Exception resentException) {
+    public CpuStatistics(long time, long instructionCount, long errorCount, Exception resentException,
+                         long exceptionAddress) {
         this.time = time;
         this.instructionCount = instructionCount;
         this.errorCount = errorCount;
         this.resentException = resentException;
+        this.exceptionAddress = exceptionAddress;
     }
 
     public void print() {
@@ -23,6 +26,7 @@ public class CpuStatistics {
         LogUtils.m("Error count: " + errorCount);
         if (resentException != null) {
             LogUtils.m("Resent Error: " + resentException.toString());
+            LogUtils.m("Resent Error Address: 0x" + Long.toHexString(exceptionAddress));
         }
         LogUtils.m("============================");
     }

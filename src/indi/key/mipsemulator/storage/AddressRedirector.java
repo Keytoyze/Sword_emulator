@@ -3,8 +3,6 @@ package indi.key.mipsemulator.storage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.model.info.Range;
@@ -16,7 +14,7 @@ import javafx.util.Pair;
 public class AddressRedirector implements Memory {
 
     private Memory[] memories;
-    private ArrayList<List<MemoryListener>> listeners;
+    private ArrayList<ArrayList<MemoryListener>> listeners;
     private boolean init = false;
 
     public AddressRedirector(File initFile) {
@@ -24,7 +22,7 @@ public class AddressRedirector implements Memory {
         listeners = new ArrayList<>(MemoryType.values().length);
         for (MemoryType memoryType : MemoryType.values()) {
             memories[memoryType.ordinal()] = memoryType.generateStorage();
-            listeners.add(memoryType.ordinal(), new LinkedList<>());
+            listeners.add(memoryType.ordinal(), new ArrayList<>());
         }
         setInitFile(initFile);
     }
@@ -45,15 +43,19 @@ public class AddressRedirector implements Memory {
     @Override
     public void save(long address, byte[] bytes) throws MemoryOutOfBoundsException {
         Pair<MemoryType, Integer> memoryPair = selectMemory(new Range<>(address, address + bytes.length - 1));
-        Memory memory = memories[memoryPair.getKey().ordinal()];
+        MemoryType choosed = memoryPair.getKey();
+        Integer addressOffset = memoryPair.getValue();
+        Memory memory = memories[choosed.ordinal()];
         boolean notify = false;
-        if (!Arrays.equals(memory.loadConstantly(memoryPair.getValue(), bytes.length), bytes)) {
+        if (!Arrays.equals(memory.loadConstantly(addressOffset, bytes.length), bytes)) {
             notify = true;
         }
         memory.save(memoryPair.getValue(), bytes);
         if (notify) {
-            for (MemoryListener listener : listeners.get(memoryPair.getKey().ordinal())) {
-                listener.onMemoryChange(memory, memoryPair.getValue(), bytes.length);
+            ArrayList<MemoryListener> memoryListeners = listeners.get(choosed.ordinal());
+            final int size = memoryListeners.size();
+            for (int i = 0; i < size; i++) {
+                memoryListeners.get(i).onMemoryChange(memory, memoryPair.getValue(), bytes.length);
             }
         }
     }

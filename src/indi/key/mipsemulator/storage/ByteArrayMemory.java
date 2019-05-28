@@ -56,7 +56,22 @@ public class ByteArrayMemory implements Memory {
     @Override
     public void save(long address, byte[] bytes) throws MemoryOutOfBoundsException {
         try {
-            System.arraycopy(bytes, 0, memory, (int) address, bytes.length);
+            int addrInt = (int) address;
+            switch (bytes.length) {
+                case 4:
+                    memory[addrInt + 3] = bytes[3];
+                    memory[addrInt + 2] = bytes[2];
+                    // Fall
+                case 2:
+                    memory[addrInt + 1] = bytes[1];
+                    // Fall
+                case 1:
+                    memory[addrInt] = bytes[0];
+                    break;
+                default:
+                    System.arraycopy(bytes, 0, memory, addrInt, bytes.length);
+                    break;
+            }
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new MemoryOutOfBoundsException("Cannot save address: " + Long.toHexString(address));
         }
@@ -70,9 +85,21 @@ public class ByteArrayMemory implements Memory {
     @Override
     public byte[] loadConstantly(long address, int bytesNum) throws MemoryOutOfBoundsException {
         try {
-            return Arrays.copyOfRange(memory, (int) address, (int) address + bytesNum);
+            int addrInt = (int) address;
+            switch (bytesNum) {
+                case 4:
+                    return new byte[] {memory[addrInt], memory[addrInt + 1], memory[addrInt + 2],
+                            memory[addrInt + 3]};
+                case 2:
+                    return new byte[] {memory[addrInt], memory[addrInt + 1]};
+                case 1:
+                    return new byte[] {memory[addrInt]};
+                default:
+                    return Arrays.copyOfRange(memory, addrInt, addrInt + bytesNum);
+            }
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new MemoryOutOfBoundsException("Cannot load address: " + Long.toHexString(address));
+            throw new MemoryOutOfBoundsException("Cannot load address 0x" + Long.toHexString(address)
+                    + " out of limit: 0x" + Long.toHexString(memory.length));
         }
     }
 

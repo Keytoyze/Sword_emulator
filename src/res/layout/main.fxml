@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="828.0" prefWidth="1317.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="indi.key.mipsemulator.controller.stage.SwordController">
+<VBox prefHeight="828.0" prefWidth="1317.0" xmlns="http://javafx.com/javafx/8.0.211" xmlns:fx="http://javafx.com/fxml/1" fx:controller="indi.key.mipsemulator.controller.stage.SwordController">
 
     <children>
 
@@ -149,7 +149,7 @@
                     </rowConstraints>
                 </GridPane>
 
-                <ComboBox fx:id="registerModeComboBox" layoutX="1137.0" layoutY="12.0" prefWidth="150.0" AnchorPane.rightAnchor="12.0" />
+                <ComboBox fx:id="registerModeComboBox" layoutX="1137.0" layoutY="12.0" prefWidth="150.0" AnchorPane.rightAnchor="20.0" />
 
                 <GridPane fx:id="slideSwitchGrid" hgap="4.0" layoutX="669.0" layoutY="411.0" prefHeight="28.0" prefWidth="415.0">
 
@@ -194,7 +194,7 @@
                     </rowConstraints>
                 </GridPane>
 
-                <GridPane fx:id="slideLabelGrid" hgap="4.0" layoutX="669.0" layoutY="446.0" prefHeight="22.0" prefWidth="415.0">
+                <GridPane fx:id="slideLabelGrid" hgap="4.0" layoutX="669.0" layoutY="446.0" prefHeight="22.0" prefWidth="415.0" AnchorPane.leftAnchor="669.0">
 
                     <columnConstraints>
 
@@ -237,7 +237,7 @@
                     </rowConstraints>
                 </GridPane>
 
-                <GridPane fx:id="buttonPane" hgap="2" layoutX="1094.0" layoutY="261.0" prefHeight="236.0" prefWidth="213.0" vgap="2" AnchorPane.rightAnchor="12.0">
+                <GridPane fx:id="buttonPane" hgap="2" layoutX="1094.0" layoutY="261.0" prefHeight="236.0" prefWidth="213.0" vgap="2" AnchorPane.leftAnchor="1092.0" AnchorPane.rightAnchor="12.0">
 
                     <columnConstraints>
 
@@ -266,9 +266,9 @@
                     </rowConstraints>
                 </GridPane>
 
-                <Canvas fx:id="segmentCanvas" height="66.0" layoutX="669.0" layoutY="320.0" width="415.0" />
+                <Canvas fx:id="segmentCanvas" height="66.0" layoutX="669.0" layoutY="320.0" width="415.0" AnchorPane.leftAnchor="669.0" />
 
-                <GridPane fx:id="ledPane" hgap="4.0" layoutX="669.0" layoutY="475.0" prefHeight="22.0" prefWidth="415.0">
+                <GridPane fx:id="ledPane" hgap="4.0" layoutX="669.0" layoutY="475.0" prefHeight="22.0" prefWidth="415.0" AnchorPane.leftAnchor="669.0">
 
                     <columnConstraints>
 
@@ -334,7 +334,7 @@
                     </rowConstraints>
 
                     <children>
-
+            
                         <Button mnemonicParsing="false" onAction="#onOpenFile" prefHeight="40.0" prefWidth="180.0" text="加载（Ctrl+O)" />
 
                         <Button mnemonicParsing="false" onAction="#onReset" prefHeight="40.0" prefWidth="180.0" text="复位（Ctrl+R）" GridPane.rowIndex="1" />
@@ -347,7 +347,7 @@
                     </children>
                 </GridPane>
 
-                <GridPane layoutX="169.0" layoutY="515.0" prefHeight="223.0" prefWidth="213.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="169.0" AnchorPane.topAnchor="515.0">
+                <GridPane layoutX="169.0" layoutY="515.0" prefHeight="284.0" prefWidth="213.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="169.0" AnchorPane.topAnchor="515.0">
 
                     <columnConstraints>
 

@@ -30,6 +30,7 @@ public class Cpu implements Resetable {
     // For looping
     private boolean looping;
     private Exception resentException;
+    private long exceptionAddress;
     private long startTime;
     private long instructionCount;
     private long errorCount;
@@ -92,8 +93,9 @@ public class Cpu implements Resetable {
         //counter.beginTicking();
         new Thread(() -> {
             while (looping) {
+                int pcCurrent = pc.get();
                 try {
-                    int index = pc.get() / 4;
+                    int index = pcCurrent / 4;
                     if (index >= instructionCache.length || instructionCache[index] == null) {
                         instructionCache[index] = getStatementRunnable(Cpu.this);
                     }
@@ -103,6 +105,7 @@ public class Cpu implements Resetable {
                 } catch (Exception exception) {
                     errorCount++;
                     resentException = exception;
+                    exceptionAddress = pcCurrent;
                 }
                 //machine.ticks();
             }
@@ -117,7 +120,7 @@ public class Cpu implements Resetable {
         }
         notifyListeners();
         return new CpuStatistics(System.currentTimeMillis() - startTime, instructionCount,
-                errorCount, resentException);
+                errorCount, resentException, exceptionAddress);
     }
 
     private static Runnable getStatementRunnable(Cpu cpu) {
