@@ -15,11 +15,14 @@ public class ButtonController {
     private GridPane pane;
     private Memory btnMemory;
     private Button[] buttons = new Button[25];
+    private Machine machine;
     private static final int BUTTON_WIDTH = 40;
 
     public ButtonController(GridPane buttonPane, Machine machine) {
         this.pane = buttonPane;
+        this.machine = machine;
         this.btnMemory = machine.getAddressRedirector().getMemory(MemoryType.BUTTON);
+        machine.setButtons(BitArray.ofLength(5));
         initView();
     }
 
@@ -34,11 +37,12 @@ public class ButtonController {
                 buttons[kCode].setPrefHeight(BUTTON_WIDTH);
                 buttons[kCode].setStyle(" -fx-border-radius: 50; -fx-background-radius:50; -fx-font-size: 15;");
                 buttons[kCode].setOnAction(event -> {
+                    machine.setButtons(btnCode);
                     BitArray data = BitArray.of(
                             BitArray.of(1, 1), // 1
                             BitArray.ofLength(21), // 21'h000000
                             btnCode, kCodeBit);
-                    LogUtils.i(data.toString());
+                    LogUtils.m("save button data: " + data.toHexString() + " (" + data.toString() + ")");
                     btnMemory.save(0, data.bytes());
                 });
                 pane.add(buttons[kCode], x, 4 - y);

@@ -20,6 +20,7 @@ public class Machine implements Resetable {
     private AddressRedirector addressRedirector;
     private Counter counter;
     private BitArray switches;
+    private BitArray buttons;
     private BitArray led;
 
     public static Machine getInstance(File initFile) {
@@ -152,6 +153,14 @@ public class Machine implements Resetable {
 
     public BitArray getSwitches() {
         return switches;
+    }
+
+    public void setButtons(BitArray bitArray) {
+        this.buttons = bitArray;
+    }
+
+    public BitArray getButtons() {
+        return buttons;
     }
 
     public void setLed(BitArray bitArray) {

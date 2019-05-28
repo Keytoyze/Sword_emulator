@@ -156,26 +156,8 @@ public class SwordController implements Initializable {
         ledController = new LedController(ledPane, machine);
         buttonController = new ButtonController(buttonPane, machine);
         segmentController = new SegmentController(segmentCanvas, machine);
-//        memoryController = new MemoryController(memoryTable, machine, memoryJump, memoryLast,
-//                memoryNext, memroyTypeBox, memoryAddressText, 6);
         vgaController = new VgaController(vgaScreen, machine);
         keyboardController = new KeyboardController(machine);
-//        memoryAddressText.setOnKeyPressed(event -> {
-//            switch (event.getCode()) {
-//                case ENTER:
-//                    memoryJump.fire();
-//                    break;
-//                case PAGE_DOWN:
-//                    memoryNext.fire();
-//                    break;
-//                case PAGE_UP:
-//                    memoryLast.fire();
-//                    break;
-//                default:
-//                    root.fireEvent(event);
-//                    break;
-//            }
-//        });
         debugText.setOnKeyPressed(event -> {
             if (machine.isLooping() && debugText.isFocused()) {
                 keyboardController.press(event.getCode());
@@ -194,6 +176,9 @@ public class SwordController implements Initializable {
             if (newValue != oldValue) {
                 LogUtils.m(newValue ? "Begin simulating the PS2 keyboard." : "Exit simulating the PS2 keyboard.");
             }
+        });
+        vgaScreen.setOnMouseClicked(event -> {
+            debugText.requestFocus();
         });
     }
 
