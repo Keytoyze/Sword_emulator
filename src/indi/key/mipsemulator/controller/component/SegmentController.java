@@ -14,6 +14,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+// FIXME: In some case the canvas will be killed and cannot draw anything. It seems to result from JavaFX internal widgets.
 public class SegmentController implements TickCallback {
 
     private Machine machine;
