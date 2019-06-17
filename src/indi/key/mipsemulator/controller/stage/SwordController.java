@@ -193,7 +193,7 @@ public class SwordController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("COE文件", "*.coe"),
-                new FileChooser.ExtensionFilter("BIN文件", "*.bin")
+                new FileChooser.ExtensionFilter("二进制文件", "*.*")
         );
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {

@@ -1,39 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Hyperlink?><?import javafx.scene.control.Label?><?import javafx.scene.image.Image?><?import javafx.scene.image.ImageView?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.VBox?><?import javafx.scene.text.Font?>
 
-<VBox prefHeight="412.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="indi.key.mipsemulator.controller.stage.AboutController">
+<VBox prefHeight="412.0"
+    prefWidth="380.0"
+    xmlns="http://javafx.com/javafx/8.0.211"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="indi.key.mipsemulator.controller.stage.AboutController">
 
     <children>
 
-        <AnchorPane prefHeight="439.0" prefWidth="380.0">
-         <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="119.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../drawable/sword_128.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="98.0" layoutY="186.0" text="ZJUQS-II SWORD版模拟器">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
-            <Label layoutX="174.0" layoutY="218.0" text="1.0.0" />
-            <Label layoutX="86.0" layoutY="250.0" text="浙江大学计算机科学与技术学院" />
-            <Hyperlink fx:id="githubLink" layoutX="110.0" layoutY="281.0" text="在GitHub上浏览本项目" />
-            <Label layoutX="41.0" layoutY="362.0" text="欢迎通过提交Issues、PR等方式参与项目贡献">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
-            <Label layoutX="112.0" layoutY="318.0" text="版权所有© 2019 陈谋祥" />
-         </children>
+        <AnchorPane
+            prefHeight="439.0"
+            prefWidth="380.0">
+
+            <children>
+
+                <ImageView
+                    fitHeight="150.0"
+                    fitWidth="200.0"
+                    layoutX="119.0"
+                    layoutY="22.0"
+                    pickOnBounds="true"
+                    preserveRatio="true">
+
+                    <image>
+
+                        <Image url="@../drawable/sword_128.png" />
+                    </image>
+                </ImageView>
+
+                <Label
+                    layoutX="98.0"
+                    layoutY="186.0"
+                    text="ZJUQS-II SWORD版模拟器">
+
+                    <font>
+
+                        <Font
+                            name="System Bold"
+                            size="15.0" />
+                    </font>
+                </Label>
+
+                <Label
+                    fx:id="versionLabel"
+                    alignment="CENTER"
+                    contentDisplay="CENTER"
+                    layoutX="4.0"
+                    layoutY="218.0"
+                    prefWidth="202.0"
+                    text="1.0.0"
+                    textAlignment="CENTER"
+                    AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0" />
+
+                <Label
+                    layoutX="86.0"
+                    layoutY="250.0"
+                    text="浙江大学计算机科学与技术学院" />
+
+                <Hyperlink
+                    fx:id="githubLink"
+                    layoutX="110.0"
+                    layoutY="281.0"
+                    text="在GitHub上浏览本项目" />
+
+                <Label
+                    layoutX="41.0"
+                    layoutY="362.0"
+                    text="欢迎通过提交Issues、PR等方式参与项目贡献">
+
+                    <font>
+
+                        <Font
+                            name="System Bold"
+                            size="15.0" />
+                    </font>
+                </Label>
+
+                <Label
+                    layoutX="112.0"
+                    layoutY="318.0"
+                    text="版权所有© 2019 陈谋祥" />
+            </children>
         </AnchorPane>
     </children>
 </VBox>

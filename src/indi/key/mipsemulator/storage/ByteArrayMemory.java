@@ -39,11 +39,9 @@ public class ByteArrayMemory implements Memory {
                         throw new RuntimeException(e);
                     }
                     break;
-                case "bin":
+                default:
                     content = IoUtils.read(initFile);
                     break;
-                default:
-                    throw new RuntimeException("Unknown suffix: " + suffix);
             }
             System.arraycopy(content, 0, memory, 0, content.length);
         }

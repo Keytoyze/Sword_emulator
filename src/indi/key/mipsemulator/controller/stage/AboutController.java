@@ -8,13 +8,17 @@ import java.util.ResourceBundle;
 import indi.key.mipsemulator.util.FxUtils;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class AboutController implements Initializable {
+    private static final String VERSION_NAME = "1.0.2 alpha";
     public Hyperlink githubLink;
+    public Label versionLabel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        versionLabel.setText(VERSION_NAME);
         githubLink.setOnAction(event -> {
             try {
                 Desktop.getDesktop().browse(new
