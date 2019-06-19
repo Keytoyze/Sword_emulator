@@ -8,7 +8,6 @@ import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.model.info.Range;
 import indi.key.mipsemulator.model.interfaces.MemoryListener;
 import indi.key.mipsemulator.util.IoUtils;
-import indi.key.mipsemulator.vga.VgaConfigures;
 import javafx.util.Pair;
 
 public class AddressRedirector implements Memory {
@@ -50,7 +49,7 @@ public class AddressRedirector implements Memory {
         if (!Arrays.equals(memory.loadConstantly(addressOffset, bytes.length), bytes)) {
             notify = true;
         }
-        memory.save(memoryPair.getValue(), bytes);
+        memory.save(memoryPair.getValue(), bytes    );
         if (notify) {
             ArrayList<MemoryListener> memoryListeners = listeners.get(choosed.ordinal());
             final int size = memoryListeners.size();
@@ -86,18 +85,14 @@ public class AddressRedirector implements Memory {
         return memories[type.ordinal()];
     }
 
+    private void forEachMemory() throws MemoryOutOfBoundsException {
+
+    }
     private Pair<MemoryType, Integer> selectMemory(Range<Long> dataRange) throws MemoryOutOfBoundsException {
         for (MemoryType memoryType : MemoryType.values()) {
-            if (memoryType == MemoryType.VRAM) {
-                int relative = memoryType.getRelativeAddress(dataRange, VgaConfigures.getAddressOffset());
-                if (relative >= 0) {
-                    return new Pair<>(memoryType, relative);
-                }
-            } else {
-                int relative = memoryType.getRelativeAddress(dataRange);
-                if (relative >= 0) {
-                    return new Pair<>(memoryType, relative);
-                }
+            int relative = memoryType.getRelativeAddress(dataRange);
+            if (relative >= 0) {
+                return new Pair<>(memoryType, relative);
             }
         }
         throw new MemoryOutOfBoundsException("Cannot access the address " + dataRange.toString());

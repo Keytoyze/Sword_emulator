@@ -3,38 +3,32 @@ package indi.key.mipsemulator.storage;
 import java.util.function.Function;
 
 import indi.key.mipsemulator.controller.component.ButtonController;
-import indi.key.mipsemulator.controller.component.KeyboardController;
 import indi.key.mipsemulator.controller.component.SegmentController;
 import indi.key.mipsemulator.model.info.Range;
+import indi.key.mipsemulator.util.SwordPrefs;
 
-// TODO: use common properties to control addresses
 public enum MemoryType {
 
-    RAM(new MemoryRange(0x00000000L, 0x0000FFFFL)),
-    VRAM(new MemoryRange(0x00000000L, 0x00098FFFL)),
+    RAM(null, SwordPrefs.RAM, 0x10000),
+    VRAM(null, SwordPrefs.VRAM, 0x99000),
     SEGMENT(SegmentController.SegmentMemory::new,
-            new MemoryRange(0xFFFFFE00L, 0xFFFFFEFFL),
-            new MemoryRange(0xE0000000L, 0xE00000FFL)),
-    GPIO(GpioRegister::new,
-            new MemoryRange(0xFFFFFF00L),
-            new MemoryRange(0xF0000000L)),
-    BUTTON(ButtonController.ButtonMemory::new,
-            new MemoryRange(0xFFFFFC00L),
-            new MemoryRange(0xC0000000L)),
-    COUNTER(new MemoryRange(0xFFFFFF04L),
-            new MemoryRange(0xF0000004L)),
-    PS2(KeyboardController.PS2Memory::new,
-            new MemoryRange(0xFFFFD000L));
+            SwordPrefs.SEGMENT, 0x100),
+    GPIO(GpioRegister::new, SwordPrefs.GPIO),
+    BUTTON(ButtonController.ButtonMemory::new, SwordPrefs.BUTTON),
+    COUNTER(null, SwordPrefs.COUNTER),
+    PS2(null, SwordPrefs.PS2);
 
     private Function<Integer, Memory> memorySupplier;
-    private MemoryRange[] ranges;
+    private SwordPrefs beginPref;
+    private int length;
 
-    MemoryType(MemoryRange... address) {
-        this(null, address);
+    MemoryType(Function<Integer, Memory> memorySupplier, SwordPrefs prefs) {
+        this(memorySupplier, prefs, 4);
     }
 
-    MemoryType(Function<Integer, Memory> memorySupplier, MemoryRange... address) {
-        this.ranges = address;
+    MemoryType(Function<Integer, Memory> memorySupplier, SwordPrefs prefs, int length) {
+        this.beginPref = prefs;
+        this.length = length;
         if (memorySupplier == null) {
             this.memorySupplier = ByteArrayMemory::new;
         } else {
@@ -43,19 +37,7 @@ public enum MemoryType {
     }
 
     public int getRelativeAddress(Range<Long> dataRange) {
-        return getRelativeAddress(dataRange, 0);
-    }
-
-    public int getRelativeAddress(Range<Long> dataRange, int offset) {
-        Range<Long> realDataRange = new Range<>(dataRange);
-        realDataRange.setStart(realDataRange.getStart() - offset);
-        realDataRange.setEnd(realDataRange.getEnd() - offset);
-        for (MemoryRange range : ranges) {
-            if (range.contains(realDataRange)) {
-                return range.getRelativeAddress(realDataRange.getStart());
-            }
-        }
-        return -1;
+        return (int) (dataRange.getStart() - beginPref.get());
     }
 
     public Memory generateStorage() {
@@ -72,34 +54,11 @@ public enum MemoryType {
 //    }
 
     public int getLength() {
-        return ranges[0].getLength();
+        return length;
     }
 
-    private static class MemoryRange {
-
-        Range<Long> addressRange;
-
-        MemoryRange(long address) {
-            this(address, address + 3);
-        }
-
-        MemoryRange(long begin, long end) {
-            this.addressRange = new Range<>(begin, end);
-        }
-
-        boolean contains(Range<Long> dataRange) {
-            Range<Long> realDataRange = new Range<>(dataRange);
-            realDataRange.setStart(realDataRange.getStart());
-            realDataRange.setEnd(realDataRange.getEnd());
-            return addressRange.contains(realDataRange);
-        }
-
-        int getLength() {
-            return (int) (addressRange.getEnd() - addressRange.getStart() + 1);
-        }
-
-        int getRelativeAddress(long address) {
-            return (int) (address - addressRange.getStart());
-        }
+    public void setAddressBeginOffset(long offset) {
+        beginPref.set(offset);
     }
+
 }

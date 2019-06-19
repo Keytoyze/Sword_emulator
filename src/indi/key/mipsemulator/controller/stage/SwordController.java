@@ -38,12 +38,18 @@ import javafx.stage.Stage;
 
 public class SwordController implements Initializable {
 
-    @FXML RadioButton graphModeButton;
-    @FXML RadioButton chineseModeButton;
-    @FXML RadioButton englishModeButton;
-    @FXML Button pauseButton;
-    @FXML Button singleButton;
-    @FXML Button executeButton;
+    @FXML
+    RadioButton graphModeButton;
+    @FXML
+    RadioButton chineseModeButton;
+    @FXML
+    RadioButton englishModeButton;
+    @FXML
+    Button pauseButton;
+    @FXML
+    Button singleButton;
+    @FXML
+    Button executeButton;
     @FXML
     RadioMenuItem vgaEnglishMenu;
     @FXML
@@ -257,7 +263,10 @@ public class SwordController implements Initializable {
 
     public void onSingle(ActionEvent actionEvent) {
         machine.singleStep();
-        memoryStageController.jumpPcButton.fire();
+        try {
+            memoryStageController.jumpPcButton.fire();
+        } catch (Exception ignore) {
+        }
     }
 
     public void onSingleNotJal(ActionEvent actionEvent) {
