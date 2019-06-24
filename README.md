@@ -20,7 +20,7 @@ The project supports simulating the following devices.
 ### Input
 - Buttons
 - Sliding switches
-- PS2 keyboard.
+- PS2 keyboard
 
 ### Output
 - 7-Segment digital cubes.
@@ -31,3 +31,10 @@ The project supports simulating the following devices.
 - Counter
 - Register viewer
 - Memory viewer
+
+# How to run it above the JDK 11?
+This project is developed with JDK 8. However, JDK 11 removed JavaFX in the native jdk, which is necessary 
+for this project. To run and compile it with JDK 11+, you should download [JavaFX SDK](https://openjfx.io/), 
+then use the following compiling / running parameters: 
+
+```--module-path [Java FX SDK] --add-modules javafx.controls,javafx.fxml```

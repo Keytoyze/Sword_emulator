@@ -2,7 +2,7 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>..\out\artifacts\mips_emulator_jar\mips_emulator.jar</jar>
+  <jar>..\out\artifacts\mips_emulator_jar.jar</jar>
   <outfile>..\out\ZJUQS-II SWORD Emulator.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>

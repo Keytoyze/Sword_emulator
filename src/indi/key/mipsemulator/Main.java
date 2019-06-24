@@ -6,8 +6,11 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    public static Application INSTANCE;
+
     @Override
     public void start(Stage primaryStage) {
+        INSTANCE = this;
         SwordController.run(primaryStage);
     }
 
