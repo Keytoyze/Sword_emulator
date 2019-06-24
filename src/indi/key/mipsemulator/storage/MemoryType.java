@@ -5,6 +5,7 @@ import java.util.function.Function;
 import indi.key.mipsemulator.controller.component.ButtonController;
 import indi.key.mipsemulator.controller.component.KeyboardController;
 import indi.key.mipsemulator.controller.component.SegmentController;
+import indi.key.mipsemulator.util.IoUtils;
 import indi.key.mipsemulator.util.SwordPrefs;
 
 public enum MemoryType {
@@ -20,6 +21,7 @@ public enum MemoryType {
 
     private Function<Integer, Memory> memorySupplier;
     private SwordPrefs beginPref;
+    private Long[] addresses;
     private int length;
 
     MemoryType(Function<Integer, Memory> memorySupplier, SwordPrefs prefs) {
@@ -29,6 +31,7 @@ public enum MemoryType {
     MemoryType(Function<Integer, Memory> memorySupplier, SwordPrefs prefs, int length) {
         this.beginPref = prefs;
         this.length = length;
+        this.addresses = IoUtils.stringToLong(prefs.get());
         if (memorySupplier == null) {
             this.memorySupplier = ByteArrayMemory::new;
         } else {
@@ -37,7 +40,6 @@ public enum MemoryType {
     }
 
     public int getRelativeAddress(Long address, int length) {
-        Long[] addresses = beginPref.get();
         for (Long a : addresses) {
             if (address >= a && a + this.length >= address + length) {
                 return (int) (address - a);

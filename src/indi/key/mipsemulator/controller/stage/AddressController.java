@@ -33,7 +33,7 @@ public class AddressController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         for (int i = 0; i < 7; i++) {
             addressGrid.add(new Label(memoryName[i]), 0, i);
-            final TextField textField = new TextField(MemoryType.values()[i].getPref().getAsString());
+            final TextField textField = new TextField(MemoryType.values()[i].getPref().get());
             texts[i] = textField;
             addressGrid.add(textField, 1, i);
         }
@@ -52,7 +52,8 @@ public class AddressController implements Initializable {
                 return;
             }
             for (i = 0; i < 7; i++) {
-                MemoryType.values()[i].getPref().set(texts[i].getText());
+                MemoryType.values()[i].getPref().set(
+                        IoUtils.longToString(IoUtils.stringToLong(texts[i].getText())));
             }
             FxUtils.getStage(saveButton).close();
         });

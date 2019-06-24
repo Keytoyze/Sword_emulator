@@ -27,8 +27,8 @@ public class ClockController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        divText.setText("" + SwordPrefs.DIV.get());
-        clockFrequencyText.setText("" + SwordPrefs.CLOCK_FREQUENCY.get());
+        divText.setText(SwordPrefs.DIV.get());
+        clockFrequencyText.setText(SwordPrefs.CLOCK_FREQUENCY.get());
         divText.textProperty().addListener((observable, oldValue, newValue) -> calculateFrequency());
         clockFrequencyText.textProperty().addListener((observable, oldValue, newValue) -> calculateFrequency());
         calculateFrequency();
@@ -41,8 +41,8 @@ public class ClockController implements Initializable {
                 FxUtils.showException(e);
                 return;
             }
-            SwordPrefs.DIV.set(div);
-            SwordPrefs.CLOCK_FREQUENCY.set(clock);
+            SwordPrefs.DIV.set("" + div);
+            SwordPrefs.CLOCK_FREQUENCY.set("" + clock);
             FxUtils.getStage(countFrequencyLabel).close();
         });
         cancelButton.setOnAction(event -> FxUtils.getStage(countFrequencyLabel).close());

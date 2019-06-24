@@ -203,7 +203,7 @@ public class SwordController implements Initializable {
                 new FileChooser.ExtensionFilter("二进制文件", "*.*")
         );
         try {
-            fileChooser.setInitialDirectory(new File(SwordPrefs.DEFAULT_PATH.getString()));
+            fileChooser.setInitialDirectory(new File(SwordPrefs.DEFAULT_PATH.get()));
         } catch (Exception e) {
             e.printStackTrace();
         }
