@@ -31,8 +31,3 @@ The project supports simulating the following devices.
 - Counter
 - Register viewer
 - Memory viewer
-
-## TODO
-- Support more custom preferences, such as clock frequencies.
-- Support more instructions simulation.
-- Support multilingual environment.
