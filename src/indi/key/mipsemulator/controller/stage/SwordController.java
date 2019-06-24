@@ -315,7 +315,7 @@ public class SwordController implements Initializable {
                 BitArray bitArray = BitArray.of(IoUtils.parseUnsignedInteger(s), 32);
                 VgaConfigures.setAddressOffsetRegister(bitArray);
             } catch (Exception e) {
-                LogUtils.m("Error occurs when modify VRAM offset register: " + e.getMessage());
+                LogUtils.m("Error occurs when modify VRAM_GRAPH offset register: " + e.getMessage());
             }
         }, "修改VRAM起始地址");
     }

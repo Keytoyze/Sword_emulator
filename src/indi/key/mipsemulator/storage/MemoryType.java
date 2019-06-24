@@ -3,8 +3,8 @@ package indi.key.mipsemulator.storage;
 import java.util.function.Function;
 
 import indi.key.mipsemulator.controller.component.ButtonController;
+import indi.key.mipsemulator.controller.component.KeyboardController;
 import indi.key.mipsemulator.controller.component.SegmentController;
-import indi.key.mipsemulator.model.info.Range;
 import indi.key.mipsemulator.util.SwordPrefs;
 
 public enum MemoryType {
@@ -16,7 +16,7 @@ public enum MemoryType {
     GPIO(GpioRegister::new, SwordPrefs.GPIO),
     BUTTON(ButtonController.ButtonMemory::new, SwordPrefs.BUTTON),
     COUNTER(null, SwordPrefs.COUNTER),
-    PS2(null, SwordPrefs.PS2);
+    PS2(KeyboardController.PS2Memory::new, SwordPrefs.PS2);
 
     private Function<Integer, Memory> memorySupplier;
     private SwordPrefs beginPref;
@@ -36,8 +36,11 @@ public enum MemoryType {
         }
     }
 
-    public int getRelativeAddress(Range<Long> dataRange) {
-        return (int) (dataRange.getStart() - beginPref.get());
+    public int getRelativeAddress(Long address, int length) {
+        if (address >= beginPref.get() && beginPref.get() + this.length >= address + length) {
+            return (int) (address - beginPref.get());
+        }
+        return -1;
     }
 
     public Memory generateStorage() {
