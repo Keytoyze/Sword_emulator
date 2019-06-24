@@ -7,6 +7,7 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -38,6 +39,14 @@ public class FxUtils {
             e.printStackTrace();
             return old;
         }
+    }
+
+    public static void showException(Throwable throwable) {
+        throwable.printStackTrace();
+        Alert information = new Alert(Alert.AlertType.ERROR);
+        information.setTitle(throwable.getClass().getSimpleName());
+        information.setHeaderText(throwable.getMessage());
+        information.showAndWait();
     }
 
     public static Stage getStage(Node node) {

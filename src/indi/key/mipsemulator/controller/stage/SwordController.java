@@ -323,4 +323,9 @@ public class SwordController implements Initializable {
     public void onAbout(ActionEvent actionEvent) {
         AboutController.run();
     }
+
+    public void onCustomAddress(ActionEvent actionEvent) {
+        FxUtils.newStage(null, "自定义总线外设地址", "address.fxml", null)
+                .show();
+    }
 }

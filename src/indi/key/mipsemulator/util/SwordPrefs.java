@@ -2,6 +2,8 @@ package indi.key.mipsemulator.util;
 
 import java.util.prefs.Preferences;
 
+import indi.key.mipsemulator.model.info.BitArray;
+
 public enum SwordPrefs {
 
     RAM(0x00000000L),
@@ -35,6 +37,11 @@ public enum SwordPrefs {
 
     public long get() {
         return value;
+    }
+
+    public String getAsString() {
+        return "0x" + IoUtils.completeWithZero(Integer.toHexString(BitArray.of((int) value, 32).value())
+                .toUpperCase(), 8);
     }
 
 

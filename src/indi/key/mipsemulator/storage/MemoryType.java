@@ -60,8 +60,8 @@ public enum MemoryType {
         return length;
     }
 
-    public void setAddressBeginOffset(long offset) {
-        beginPref.set(offset);
+    public SwordPrefs getPref() {
+        return beginPref;
     }
 
 }
