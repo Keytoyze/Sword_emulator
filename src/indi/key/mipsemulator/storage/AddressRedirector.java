@@ -2,20 +2,16 @@ package indi.key.mipsemulator.storage;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Arrays;
 
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
-import indi.key.mipsemulator.model.info.Range;
 import indi.key.mipsemulator.model.interfaces.MemoryListener;
 import indi.key.mipsemulator.util.IoUtils;
-import indi.key.mipsemulator.vga.VgaConfigures;
-import javafx.util.Pair;
 
 public class AddressRedirector implements Memory {
 
     private Memory[] memories;
-    private ArrayList<List<MemoryListener>> listeners;
+    private ArrayList<ArrayList<MemoryListener>> listeners;
     private boolean init = false;
 
     public AddressRedirector(File initFile) {
@@ -23,7 +19,7 @@ public class AddressRedirector implements Memory {
         listeners = new ArrayList<>(MemoryType.values().length);
         for (MemoryType memoryType : MemoryType.values()) {
             memories[memoryType.ordinal()] = memoryType.generateStorage();
-            listeners.add(memoryType.ordinal(), new LinkedList<>());
+            listeners.add(memoryType.ordinal(), new ArrayList<>());
         }
         setInitFile(initFile);
     }
@@ -43,12 +39,22 @@ public class AddressRedirector implements Memory {
 
     @Override
     public void save(long address, byte[] bytes) throws MemoryOutOfBoundsException {
-        Pair<MemoryType, Integer> memoryPair = selectMemory(new Range<>(address, address + bytes.length - 1));
-        Memory memory = memories[memoryPair.getKey().ordinal()];
-        memory.save(memoryPair.getValue(), bytes);
-        for (MemoryListener listener : listeners.get(memoryPair.getKey().ordinal())) {
-            listener.onMemoryChange(memory, memoryPair.getValue(), bytes.length);
-        }
+        selectMemory(address, bytes.length, (memoryType, relativeAddress) -> {
+            Memory memory = memories[memoryType.ordinal()];
+            boolean notify = false;
+            if (!Arrays.equals(memory.loadConstantly(relativeAddress, bytes.length), bytes)) {
+                notify = true;
+            }
+            memory.save(relativeAddress, bytes);
+            if (notify) {
+                ArrayList<MemoryListener> memoryListeners = listeners.get(memoryType.ordinal());
+                final int size = memoryListeners.size();
+                for (int i = 0; i < size; i++) {
+                    memoryListeners.get(i).onMemoryChange(memory, relativeAddress, bytes.length);
+                }
+            }
+            return null;
+        });
     }
 
     public void saveInt(long address, int data) {
@@ -57,9 +63,10 @@ public class AddressRedirector implements Memory {
 
     @Override
     public byte[] load(long address, int bytesNum) throws MemoryOutOfBoundsException {
-        Pair<MemoryType, Integer> memoryPair = selectMemory(new Range<>(address, address + bytesNum - 1));
-        Memory memory = memories[memoryPair.getKey().ordinal()];
-        return memory.load(memoryPair.getValue(), bytesNum);
+        return selectMemory(address, bytesNum, (memoryType, relativeAddress) -> {
+            Memory memory = memories[memoryType.ordinal()];
+            return memory.load(relativeAddress, bytesNum);
+        });
     }
 
     public int loadInt(long address) {
@@ -68,30 +75,32 @@ public class AddressRedirector implements Memory {
 
     @Override
     public byte[] loadConstantly(long address, int bytesNum) throws MemoryOutOfBoundsException {
-        Pair<MemoryType, Integer> memoryPair = selectMemory(new Range<>(address, address + bytesNum - 1));
-        Memory memory = memories[memoryPair.getKey().ordinal()];
-        return memory.loadConstantly(memoryPair.getValue(), bytesNum);
+        return selectMemory(address, bytesNum, (memoryType, relativeAddress) -> {
+            Memory memory = memories[memoryType.ordinal()];
+            return memory.loadConstantly(relativeAddress, bytesNum);
+        });
     }
 
     public Memory getMemory(MemoryType type) {
         return memories[type.ordinal()];
     }
 
-    private Pair<MemoryType, Integer> selectMemory(Range<Long> dataRange) throws MemoryOutOfBoundsException {
+    private byte[] selectMemory(long address, int length, MemorySelectedCallback callback)
+            throws MemoryOutOfBoundsException {
+        boolean flag = true;
+        byte[] re = null;
         for (MemoryType memoryType : MemoryType.values()) {
-            if (memoryType == MemoryType.VRAM) {
-                int relative = memoryType.getRelativeAddress(dataRange, VgaConfigures.getAddressOffset());
-                if (relative >= 0) {
-                    return new Pair<>(memoryType, relative);
-                }
-            } else {
-                int relative = memoryType.getRelativeAddress(dataRange);
-                if (relative >= 0) {
-                    return new Pair<>(memoryType, relative);
-                }
+            int relative = memoryType.getRelativeAddress(address, length);
+            if (relative >= 0) {
+                flag = false;
+                re = callback.onMemorySelected(memoryType, relative);
             }
         }
-        throw new MemoryOutOfBoundsException("Cannot access the address " + dataRange.toString());
+        if (flag) {
+            throw new MemoryOutOfBoundsException("Cannot access the address: 0x" +
+                    Long.toHexString(address).toUpperCase());
+        }
+        return re;
     }
 
     @Override
@@ -99,5 +108,9 @@ public class AddressRedirector implements Memory {
         for (Memory memory : memories) {
             memory.reset();
         }
+    }
+
+    private interface MemorySelectedCallback {
+        byte[] onMemorySelected(MemoryType memoryType, int relativeAddress);
     }
 }

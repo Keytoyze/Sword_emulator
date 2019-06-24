@@ -1,27 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioMenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.input.KeyCodeCombination?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.canvas.Canvas?><?import javafx.scene.control.Button?><?import javafx.scene.control.ComboBox?><?import javafx.scene.control.Label?><?import javafx.scene.control.Menu?><?import javafx.scene.control.MenuBar?><?import javafx.scene.control.MenuItem?><?import javafx.scene.control.RadioButton?><?import javafx.scene.control.RadioMenuItem?><?import javafx.scene.control.SeparatorMenuItem?><?import javafx.scene.control.TextArea?><?import javafx.scene.image.ImageView?><?import javafx.scene.input.KeyCodeCombination?><?import javafx.scene.layout.AnchorPane?><?import javafx.scene.layout.ColumnConstraints?><?import javafx.scene.layout.GridPane?><?import javafx.scene.layout.RowConstraints?><?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="828.0" prefWidth="1317.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="indi.key.mipsemulator.controller.stage.SwordController">
+<VBox prefHeight="828.0"
+    prefWidth="1317.0"
+    xmlns="http://javafx.com/javafx/8.0.211"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="indi.key.mipsemulator.controller.stage.SwordController">
 
     <children>
 
@@ -29,310 +14,878 @@
 
             <menus>
 
-                <Menu mnemonicParsing="false" text="文件">
+                <Menu
+                    mnemonicParsing="false"
+                    text="文件">
 
                     <items>
 
-                        <MenuItem mnemonicParsing="false" onAction="#onOpenFile" text="加载初始化文件…">
+                        <MenuItem
+                            mnemonicParsing="false"
+                            onAction="#onOpenFile"
+                            text="加载初始化文件…">
 
                             <accelerator>
 
-                                <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                <KeyCodeCombination
+                                    alt="UP"
+                                    code="O"
+                                    control="DOWN"
+                                    meta="UP"
+                                    shift="UP"
+                                    shortcut="UP" />
                             </accelerator>
 
                         </MenuItem>
 
-                        <MenuItem mnemonicParsing="false" onAction="#onReset" text="复位">
+                        <MenuItem
+                            mnemonicParsing="false"
+                            onAction="#onReset"
+                            text="复位">
 
                             <accelerator>
 
-                                <KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                <KeyCodeCombination
+                                    alt="UP"
+                                    code="R"
+                                    control="DOWN"
+                                    meta="UP"
+                                    shift="UP"
+                                    shortcut="UP" />
                             </accelerator>
                         </MenuItem>
 
                         <SeparatorMenuItem />
 
-                        <MenuItem mnemonicParsing="false" onAction="#onExit" text="退出">
+                        <MenuItem
+                            mnemonicParsing="false"
+                            onAction="#onExit"
+                            text="退出">
 
                             <accelerator>
 
-                                <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                <KeyCodeCombination
+                                    alt="UP"
+                                    code="E"
+                                    control="DOWN"
+                                    meta="UP"
+                                    shift="UP"
+                                    shortcut="UP" />
                             </accelerator>
                         </MenuItem>
                     </items>
                 </Menu>
 
-                <Menu mnemonicParsing="false" text="调试">
+                <Menu
+                    mnemonicParsing="false"
+                    text="调试">
 
                     <items>
 
-                        <MenuItem fx:id="debugExecuteMenu" accelerator="F5" mnemonicParsing="false" onAction="#onExecute" text="运行" />
+                        <MenuItem
+                            fx:id="debugExecuteMenu"
+                            accelerator="F5"
+                            mnemonicParsing="false"
+                            onAction="#onExecute"
+                            text="运行" />
 
-                        <MenuItem fx:id="debugStopMenu" accelerator="F4" mnemonicParsing="false" onAction="#onPause" text="暂停" />
+                        <MenuItem
+                            fx:id="debugStopMenu"
+                            accelerator="F4"
+                            mnemonicParsing="false"
+                            onAction="#onPause"
+                            text="暂停" />
 
                         <SeparatorMenuItem />
 
-                        <MenuItem fx:id="debugSingleMenu" accelerator="F7" mnemonicParsing="false" onAction="#onSingle" text="单步执行" />
+                        <MenuItem
+                            fx:id="debugSingleMenu"
+                            accelerator="F7"
+                            mnemonicParsing="false"
+                            onAction="#onSingle"
+                            text="单步执行" />
 
-                        <MenuItem fx:id="debugSingleWithoutJalMenu" accelerator="F8" mnemonicParsing="false" onAction="#onSingleNotJal" text="单步执行（跳过Jump）" />
+                        <MenuItem
+                            fx:id="debugSingleWithoutJalMenu"
+                            accelerator="F8"
+                            mnemonicParsing="false"
+                            onAction="#onSingleNotJal"
+                            text="单步执行（跳过Jump）" />
+
+                        <SeparatorMenuItem />
+
+                        <MenuItem
+                            mnemonicParsing="false"
+                            onAction="#onViewMemory"
+                            text="显示内存" />
                     </items>
                 </Menu>
 
-                <Menu mnemonicParsing="false" text="显示">
+                <Menu
+                    mnemonicParsing="false"
+                    text="配置">
 
                     <items>
 
-                        <RadioMenuItem fx:id="vgaEnglishMenu" accelerator="F9" mnemonicParsing="false" onAction="#onEnglishMode" text="文本模式（8×8西文）" />
+                        <RadioMenuItem
+                            fx:id="vgaEnglishMenu"
+                            accelerator="F9"
+                            mnemonicParsing="false"
+                            onAction="#onEnglishMode"
+                            text="文本模式（8×8西文）" />
 
-                        <RadioMenuItem fx:id="vgaChineseMenu" accelerator="F10" mnemonicParsing="false" onAction="#onChineseMode" text="文本模式（16×16汉字）" />
+                        <RadioMenuItem
+                            fx:id="vgaChineseMenu"
+                            accelerator="F10"
+                            mnemonicParsing="false"
+                            onAction="#onChineseMode"
+                            text="文本模式（16×16汉字）" />
 
-                        <RadioMenuItem fx:id="vgaGraphMenu" accelerator="F11" mnemonicParsing="false" onAction="#onGraphMode" selected="true" text="图形模式" />
+                        <RadioMenuItem
+                            fx:id="vgaGraphMenu"
+                            accelerator="F11"
+                            mnemonicParsing="false"
+                            onAction="#onGraphMode"
+                            selected="true"
+                            text="图形模式" />
 
                         <SeparatorMenuItem mnemonicParsing="false" />
 
-                        <MenuItem mnemonicParsing="false" onAction="#onVgaModeControl" text="模式控制寄存器…" />
+                        <MenuItem
+                            mnemonicParsing="false"
+                            onAction="#onVgaModeControl"
+                            text="VGA模式控制寄存器…" />
 
-                        <MenuItem mnemonicParsing="false" onAction="#onVgaOffsetControl" text="VRAM起始地址寄存器…" />
+
+
+                        <MenuItem
+                            mnemonicParsing="false"
+                            onAction="#onCustomClock"
+                            text="自定义计数器频率…" />
+
+                        <MenuItem
+                            mnemonicParsing="false"
+                            onAction="#onCustomAddress"
+                            text="自定义总线外设地址…" />
                     </items>
                 </Menu>
 
-                <Menu mnemonicParsing="false" text="帮助">
+                <Menu
+                    mnemonicParsing="false"
+                    text="帮助">
 
                     <items>
 
-                        <MenuItem accelerator="F1" mnemonicParsing="false" onAction="#onAbout" text="关于" />
+                        <MenuItem
+                            accelerator="F1"
+                            mnemonicParsing="false"
+                            onAction="#onAbout"
+                            text="关于" />
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
 
-        <AnchorPane fx:id="root" maxHeight="-1.0" maxWidth="-1.0" prefHeight="806.0" prefWidth="1282.0" VBox.vgrow="ALWAYS">
+        <AnchorPane
+            fx:id="root"
+            maxHeight="-1.0"
+            maxWidth="-1.0"
+            prefHeight="806.0"
+            prefWidth="1282.0"
+            VBox.vgrow="ALWAYS">
 
             <children>
 
-                <ImageView fx:id="vgaScreen" layoutX="14.0" layoutY="26.0" />
+                <ImageView
+                    fx:id="vgaScreen"
+                    layoutX="14.0"
+                    layoutY="26.0"
+                    AnchorPane.leftAnchor="8.0"
+                    AnchorPane.topAnchor="16.0" />
 
-                <GridPane fx:id="registerPane" layoutX="673.0" layoutY="47.0" prefHeight="215.0" prefWidth="633.0">
+                <Label
+                    layoutX="675.0"
+                    layoutY="22.0"
+                    text="寄存器组：" />
+
+                <GridPane
+                    fx:id="registerPane"
+                    layoutX="659.0"
+                    layoutY="52.0"
+                    prefHeight="205.0"
+                    prefWidth="636.0"
+                    AnchorPane.leftAnchor="659.0"
+                    AnchorPane.rightAnchor="22.0">
 
                     <columnConstraints>
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
                     </columnConstraints>
 
                     <rowConstraints>
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
 
-                <GridPane fx:id="slideSwitchGrid" hgap="4.0" layoutX="669.0" layoutY="411.0" prefHeight="28.0" prefWidth="415.0">
+                <ComboBox
+                    fx:id="registerModeComboBox"
+                    layoutX="1137.0"
+                    layoutY="12.0"
+                    prefWidth="150.0"
+                    AnchorPane.rightAnchor="20.0" />
+
+                <GridPane
+                    fx:id="slideSwitchGrid"
+                    hgap="4.0"
+                    layoutX="669.0"
+                    layoutY="411.0"
+                    prefHeight="28.0"
+                    prefWidth="415.0">
 
                     <columnConstraints>
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
                     </columnConstraints>
 
                     <rowConstraints>
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
 
-                <GridPane fx:id="slideLabelGrid" hgap="4.0" layoutX="669.0" layoutY="446.0" prefHeight="22.0" prefWidth="415.0">
+                <GridPane
+                    fx:id="slideLabelGrid"
+                    hgap="4.0"
+                    layoutX="669.0"
+                    layoutY="446.0"
+                    prefHeight="22.0"
+                    prefWidth="415.0"
+                    AnchorPane.leftAnchor="669.0">
 
                     <columnConstraints>
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
                     </columnConstraints>
 
                     <rowConstraints>
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
 
-                <GridPane fx:id="buttonPane" hgap="2" layoutX="1094.0" layoutY="274.0" prefHeight="223.0" prefWidth="213.0" vgap="2">
+                <GridPane
+                    fx:id="buttonPane"
+                    hgap="2"
+                    layoutX="1094.0"
+                    layoutY="261.0"
+                    prefHeight="236.0"
+                    prefWidth="213.0"
+                    vgap="2"
+                    AnchorPane.leftAnchor="1092.0"
+                    AnchorPane.rightAnchor="12.0">
 
                     <columnConstraints>
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
                     </columnConstraints>
 
                     <rowConstraints>
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            valignment="CENTER"
+                            vgrow="SOMETIMES" />
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            valignment="CENTER"
+                            vgrow="SOMETIMES" />
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            valignment="CENTER"
+                            vgrow="SOMETIMES" />
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            valignment="CENTER"
+                            vgrow="SOMETIMES" />
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            valignment="CENTER"
+                            vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
 
-                <Canvas fx:id="segmentCanvas" height="66.0" layoutX="669.0" layoutY="320.0" width="415.0" />
+                <Canvas
+                    fx:id="segmentCanvas"
+                    height="66.0"
+                    layoutX="669.0"
+                    layoutY="320.0"
+                    width="415.0"
+                    AnchorPane.leftAnchor="669.0" />
 
-                <GridPane fx:id="ledPane" hgap="4.0" layoutX="669.0" layoutY="475.0" prefHeight="22.0" prefWidth="415.0">
+                <GridPane
+                    fx:id="ledPane"
+                    hgap="4.0"
+                    layoutX="669.0"
+                    layoutY="475.0"
+                    prefHeight="22.0"
+                    prefWidth="415.0"
+                    AnchorPane.leftAnchor="669.0">
 
                     <columnConstraints>
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
 
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints
+                            halignment="CENTER"
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
                     </columnConstraints>
 
                     <rowConstraints>
 
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
 
-                <ComboBox fx:id="registerModeComboBox" layoutX="1137.0" layoutY="12.0" prefWidth="150.0" />
+                <TextArea
+                    fx:id="debugText"
+                    editable="false"
+                    layoutX="408.0"
+                    layoutY="515.0"
+                    prefHeight="270.0"
+                    prefWidth="888.0"
+                    AnchorPane.bottomAnchor="21.0"
+                    AnchorPane.leftAnchor="408.0"
+                    AnchorPane.rightAnchor="21.0"
+                    AnchorPane.topAnchor="515.0" />
 
-                <TableView fx:id="memoryTable" layoutX="14.0" layoutY="562.0" prefHeight="223.0" prefWidth="643.0" style="-fx-alignment: LEFT;">
+                <GridPane
+                    layoutX="29.0"
+                    layoutY="529.0"
+                    prefHeight="270.0"
+                    prefWidth="139.0"
+                    AnchorPane.bottomAnchor="16.0"
+                    AnchorPane.leftAnchor="16.0"
+                    AnchorPane.topAnchor="515.0">
 
-                    <columns>
+                    <columnConstraints>
 
-                        <TableColumn editable="false" minWidth="75.0" prefWidth="100.0" sortable="false" text="地址" />
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+                    </columnConstraints>
 
-                        <TableColumn editable="false" minWidth="-Infinity" prefWidth="120.0" sortable="false" text="数据" />
+                    <rowConstraints>
 
-                        <TableColumn editable="false" minWidth="-Infinity" prefWidth="250.0" sortable="false" text="汇编指令" />
-                  <TableColumn editable="false" minWidth="-Infinity" prefWidth="160.0" sortable="false" text="ASCII码" />
-                    </columns>
-                </TableView>
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
 
-                <ComboBox fx:id="memroyTypeBox" layoutX="526.0" layoutY="523.0" prefHeight="28.0" prefWidth="131.0" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
 
-                <TextField fx:id="memoryAddressText" layoutX="14.0" layoutY="522.0" prefHeight="26.0" prefWidth="164.0" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
 
-                <Button fx:id="memoryJump" layoutX="187.0" layoutY="521.0" mnemonicParsing="false" text="跳转" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
 
-                <Button fx:id="memoryLast" layoutX="259.0" layoutY="521.0" mnemonicParsing="false" text="上一页" />
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
+                    </rowConstraints>
 
-                <Button fx:id="memoryNext" layoutX="333.0" layoutY="521.0" mnemonicParsing="false" text="下一页" />
+                    <children>
 
-                <TextArea fx:id="debugText" editable="false" layoutX="674.0" layoutY="521.0" prefHeight="263.0" prefWidth="614.0" />
+                        <Button
+                            mnemonicParsing="false"
+                            onAction="#onOpenFile"
+                            prefHeight="40.0"
+                            prefWidth="180.0"
+                            text="加载（Ctrl+O)" />
 
-                <Label layoutX="675.0" layoutY="22.0" text="寄存器组：" />
+                        <Button
+                            mnemonicParsing="false"
+                            onAction="#onReset"
+                            prefHeight="40.0"
+                            prefWidth="180.0"
+                            text="复位（Ctrl+R）"
+                            GridPane.rowIndex="1" />
+
+                        <Button
+                            fx:id="executeButton"
+                            mnemonicParsing="false"
+                            onAction="#onExecute"
+                            prefHeight="40.0"
+                            prefWidth="180.0"
+                            text="运行（F5）"
+                            GridPane.rowIndex="2" />
+
+                        <Button
+                            fx:id="pauseButton"
+                            mnemonicParsing="false"
+                            onAction="#onPause"
+                            prefHeight="40.0"
+                            prefWidth="180.0"
+                            text="暂停（F4）"
+                            GridPane.rowIndex="3" />
+
+                        <Button
+                            fx:id="singleButton"
+                            mnemonicParsing="false"
+                            onAction="#onSingle"
+                            prefHeight="40.0"
+                            prefWidth="180.0"
+                            text="单步执行（F7）"
+                            GridPane.rowIndex="4" />
+                    </children>
+                </GridPane>
+
+                <GridPane
+                    layoutX="169.0"
+                    layoutY="515.0"
+                    prefHeight="284.0"
+                    prefWidth="213.0"
+                    AnchorPane.bottomAnchor="7.0"
+                    AnchorPane.leftAnchor="169.0"
+                    AnchorPane.topAnchor="515.0">
+
+                    <columnConstraints>
+
+                        <ColumnConstraints
+                            hgrow="SOMETIMES"
+                            minWidth="10.0"
+                            prefWidth="100.0" />
+                    </columnConstraints>
+
+                    <rowConstraints>
+
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
+
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
+
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
+
+                        <RowConstraints
+                            minHeight="10.0"
+                            prefHeight="30.0"
+                            vgrow="SOMETIMES" />
+                    </rowConstraints>
+
+                    <children>
+
+                        <RadioButton
+                            fx:id="englishModeButton"
+                            mnemonicParsing="false"
+                            onAction="#onEnglishMode"
+                            text="文本模式（8×8西文）" />
+
+                        <RadioButton
+                            fx:id="chineseModeButton"
+                            mnemonicParsing="false"
+                            onAction="#onChineseMode"
+                            text="文本模式（16×16汉字）"
+                            GridPane.rowIndex="1" />
+
+                        <RadioButton
+                            fx:id="graphModeButton"
+                            mnemonicParsing="false"
+                            onAction="#onGraphMode"
+                            selected="true"
+                            text="图形模式"
+                            GridPane.rowIndex="2" />
+
+                        <Button
+                            mnemonicParsing="false"
+                            onAction="#onViewMemory"
+                            prefHeight="40.0"
+                            prefWidth="180.0"
+                            text="查看内存"
+                            GridPane.rowIndex="3" />
+                    </children>
+                </GridPane>
                 <!--<ToggleButtonGroup layoutX="637.0" layoutY="632.0" prefHeight="32.0" prefWidth="47.0" selectionType="MULTIPLE">-->
                 <!--<toggles>-->
                 <!--<ToggleButton mnemonicParsing="false" selected="true" text="2" />-->

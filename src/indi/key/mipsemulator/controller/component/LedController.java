@@ -33,7 +33,7 @@ public class LedController implements TickCallback {
             if ((leds & k) != 0) {
                 circles[15 - i].setFill(Color.YELLOW);
             } else {
-                circles[15 - i].setFill(Color.GRAY);
+                circles[15 - i].setFill(Color.rgb(220, 220, 220));
             }
             k <<= 1;
         }

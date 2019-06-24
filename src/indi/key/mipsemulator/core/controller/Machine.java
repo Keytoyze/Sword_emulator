@@ -20,7 +20,11 @@ public class Machine implements Resetable {
     private AddressRedirector addressRedirector;
     private Counter counter;
     private BitArray switches;
+    private BitArray buttons;
     private BitArray led;
+    private Register hi = new Register(RegisterType.HI);
+    private Register lo = new Register(RegisterType.LO);
+
 
     public static Machine getInstance(File initFile) {
         if (instance == null) {
@@ -104,6 +108,16 @@ public class Machine implements Resetable {
         addressRedirector.reset();
         counter.endTicking();
         cpu.reset();
+        hi.reset();
+        lo.reset();
+    }
+
+    public Register getHi() {
+        return hi;
+    }
+
+    public Register getLo() {
+        return lo;
     }
 
     public Register getRegister(RegisterType registerType) {
@@ -152,6 +166,14 @@ public class Machine implements Resetable {
 
     public BitArray getSwitches() {
         return switches;
+    }
+
+    public void setButtons(BitArray bitArray) {
+        this.buttons = bitArray;
+    }
+
+    public BitArray getButtons() {
+        return buttons;
     }
 
     public void setLed(BitArray bitArray) {

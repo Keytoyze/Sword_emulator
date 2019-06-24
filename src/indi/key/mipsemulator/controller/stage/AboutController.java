@@ -5,19 +5,20 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import indi.key.mipsemulator.util.LogUtils;
-import javafx.fxml.FXMLLoader;
+import indi.key.mipsemulator.util.FxUtils;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class AboutController implements Initializable {
+    private static final String VERSION_NAME = "1.0.2 alpha";
     public Hyperlink githubLink;
+    public Label versionLabel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        versionLabel.setText(VERSION_NAME);
         githubLink.setOnAction(event -> {
             try {
                 Desktop.getDesktop().browse(new
@@ -29,17 +30,9 @@ public class AboutController implements Initializable {
     }
 
     public static void run() {
-        try {
-            Stage stage = new Stage();
-            stage.setMaximized(false);
-            stage.setResizable(false);
-            Parent root = FXMLLoader.load(InputDialogController.class.getResource("/res/layout/about.fxml"));
-            stage.setTitle("关于");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            LogUtils.m(e.toString());
-        }
+        Stage stage = FxUtils.newStage(null, "关于", "about.fxml", null);
+        stage.setMaximized(false);
+        stage.setResizable(false);
+        stage.show();
     }
 }

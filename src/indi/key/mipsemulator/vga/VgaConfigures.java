@@ -1,6 +1,8 @@
 package indi.key.mipsemulator.vga;
 
 import indi.key.mipsemulator.model.info.BitArray;
+import indi.key.mipsemulator.util.IoUtils;
+import indi.key.mipsemulator.util.SwordPrefs;
 
 public class VgaConfigures {
 
@@ -72,19 +74,23 @@ public class VgaConfigures {
     private static int mAddressOffset = 0x000C0000;
     private static Runnable onFontChangedCallback = null;
 
-    public static void setModeRegister(BitArray bitArray) {
+    static {
+        parseModeBits(getModeRegister());
+    }
+
+    private static void parseModeBits(BitArray bitArray) {
         mTextMode = !bitArray.get(31);
         mFont = Font.parse(bitArray.subArray(4, 7));
         mResolution = Resolution.parse(bitArray.subArray(0, 4));
     }
 
+    public static void setModeRegister(BitArray bitArray) {
+        SwordPrefs.VRAM_MODE.set(bitArray.toHexString());
+        parseModeBits(bitArray);
+    }
+
     public static BitArray getModeRegister() {
-        BitArray bitArray = BitArray.ofLength(32);
-        bitArray.set(31, !mTextMode);
-        bitArray.set(30, true);
-        bitArray.setTo(0, BitArray.of(mResolution.b, 4));
-        bitArray.setTo(4, BitArray.of(mFont.b, 4));
-        return bitArray;
+        return BitArray.of(IoUtils.parseUnsignedInteger(SwordPrefs.VRAM_MODE.get()), 32);
     }
 
     public static boolean isTextMode() {

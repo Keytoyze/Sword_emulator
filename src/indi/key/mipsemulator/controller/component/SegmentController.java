@@ -9,10 +9,12 @@ import indi.key.mipsemulator.storage.ByteArrayMemory;
 import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.MemoryType;
 import indi.key.mipsemulator.util.IoUtils;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+// FIXME: In some case the canvas will be killed and cannot draw anything. It seems to result from JavaFX internal widgets.
 public class SegmentController implements TickCallback {
 
     private Machine machine;
@@ -30,11 +32,17 @@ public class SegmentController implements TickCallback {
             3, 10, 22, 31, 23, 11, 15, 30
     };
     private static final int[] SEG_MAP = new int[]{
-            0, 5, 17, 25, 16, 4, 12, 24,
-            1, 7, 19, 27, 18, 6, 13, 26,
-            2, 9, 21, 29, 20, 8, 14, 28,
-            3, 11, 23, 31, 22, 10, 15, 30
+            3, 10, 22, 31, 23, 11, 15, 30,
+            2, 8, 20, 29, 21, 9, 14, 28,
+            1, 6, 18, 27, 19, 7, 13, 26,
+            0, 4, 16, 25, 17, 5, 12, 24
     };
+//    private static final int[] SEG_MAP = new int[]{
+//            0, 5, 17, 25, 16, 4, 12, 24,
+//            1, 7, 19, 27, 18, 6, 13, 26,
+//            2, 9, 21, 29, 20, 8, 14, 28,
+//            3, 11, 23, 31, 22, 10, 15, 30
+//    };
     private static final int[] LINE_INDEX = new int[]{
             0, 0, 0,
             1, 0, 1,
@@ -153,12 +161,14 @@ public class SegmentController implements TickCallback {
 
     @Override
     public void onTick(long ticks) {
-        boolean text = machine.getSwitches().get(0);
-        if (text) {
-            showText(segmentMem.getText(), (byte) ~0);
-        } else {
-            showGraph(segmentMem.getGraphLow(), segmentMem.getGraphHigh());
-        }
+        Platform.runLater(() -> {
+            boolean text = machine.getSwitches().get(0);
+            if (text) {
+                showText(segmentMem.getText(), (byte) ~0);
+            } else {
+                showGraph(segmentMem.getGraphLow(), segmentMem.getGraphHigh());
+            }
+        });
     }
 
     public static class SegmentMemory implements Memory {

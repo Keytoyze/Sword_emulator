@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Stream;
 
 import indi.key.mipsemulator.model.info.BitArray;
 
@@ -123,5 +124,18 @@ public class IoUtils {
         }
 
         return parseUnsignedInt(string.substring(index), radix);
+    }
+
+    public static String longToString(Long... longs) {
+        return Stream.of(longs)
+                .map(aLong -> "0x" + completeWithZero(Long.toHexString(aLong), 8).toUpperCase())
+                .reduce((s, s2) -> s + "; " + s2)
+                .orElse("");
+    }
+
+    public static Long[] stringToLong(String value) {
+        return Stream.of(value.split(";"))
+                .map(s -> Integer.toUnsignedLong(parseUnsignedInteger(s.trim())))
+                .toArray(Long[]::new);
     }
 }

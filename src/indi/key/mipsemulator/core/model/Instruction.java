@@ -6,10 +6,11 @@ import indi.key.mipsemulator.core.action.ITypeAction;
 import indi.key.mipsemulator.core.action.JumpAction;
 import indi.key.mipsemulator.core.action.MemoryAction;
 import indi.key.mipsemulator.core.action.RTypeAction;
-import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.exception.OverflowException;
+import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.util.IoUtils;
 
+// TODO: currently delay slots and exception handlers are not supported.
 @SuppressWarnings("unused")
 public enum Instruction {
     ADD((RTypeAction) (m, rs, rt, rd, shamt) -> {
@@ -32,28 +33,34 @@ public enum Instruction {
     }),
     // BAL, BC1F, BC1FL, ... , BC2TL
     BEQ((BranchAction) (m, rs, rt) -> rs.equals(rt)),
-    BEQL,
+    BEQL(BEQ),
     BGEZ((BranchAction) (m, rs, rt) -> rs.get() >= 0),
     BGEZAL((BranchAction) (m, rs, rt) -> rs.get() >= 0, true),
-    BGEZALL,
-    BGEZL,
+    BGEZALL(BGEZAL),
+    BGEZL(BGEZ),
     BGTZ((BranchAction) (m, rs, rt) -> rs.get() > 0),
-    BGTZL,
+    BGTZL(BGTZ),
     BLEZ((BranchAction) (m, rs, rt) -> rs.get() <= 0),
-    BLEZL,
+    BLEZL(BLEZ),
     BLTZ((BranchAction) (m, rs, rt) -> rs.get() < 0),
     BLTZAL((BranchAction) (m, rs, rt) -> rs.get() < 0, true),
-    BLTZALL,
-    BLTZL,
+    BLTZALL(BLTZAL),
+    BLTZL(BLTZ),
     BNE((BranchAction) (m, rs, rt) -> !rs.equals(rt)),
-    BNEL,
+    BNEL(BNE),
     BREAK,
     // C, ... , CLZ
     COP2,
     // CTC, ... , DERET
     DERET,
-    DIV,
-    DIVU,
+    DIV((RTypeAction) (m, rs, rt, rd, shamt) -> {
+        m.getLo().set(rs.get() / rt.get());
+        m.getHi().set(rs.get() % rt.get());
+    }),
+    DIVU((RTypeAction) (m, rs, rt, rd, shamt) -> {
+        m.getLo().set((int) (rs.getUnsigned() / rt.getUnsigned()));
+        m.getHi().set((int) (rs.getUnsigned() % rt.getUnsigned()));
+    }),
     ERET,
     J((JumpAction) (m, statement) -> statement.getAddress().value() << 2),
     JAL((JumpAction) (m, statement) -> statement.getAddress().value() << 2, true),
@@ -73,13 +80,13 @@ public enum Instruction {
     LHU((MemoryAction) (m, address, rt) -> {
         rt.set(IoUtils.bytesToUnsignedInt(m.loadMemory(address, 2)));
     }),
-    LL,
+    LL((MemoryAction) (m, address, rt) -> {
+        rt.set(m.loadInt(address));
+    }),
     LUI((ITypeAction) (m, rs, rt, immediate) -> {
         rt.set(immediate.value() << 16);
     }),
-    LW((MemoryAction) (m, address, rt) -> {
-        rt.set(m.loadInt(address));
-    }),
+    LW(LL),
     LWC1,
     LWC2,
     //    LWC3,
@@ -87,23 +94,39 @@ public enum Instruction {
     LWR,
     // MADD, ... MFC2
     MFC0,
-    MFHI,
-    MFLO,
+    MFHI((RTypeAction) (m, rs, rt, rd, shamt) -> {
+        rd.set(m.getHi().get());
+    }),
+    MFLO((RTypeAction) (m, rs, rt, rd, shamt) -> {
+        rd.set(m.getLo().get());
+    }),
     MOVE,
     MOVN,
     // MOVT
     MOVZ,
     // MSUB, ... ,MTC2
     MTC0,
-    MTHI,
-    MTLO,
-    // MUL
-    MULT,
-    MULTU,
-    NOR((RTypeAction) (m, rs, rt, rd, shamt) -> {
-        rd.set(~(rs.get() | rd.get()));
+    MTHI((RTypeAction) (m, rs, rt, rd, shamt) -> {
+        m.getHi().set(rs.get());
     }),
-    NOP(),
+    MTLO((RTypeAction) (m, rs, rt, rd, shamt) -> {
+        m.getLo().set(rs.get());
+    }),
+    // MUL
+    MULT((RTypeAction) (m, rs, rt, rd, shamt) -> {
+        long result = rs.getAsLong() * rt.getAsLong();
+        m.getLo().set((int) (result & 0xFFFFFFFFL));
+        m.getHi().set((int) (result >> 32));
+    }),
+    MULTU((RTypeAction) (m, rs, rt, rd, shamt) -> {
+        long result = rs.getUnsigned() * rt.getUnsigned();
+        m.getLo().set((int) (result & 0xFFFFFFFFL));
+        m.getHi().set((int) (result >> 32));
+    }),
+    NOR((RTypeAction) (m, rs, rt, rd, shamt) -> {
+        rd.set(~(rs.get() | rt.get()));
+    }),
+    NOP,
     OR((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rs.get() | rt.get());
     }),
@@ -112,16 +135,18 @@ public enum Instruction {
     }),
     PREF,
     SB((MemoryAction) (m, address, rt) -> {
-        m.saveMemory(address, BitArray.ofValue(rt.get()).setLength(4).bytes());
+        m.saveMemory(address, BitArray.ofValue(rt.get()).setLength(8).bytes());
     }),
-    SC,
+    SC((MemoryAction) (m, address, rt) -> {
+        m.saveInt(address, rt.get());
+    }),
     // SDBBP
     SDC1,
     SDC2,
     //    SDL,
 //    SDR,
     SH((MemoryAction) (m, address, rt) -> {
-        m.saveMemory(address, BitArray.ofValue(rt.get()).setLength(8).bytes());
+        m.saveMemory(address, BitArray.ofValue(rt.get()).setLength(16).bytes());
     }),
     SLL((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rt.get() << shamt);
@@ -160,9 +185,7 @@ public enum Instruction {
     SUBU((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.setUnsigned(rs.getUnsigned() - rt.getUnsigned());
     }),
-    SW((MemoryAction) (m, address, rt) -> {
-        m.saveInt(address, rt.get());
-    }),
+    SW(SC),
     SWC1,
     SWC2,
     SWC3,
@@ -190,6 +213,10 @@ public enum Instruction {
         this(null, false);
     }
 
+    Instruction(Instruction delegate) {
+        this(delegate.action, delegate.linkNext);
+    }
+
     Instruction(Action action) {
         this(action, false);
     }
@@ -209,6 +236,7 @@ public enum Instruction {
 
     private static int checkOverflow(long value) throws OverflowException {
         if ((int) value != value) {
+            // remove due to so many programs use ADD just like ADDU
             //throw new OverflowException("Result " + value + " overflow.");
         }
         return (int) value;

@@ -34,13 +34,14 @@ public class MemoryController implements CpuCallback, TickCallback {
     private TextField addressText;
     private Machine machine;
 
-    private static final int PAGE_NUM = 6;
+    private int pageNum;
 
     public MemoryController(TableView<MemoryBean> tableView, Machine machine,
                             Button jump, Button last, Button next, ComboBox<String> typeBox,
-                            TextField addressText) {
+                            TextField addressText, int pageNum) {
         this.tableView = tableView;
-        this.memoryListWrapper = new MemoryListWrapper(machine.getAddressRedirector());
+        this.pageNum = pageNum;
+        this.memoryListWrapper = new MemoryListWrapper(machine.getAddressRedirector(), pageNum);
         this.machine = machine;
         machine.addCpuListener(this);
         TimingRenderer.register(this);
@@ -99,7 +100,13 @@ public class MemoryController implements CpuCallback, TickCallback {
 
     @Override
     public void onCpuNext(Register pc) {
-        long pcValue = pc.getUnsigned();
+//        long pcValue = pc.getUnsigned();
+//        jumpTo(pcValue / getAddressPageRange() * getAddressPageRange());
+        refresh();
+    }
+
+    public void jumpToPc() {
+        long pcValue = machine.getRegister(RegisterType.PC).getUnsigned();
         jumpTo(pcValue / getAddressPageRange() * getAddressPageRange());
     }
 
@@ -121,8 +128,8 @@ public class MemoryController implements CpuCallback, TickCallback {
     public void refresh() {
         tableView.refresh();
         long pc = machine.getRegister(RegisterType.PC).getUnsigned();
-        long index = (pc - memoryListWrapper.getAddress()) / (getAddressPageRange() / PAGE_NUM);
-        if (0 <= index && index < PAGE_NUM) {
+        long index = (pc - memoryListWrapper.getAddress()) / (getAddressPageRange() / pageNum);
+        if (0 <= index && index < pageNum) {
             tableView.getSelectionModel().select((int) index);
         }
     }
@@ -137,7 +144,7 @@ public class MemoryController implements CpuCallback, TickCallback {
     }
 
     private long getAddressPageRange() {
-        return memoryListWrapper.getMemoryType() ? PAGE_NUM : PAGE_NUM * 4;
+        return memoryListWrapper.getMemoryType() ? pageNum : pageNum * 4;
     }
 
     private static class MemoryListWrapper extends AbstractList<MemoryBean> implements RandomAccess {
@@ -145,9 +152,11 @@ public class MemoryController implements CpuCallback, TickCallback {
         private long beginAddress = 0;
         private Memory memory;
         private boolean binary = false;
+        private int pageNum;
 
-        MemoryListWrapper(Memory memory) {
+        MemoryListWrapper(Memory memory, int pageNum) {
             this.memory = memory;
+            this.pageNum = pageNum;
         }
 
         void setAddress(long address) {
@@ -201,7 +210,7 @@ public class MemoryController implements CpuCallback, TickCallback {
 
         @Override
         public int size() {
-            return PAGE_NUM;
+            return pageNum;
         }
     }
 

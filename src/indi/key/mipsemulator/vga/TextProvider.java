@@ -34,7 +34,7 @@ public class TextProvider extends ScreenProvider {
         if (font.isEN()) {
             for (int i = address - address % 2; i < address + length; i += 4) {
                 byte[] bytes = memory.load(i + 2, 2);
-                int wordAddr = bytes[1] * 8;
+                int wordAddr = Byte.toUnsignedInt(bytes[1]) * 8;
                 BitArray colorBits = BitArray.of(bytes[0], 8);
                 int fb = colorBits.get(0) ? 255 : 0;
                 int fg = colorBits.get(1) ? 255 : 0;
@@ -59,6 +59,7 @@ public class TextProvider extends ScreenProvider {
                         fb, fg, fr, bb, bg, br, 16);
             }
         }
+
     }
 
     private void drawCharacter(int fontWidth, int fontHeight, int index, byte[] wordStocks,
@@ -72,7 +73,11 @@ public class TextProvider extends ScreenProvider {
         int marginY = indexY * fontHeight;
         byte c;
         for (int offset = 0; offset < rawWidth * rawWidth / 8; offset++) {
-            c = wordStocks[address + offset];
+            try {
+                c = wordStocks[address + offset];
+            } catch (Exception e) {
+                continue;
+            }
             int pointIndex = offset * 8;
             for (int d = 0; d < 8; d++) {
                 int pointY = marginY + pointIndex / rawWidth * foldY;

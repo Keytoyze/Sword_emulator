@@ -4,6 +4,13 @@ It's designed for ZJU SWORD.
 
 Thanks to Zhanghai for his awesome project [mipsasm](https://github.com/zhanghai/mipsasm).
 
+## Screenshot
+![Main Stage](./screenshot/MainStage.jpg)
+
+![Main Stage2](./screenshot/MainStage2.jpg)
+
+![MemoryViewer](./screenshot/MemoryViewer.jpg)
+
 ## Supported Instruction set
 See [here](https://github.com/Keytoyze/Sword_emulator/blob/master/src/indi/key/mipsemulator/core/model/Instruction.java).
 
@@ -24,10 +31,3 @@ The project supports simulating the following devices.
 - Counter
 - Register viewer
 - Memory viewer
-
-## TODO
-- Split memory viewer into a new stage.
-- Allow modifying addresses of the devices.
-- Support more custom preferences, such as clock frequencies.
-- Support more instructions simulation.
-- Support multilingual environment.

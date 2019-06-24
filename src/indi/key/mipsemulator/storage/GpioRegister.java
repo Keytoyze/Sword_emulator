@@ -32,6 +32,7 @@ public class GpioRegister implements Memory {
         bitArray.set(31, counterOut);
         bitArray.set(30, counterOut);
         bitArray.set(29, counterOut);
+        bitArray.setTo(16, machine.getButtons());
         bitArray.setTo(0, machine.getSwitches());
         readRegister.save(0, bitArray.bytes());
         return readRegister.load(address, bytesNum);
