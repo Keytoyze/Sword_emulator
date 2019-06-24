@@ -25,7 +25,7 @@ public class CpuStatistics {
         LogUtils.m("MIPS (Million Instructions Per Second): " + instructionCount / 1000000.0 / (time / 1000.0));
         LogUtils.m("Error count: " + errorCount);
         if (resentException != null) {
-            LogUtils.m("Resent Error: " + resentException.toString());
+            LogUtils.m("Resent Error: " + resentException.getMessage());
             LogUtils.m("Resent Error Address: 0x" + Long.toHexString(exceptionAddress));
         }
         LogUtils.m("============================");

@@ -304,7 +304,7 @@ public class SwordController implements Initializable {
                 BitArray bitArray = BitArray.of(IoUtils.parseUnsignedInteger(s), 32);
                 VgaConfigures.setModeRegister(bitArray);
             } catch (Exception e) {
-                LogUtils.m("Error occurs when modify VGA mode register: " + e.getMessage());
+                FxUtils.showException(e);
             }
         }, "修改VGA模式控制寄存器");
     }
@@ -326,6 +326,11 @@ public class SwordController implements Initializable {
 
     public void onCustomAddress(ActionEvent actionEvent) {
         FxUtils.newStage(null, "自定义总线外设地址", "address.fxml", null)
+                .show();
+    }
+
+    public void onCustomClock(ActionEvent actionEvent) {
+        FxUtils.newStage(null, "自定义计数器频率", "clock.fxml", null)
                 .show();
     }
 }

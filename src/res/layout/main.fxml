@@ -154,7 +154,14 @@
                         <MenuItem
                             mnemonicParsing="false"
                             onAction="#onVgaModeControl"
-                            text="模式控制寄存器…" />
+                            text="VGA模式控制寄存器…" />
+
+
+
+                        <MenuItem
+                            mnemonicParsing="false"
+                            onAction="#onCustomClock"
+                            text="自定义计数器频率…" />
 
                         <MenuItem
                             mnemonicParsing="false"

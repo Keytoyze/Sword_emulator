@@ -98,7 +98,7 @@ public class AddressRedirector implements Memory {
         }
         if (flag) {
             throw new MemoryOutOfBoundsException("Cannot access the address: 0x" +
-                    Long.toHexString(address));
+                    Long.toHexString(address).toUpperCase());
         }
         return re;
     }

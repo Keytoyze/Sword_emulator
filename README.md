@@ -33,7 +33,6 @@ The project supports simulating the following devices.
 - Memory viewer
 
 ## TODO
-- Allow modifying addresses of the devices.
 - Support more custom preferences, such as clock frequencies.
 - Support more instructions simulation.
 - Support multilingual environment.

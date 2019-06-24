@@ -13,7 +13,11 @@ public enum SwordPrefs {
     GPIO(0xFFFFFF00L),
     BUTTON(0xFFFFFC00L),
     COUNTER(0xFFFFFF04L),
-    PS2(0xFFFFD000L);
+    PS2(0xFFFFD000L),
+
+    CLOCK_FREQUENCY(50),
+    DIV(8);
+
 
     private static Preferences preferences = null;
 
@@ -30,9 +34,9 @@ public enum SwordPrefs {
         value = getPrefs().getLong(name(), defaultValue);
     }
 
-    public void set(long value) {
-        this.value = value;
-        getPrefs().putLong(name(), value);
+    public void set(int value) {
+        this.value = Integer.toUnsignedLong(value);
+        getPrefs().putLong(name(), this.value);
     }
 
     public long get() {
@@ -42,6 +46,10 @@ public enum SwordPrefs {
     public String getAsString() {
         return "0x" + IoUtils.completeWithZero(Integer.toHexString(BitArray.of((int) value, 32).value())
                 .toUpperCase(), 8);
+    }
+
+    public BitArray getAsBits() {
+        return BitArray.of((int) value, 32);
     }
 
 
