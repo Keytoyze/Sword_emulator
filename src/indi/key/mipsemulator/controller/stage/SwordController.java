@@ -1,6 +1,10 @@
 package indi.key.mipsemulator.controller.stage;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -349,5 +353,23 @@ public class SwordController implements Initializable {
     public void onCustomClock(ActionEvent actionEvent) {
         FxUtils.newStage(null, "自定义计数器频率", "clock.fxml", null)
                 .show();
+    }
+
+    public void onHelp(ActionEvent actionEvent) {
+        try {
+            final File tempFile = File.createTempFile(getClass().getSimpleName() + "_usage", ".pdf");
+            InputStream is = getClass().getResource("/res/document/document.pdf").openStream();
+            FileOutputStream fos = new FileOutputStream(tempFile);
+            byte[] b = new byte[5];
+            int len;
+            while ((len = is.read(b)) != -1) {
+                fos.write(b, 0, len);
+            }
+            fos.flush();
+            fos.close();
+            Desktop.getDesktop().open(tempFile);
+        } catch (IOException e) {
+            FxUtils.showException(e);
+        }
     }
 }
