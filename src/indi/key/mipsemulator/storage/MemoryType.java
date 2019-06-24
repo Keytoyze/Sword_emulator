@@ -37,8 +37,11 @@ public enum MemoryType {
     }
 
     public int getRelativeAddress(Long address, int length) {
-        if (address >= beginPref.get() && beginPref.get() + this.length >= address + length) {
-            return (int) (address - beginPref.get());
+        Long[] addresses = beginPref.get();
+        for (Long a : addresses) {
+            if (address >= a && a + this.length >= address + length) {
+                return (int) (address - a);
+            }
         }
         return -1;
     }

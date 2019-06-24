@@ -38,11 +38,13 @@ public class AddressController implements Initializable {
             addressGrid.add(textField, 1, i);
         }
         saveButton.setOnAction(event -> {
-            int[] newAddresses = new int[7];
             int i = 0;
             try {
                 for (; i < 7; i++) {
-                    newAddresses[i] = IoUtils.parseUnsignedInteger(texts[i].getText());
+                    String[] splited = texts[i].getText().split(";");
+                    for (String s : splited) {
+                        IoUtils.parseUnsignedInteger(s.trim());
+                    }
                 }
             } catch (Exception e) {
                 FxUtils.showException(new IllegalArgumentException("Fail to parse memory: " +
@@ -50,7 +52,7 @@ public class AddressController implements Initializable {
                 return;
             }
             for (i = 0; i < 7; i++) {
-                MemoryType.values()[i].getPref().set(newAddresses[i]);
+                MemoryType.values()[i].getPref().set(texts[i].getText());
             }
             FxUtils.getStage(saveButton).close();
         });

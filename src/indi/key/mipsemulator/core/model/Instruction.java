@@ -80,13 +80,13 @@ public enum Instruction {
     LHU((MemoryAction) (m, address, rt) -> {
         rt.set(IoUtils.bytesToUnsignedInt(m.loadMemory(address, 2)));
     }),
-    LL(Instruction.LW),
+    LL((MemoryAction) (m, address, rt) -> {
+        rt.set(m.loadInt(address));
+    }),
     LUI((ITypeAction) (m, rs, rt, immediate) -> {
         rt.set(immediate.value() << 16);
     }),
-    LW((MemoryAction) (m, address, rt) -> {
-        rt.set(m.loadInt(address));
-    }),
+    LW(LL),
     LWC1,
     LWC2,
     //    LWC3,
@@ -137,7 +137,9 @@ public enum Instruction {
     SB((MemoryAction) (m, address, rt) -> {
         m.saveMemory(address, BitArray.ofValue(rt.get()).setLength(8).bytes());
     }),
-    SC(Instruction.SW),
+    SC((MemoryAction) (m, address, rt) -> {
+        m.saveInt(address, rt.get());
+    }),
     // SDBBP
     SDC1,
     SDC2,
@@ -183,9 +185,7 @@ public enum Instruction {
     SUBU((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.setUnsigned(rs.getUnsigned() - rt.getUnsigned());
     }),
-    SW((MemoryAction) (m, address, rt) -> {
-        m.saveInt(address, rt.get());
-    }),
+    SW(SC),
     SWC1,
     SWC2,
     SWC3,

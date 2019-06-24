@@ -84,7 +84,7 @@ public class VgaConfigures {
     }
 
     public static void setModeRegister(BitArray bitArray) {
-        SwordPrefs.VRAM_MODE.set(bitArray.value());
+        SwordPrefs.VRAM_MODE.set(Long.valueOf(bitArray.value()));
         parseModeBits(bitArray);
     }
 

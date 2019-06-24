@@ -51,8 +51,9 @@ public class Counter implements TickCallback {
         byte[] bytes = counterMem.load(0, 4);
         long currentTime = System.currentTimeMillis();
         long interval = currentTime - timeStamp;
-        double ticks = Integer.toUnsignedLong(IoUtils.bytesToInt(bytes)) - interval / Math.pow(2, SwordPrefs.DIV.get()) *
-                SwordPrefs.CLOCK_FREQUENCY.get() * 1000;
+        double ticks = Integer.toUnsignedLong(IoUtils.bytesToInt(bytes)) - interval / Math.pow(2,
+                SwordPrefs.DIV.get()[0]) *
+                SwordPrefs.CLOCK_FREQUENCY.get()[0] * 1000;
         //LogUtils.i(Integer.toUnsignedLong(IoUtils.bytesToInt(IoUtils.intToBytes((int) ticks, 32))), Integer.toUnsignedLong((int) ticks));
         if (ticks < 0) ticks = 0;
         timeStamp = currentTime;

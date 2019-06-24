@@ -16,6 +16,7 @@ import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.util.FxUtils;
 import indi.key.mipsemulator.util.IoUtils;
 import indi.key.mipsemulator.util.LogUtils;
+import indi.key.mipsemulator.util.SwordPrefs;
 import indi.key.mipsemulator.vga.VgaConfigures;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -201,8 +202,14 @@ public class SwordController implements Initializable {
                 new FileChooser.ExtensionFilter("COE文件", "*.coe"),
                 new FileChooser.ExtensionFilter("二进制文件", "*.*")
         );
+        try {
+            fileChooser.setInitialDirectory(new File(SwordPrefs.DEFAULT_PATH.getString()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
+            SwordPrefs.DEFAULT_PATH.set(file.getParent());
             onReset(null);
             onViewMemory(null);
             memoryStage.toBack();
