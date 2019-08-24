@@ -1,7 +1,5 @@
 package indi.key.mipsemulator.util;
 
-import com.sun.istack.internal.Nullable;
-
 import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
@@ -16,8 +14,8 @@ public class FxUtils {
     private FxUtils() {
     }
 
-    public static Stage newStage(@Nullable Stage old, String title, String fxmlName,
-                                 @Nullable String cssName) {
+    public static Stage newStage(Stage old, String title, String fxmlName,
+                                 String cssName) {
         try {
             Stage stage = old;
             if (stage == null) {

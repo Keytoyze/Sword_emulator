@@ -35,9 +35,10 @@ The project supports simulating the following devices.
 - Register viewer
 - Memory viewer
 
-# How to run it above the JDK 11?
-This project is developed with JDK 8. However, JDK 11 removed JavaFX in the native jdk, which is necessary 
-for this project. To run and compile it with JDK 11+, you should download [JavaFX SDK](https://openjfx.io/), 
-then use the following compiling / running parameters: 
-
-```--module-path [Java FX SDK] --add-modules javafx.controls,javafx.fxml```
+## Build
+This project uses [zenjava](https://github.com/javafx-maven-plugin/javafx-maven-plugin) to
+build. To run and compile it with JDK 11+, you should also download [JavaFX SDK](https://openjfx.io/)
+### Build jar
+Use ```mvn jfx:jar``` to create jar executable file. The file is under PROJECT_DIR/target/jfx/app.
+### Build native bundle
+Use ```mvn jfx:native``` to create native bundle. The files are under PROJECT_DIR/target/jfx/native.
