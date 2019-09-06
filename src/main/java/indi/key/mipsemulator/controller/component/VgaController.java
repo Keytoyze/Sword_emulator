@@ -30,7 +30,7 @@ public class VgaController implements TickCallback, Resetable {
     public VgaController(ImageView screen, Machine machine) {
         content = new WritableImage(WIDTH, HEIGHT);
         this.machine = machine;
-        placeHolder = new Image(VgaController.class.getResourceAsStream("/res/drawable/placeholder.jpg"));
+        placeHolder = new Image(VgaController.class.getResourceAsStream("/drawable/placeholder.jpg"));
         this.screen = screen;
         screen.setImage(placeHolder);
 

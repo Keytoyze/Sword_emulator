@@ -14,8 +14,8 @@ public class TextProvider extends ScreenProvider {
 
     public TextProvider(Machine machine) {
         super(machine);
-        asciiStocks = IoUtils.read("/res/font/ASCII_8.bin");
-        gbkStocks = IoUtils.read("/res/font/HZK_16.bin");
+        asciiStocks = IoUtils.read("/font/ASCII_8.bin");
+        gbkStocks = IoUtils.read("/font/HZK_16.bin");
     }
 
     private VgaConfigures.Font preFont = VgaConfigures.Font.EN_8_8;

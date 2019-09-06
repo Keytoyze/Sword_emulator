@@ -23,14 +23,14 @@ public class FxUtils {
             }
             stage.setTitle(title);
             Pane pane = FXMLLoader.load(FxUtils.class.getResource(
-                    "/res/layout/" + fxmlName));
+                    "/layout/" + fxmlName));
             Scene scene = new Scene(pane);
             if (cssName != null) {
                 scene.getStylesheets().add(FxUtils.class.getResource(
-                        "/res/layout/" + cssName).toExternalForm());
+                        "/layout/" + cssName).toExternalForm());
             }
             stage.getIcons().add(new Image(
-                    FxUtils.class.getResourceAsStream("/res/drawable/sword_128.png")));
+                    FxUtils.class.getResourceAsStream("/drawable/sword_128.png")));
             stage.setScene(scene);
             return stage;
         } catch (IOException e) {

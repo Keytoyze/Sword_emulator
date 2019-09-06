@@ -358,7 +358,7 @@ public class SwordController implements Initializable {
     public void onHelp(ActionEvent actionEvent) {
         try {
             final File tempFile = File.createTempFile(getClass().getSimpleName() + "_usage", ".pdf");
-            InputStream is = getClass().getResource("/res/document/document.pdf").openStream();
+            InputStream is = getClass().getResource("/document/document.pdf").openStream();
             FileOutputStream fos = new FileOutputStream(tempFile);
             byte[] b = new byte[5];
             int len;
