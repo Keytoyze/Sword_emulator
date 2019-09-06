@@ -177,10 +177,17 @@
                     <items>
 
                         <MenuItem
+                            accelerator="F2"
+                            mnemonicParsing="false"
+                            onAction="#onHelp"
+                            text="模拟器使用说明" />
+
+                        <MenuItem
                             accelerator="F1"
                             mnemonicParsing="false"
                             onAction="#onAbout"
                             text="关于" />
+
                     </items>
                 </Menu>
             </menus>

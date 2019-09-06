@@ -1,9 +1,15 @@
 package indi.key.mipsemulator.controller.stage;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import indi.key.mipsemulator.Main;
 import indi.key.mipsemulator.controller.component.ButtonController;
 import indi.key.mipsemulator.controller.component.KeyboardController;
 import indi.key.mipsemulator.controller.component.LedController;
@@ -113,9 +119,17 @@ public class SwordController implements Initializable {
         setUpControllers();
         setUpMenu();
 
+        List<String> params = Main.INSTANCE.getParameters().getRaw();
+        if (params.size() != 0) {
+            openFile(new File(params.get(0)));
+        }
+
         primaryStage.setOnCloseRequest(event -> {
-            instance = null;
-            primaryStage = null;
+            if (Platform.isImplicitExit()) {
+                instance = null;
+                primaryStage = null;
+                Main.INSTANCE = null;
+            }
             if (memoryStage != null && memoryStage.isShowing()) {
                 memoryStage.close();
             }
@@ -124,6 +138,13 @@ public class SwordController implements Initializable {
                 machine.exitLoop();
             }
         });
+    }
+
+    public void toFront() {
+        if (primaryStage != null) {
+            primaryStage.show();
+            primaryStage.toFront();
+        }
     }
 
     public static SwordController getInstance() {
@@ -209,25 +230,29 @@ public class SwordController implements Initializable {
         }
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
-            SwordPrefs.DEFAULT_PATH.set(file.getParent());
-            onReset(null);
-            onViewMemory(null);
-            memoryStage.toBack();
-            if (machine.isLooping()) {
-                onPause(actionEvent);
-            }
-            try {
-                machine = Machine.getInstance(file);
-                LogUtils.m("Load file: " + file.getName());
-            } catch (Exception e) {
-                String[] reasons = e.getMessage().split(":");
-                LogUtils.m("Fail to load file: " + file.getName() + ", reason: " +
-                        reasons[reasons.length - 1]);
-                machine = Machine.getInstance(null);
-            }
-            if (memoryStageController != null) {
-                memoryStageController.refresh();
-            }
+            openFile(file);
+        }
+    }
+
+    public void openFile(File file) {
+        SwordPrefs.DEFAULT_PATH.set(file.getParent());
+        onReset(null);
+        onViewMemory(null);
+        memoryStage.toBack();
+        if (machine.isLooping()) {
+            onPause(null);
+        }
+        try {
+            machine = Machine.getInstance(file);
+            LogUtils.m("Load file: " + file.getName());
+        } catch (Exception e) {
+            String[] reasons = e.getMessage().split(":");
+            LogUtils.m("Fail to load file: " + file.getName() + ", reason: " +
+                    reasons[reasons.length - 1]);
+            machine = Machine.getInstance(null);
+        }
+        if (memoryStageController != null) {
+            memoryStageController.refresh();
         }
     }
 
@@ -316,17 +341,6 @@ public class SwordController implements Initializable {
         }, "修改VGA模式控制寄存器");
     }
 
-    public void onVgaOffsetControl(ActionEvent actionEvent) {
-        InputDialogController.run(VgaConfigures.getAddressOffsetRegister().toHexString(), s -> {
-            try {
-                BitArray bitArray = BitArray.of(IoUtils.parseUnsignedInteger(s), 32);
-                VgaConfigures.setAddressOffsetRegister(bitArray);
-            } catch (Exception e) {
-                LogUtils.m("Error occurs when modify VRAM_GRAPH offset register: " + e.getMessage());
-            }
-        }, "修改VRAM起始地址");
-    }
-
     public void onAbout(ActionEvent actionEvent) {
         AboutController.run();
     }
@@ -339,5 +353,23 @@ public class SwordController implements Initializable {
     public void onCustomClock(ActionEvent actionEvent) {
         FxUtils.newStage(null, "自定义计数器频率", "clock.fxml", null)
                 .show();
+    }
+
+    public void onHelp(ActionEvent actionEvent) {
+        try {
+            final File tempFile = File.createTempFile(getClass().getSimpleName() + "_usage", ".pdf");
+            InputStream is = getClass().getResource("/res/document/document.pdf").openStream();
+            FileOutputStream fos = new FileOutputStream(tempFile);
+            byte[] b = new byte[5];
+            int len;
+            while ((len = is.read(b)) != -1) {
+                fos.write(b, 0, len);
+            }
+            fos.flush();
+            fos.close();
+            Desktop.getDesktop().open(tempFile);
+        } catch (IOException e) {
+            FxUtils.showException(e);
+        }
     }
 }

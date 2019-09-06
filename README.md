@@ -11,6 +11,9 @@ Thanks to Zhanghai for his awesome project [mipsasm](https://github.com/zhanghai
 
 ![MemoryViewer](./screenshot/MemoryViewer.jpg)
 
+## usage
+See [here](https://github.com/Keytoyze/Sword_emulator/tree/master/src/res/document/document.pdf).
+
 ## Supported Instruction set
 See [here](https://github.com/Keytoyze/Sword_emulator/blob/master/src/indi/key/mipsemulator/core/model/Instruction.java).
 
@@ -20,7 +23,7 @@ The project supports simulating the following devices.
 ### Input
 - Buttons
 - Sliding switches
-- PS2 keyboard.
+- PS2 keyboard
 
 ### Output
 - 7-Segment digital cubes.
@@ -31,3 +34,11 @@ The project supports simulating the following devices.
 - Counter
 - Register viewer
 - Memory viewer
+
+## Build
+This project uses [zenjava](https://github.com/javafx-maven-plugin/javafx-maven-plugin) to
+build. To run and compile it with JDK 11+, you should also download [JavaFX SDK](https://openjfx.io/)
+### Build jar
+Use ```mvn jfx:jar``` to create jar executable file. The file is under PROJECT_DIR/target/jfx/app.
+### Build native bundle
+Use ```mvn jfx:native``` to create native bundle. The files are under PROJECT_DIR/target/jfx/native.
