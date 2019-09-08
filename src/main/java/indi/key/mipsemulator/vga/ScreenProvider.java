@@ -21,10 +21,12 @@ public abstract class ScreenProvider implements MemoryListener, Resetable, Suppl
     byte[] rgbBytes = new byte[VgaController.HEIGHT * VgaController.WIDTH * 4];
 
 
-    public ScreenProvider(Machine machine) {
-        machine.getAddressRedirector().addListener(MemoryType.VRAM, this);
+    ScreenProvider(Machine machine) {
+        machine.getAddressRedirector().addListener(getMemoryType(), this);
         reset();
     }
+
+    protected abstract MemoryType getMemoryType();
 
     @Override
     public byte[] get() {

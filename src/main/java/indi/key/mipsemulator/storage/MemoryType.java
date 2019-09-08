@@ -11,7 +11,8 @@ import indi.key.mipsemulator.util.SwordPrefs;
 public enum MemoryType {
 
     RAM(null, SwordPrefs.RAM, 0x10000),
-    VRAM(null, SwordPrefs.VRAM, 0x99000),
+    VRAM_TEXT(null, SwordPrefs.VRAM_TEXT, 80 * 60 * 2),
+    VRAM_GRAPH(null, SwordPrefs.VRAM_GRAPH, 640 * 480 * 2),
     SEGMENT(SegmentController.SegmentMemory::new,
             SwordPrefs.SEGMENT, 0x100),
     GPIO(GpioRegister::new, SwordPrefs.GPIO),
@@ -22,15 +23,15 @@ public enum MemoryType {
     private Function<Integer, Memory> memorySupplier;
     private SwordPrefs beginPref;
     private Long[] addresses;
-    private int length;
+    private int capacity;
 
     MemoryType(Function<Integer, Memory> memorySupplier, SwordPrefs prefs) {
         this(memorySupplier, prefs, 4);
     }
 
-    MemoryType(Function<Integer, Memory> memorySupplier, SwordPrefs prefs, int length) {
+    MemoryType(Function<Integer, Memory> memorySupplier, SwordPrefs prefs, int capacity) {
         this.beginPref = prefs;
-        this.length = length;
+        this.capacity = capacity;
         this.addresses = IoUtils.stringToLong(prefs.get());
         if (memorySupplier == null) {
             this.memorySupplier = ByteArrayMemory::new;
@@ -41,7 +42,7 @@ public enum MemoryType {
 
     public int getRelativeAddress(Long address, int length) {
         for (Long a : addresses) {
-            if (address >= a && a + this.length >= address + length) {
+            if (address >= a && a + this.capacity >= address + length) {
                 return (int) (address - a);
             }
         }
@@ -49,7 +50,7 @@ public enum MemoryType {
     }
 
     public Memory generateStorage() {
-        return memorySupplier.apply(getLength());
+        return memorySupplier.apply(getCapacity());
     }
 
 //    public int getRelativeAddress(long address) {
@@ -61,8 +62,8 @@ public enum MemoryType {
 //        return -1;
 //    }
 
-    public int getLength() {
-        return length;
+    public int getCapacity() {
+        return capacity;
     }
 
     public SwordPrefs getPref() {

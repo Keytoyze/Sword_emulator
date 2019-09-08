@@ -28,7 +28,7 @@ public class Cpu implements Resetable {
     private Machine machine;
 
     // For looping
-    private boolean looping;
+    private volatile boolean looping;
     private Exception resentException;
     private long exceptionAddress;
     private long startTime;
@@ -47,7 +47,7 @@ public class Cpu implements Resetable {
     @Override
     public void reset() {
         looping = false;
-        instructionCache = new Runnable[MemoryType.RAM.getLength() / 4 + 1];
+        instructionCache = new Runnable[MemoryType.RAM.getCapacity() / 4 + 1];
     }
 
     public void addCpuListener(CpuCallback callback) {

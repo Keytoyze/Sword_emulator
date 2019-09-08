@@ -5,7 +5,8 @@ import java.util.prefs.Preferences;
 public enum SwordPrefs {
 
     RAM("0x00000000"),
-    VRAM("0x000C0000"),
+    VRAM_TEXT("0x000C0000"),
+    VRAM_GRAPH("0x000C2000"),
     VRAM_MODE("0xc0000001"),
     SEGMENT("0xFFFFFE00; 0xE0000000"),
     GPIO("0xFFFFFF00; 0xF0000000"),

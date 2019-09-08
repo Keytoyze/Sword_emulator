@@ -18,6 +18,11 @@ public class TextProvider extends ScreenProvider {
         gbkStocks = IoUtils.read("/font/HZK_16.bin");
     }
 
+    @Override
+    protected MemoryType getMemoryType() {
+        return MemoryType.VRAM_TEXT;
+    }
+
     private VgaConfigures.Font preFont = VgaConfigures.Font.EN_8_8;
 
     @Override
@@ -26,13 +31,13 @@ public class TextProvider extends ScreenProvider {
         if (preFont != font) {
             reset();
             preFont = font;
-            onMemoryChange(memory, 0, MemoryType.VRAM.getLength());
+            onMemoryChange(memory, 0, MemoryType.VRAM_TEXT.getCapacity());
             return;
         }
         int fontWidth = font.getWidth();
         int fontHeight = font.getHeight();
         if (font.isEN()) {
-            for (int i = address - address % 2; i < address + length; i += 4) {
+            for (int i = address - address % 2; i + 4 <= address + length; i += 4) {
                 byte[] bytes = memory.load(i + 2, 2);
                 int wordAddr = Byte.toUnsignedInt(bytes[1]) * 8;
                 BitArray colorBits = BitArray.of(bytes[0], 8);
@@ -46,7 +51,7 @@ public class TextProvider extends ScreenProvider {
                         fb, fg, fr, bb, bg, br, 8);
             }
         } else {
-            for (int i = address - address % 4; i < address + length; i += 4) {
+            for (int i = address - address % 4; i + 4 <= address + length; i += 4) {
                 byte[] bytes = memory.load(i, 4);
                 int offset = (94 * (bytes[0] + 0x60 - 1) + (bytes[1] + 0x60 - 1)) * 32;
                 int fb = 255;

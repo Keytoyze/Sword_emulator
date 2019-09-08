@@ -24,14 +24,14 @@ public class AddressController implements Initializable {
     GridPane addressGrid;
 
     private static String[] memoryName = new String[]{
-            "RAM", "VRAM", "7-Segment", "GPIO", "Button", "Counter", "PS2 Keyboard"
+            "RAM", "VRAM_TEXT", "VRAM_GRAPH", "7-Segment", "GPIO", "Button", "Counter", "PS2 Keyboard"
     };
 
-    private TextField[] texts = new TextField[7];
+    private TextField[] texts = new TextField[memoryName.length];
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < memoryName.length; i++) {
             addressGrid.add(new Label(memoryName[i]), 0, i);
             final TextField textField = new TextField(MemoryType.values()[i].getPref().get());
             texts[i] = textField;
@@ -40,7 +40,7 @@ public class AddressController implements Initializable {
         saveButton.setOnAction(event -> {
             int i = 0;
             try {
-                for (; i < 7; i++) {
+                for (; i < memoryName.length; i++) {
                     String[] splited = texts[i].getText().split(";");
                     for (String s : splited) {
                         IoUtils.parseUnsignedInteger(s.trim());
@@ -51,7 +51,7 @@ public class AddressController implements Initializable {
                         memoryName[i] + " (" + e.getMessage() + ")"));
                 return;
             }
-            for (i = 0; i < 7; i++) {
+            for (i = 0; i < memoryName.length; i++) {
                 MemoryType.values()[i].getPref().set(
                         IoUtils.longToString(IoUtils.stringToLong(texts[i].getText())));
             }
