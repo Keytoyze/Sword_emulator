@@ -40,7 +40,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class SwordController implements Initializable {
@@ -114,7 +113,7 @@ public class SwordController implements Initializable {
         debugText.setFont(Font.font("Consolas", 20));
         Platform.runLater(() -> registerModeComboBox.requestFocus());
         LogUtils.setLogText(debugText);
-        this.machine = Machine.getInstance(null);
+        this.machine = Machine.getInstance();
 
         setUpControllers();
         setUpMenu();
@@ -133,7 +132,7 @@ public class SwordController implements Initializable {
             if (memoryStage != null && memoryStage.isShowing()) {
                 memoryStage.close();
             }
-            Machine machine = Machine.getReference();
+            Machine machine = Machine.getInstance();
             if (machine != null && machine.isLooping()) {
                 machine.exitLoop();
             }
@@ -218,42 +217,50 @@ public class SwordController implements Initializable {
     }
 
     public void onOpenFile(ActionEvent actionEvent) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("COE文件", "*.coe"),
-                new FileChooser.ExtensionFilter("二进制文件", "*.*")
-        );
-        try {
-            fileChooser.setInitialDirectory(new File(SwordPrefs.DEFAULT_PATH.get()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        File file = fileChooser.showOpenDialog(primaryStage);
-        if (file != null) {
-            openFile(file);
-        }
+//        FileChooser fileChooser = new FileChooser();
+//        fileChooser.getExtensionFilters().addAll(
+//                new FileChooser.ExtensionFilter("COE文件", "*.coe"),
+//                new FileChooser.ExtensionFilter("二进制文件", "*.*")
+//        );
+//        try {
+//            fileChooser.setInitialDirectory(new File(SwordPrefs.DEFAULT_PATH.get()));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        File file = fileChooser.showOpenDialog(primaryStage);
+//        if (file != null) {
+//            openFile(file);
+//        }
+        LoadFileController.run((ram, rom, useDelaySlot) -> {
+            if (machine.isLooping()) {
+                onPause(null);
+            }
+            try {
+                machine.setRam(ram);
+                machine.setRom(rom);
+                machine.setDelaySlot(useDelaySlot);
+                LogUtils.m("Load successfully, RAM: " + ram.getName() +
+                        (rom == null ? "" : ", ROM: " + rom.getName()) +
+                        (!useDelaySlot ? "" : ", enable delay slot"));
+            } catch (Exception e) {
+                machine.setRam(null);
+                machine.setRom(null);
+                FxUtils.showException(e);
+                return false;
+            }
+            onReset(null);
+            onViewMemory(null);
+            memoryStage.toBack();
+            if (memoryStageController != null) {
+                memoryStageController.refresh();
+            }
+            return true;
+        });
     }
 
     public void openFile(File file) {
         SwordPrefs.DEFAULT_PATH.set(file.getParent());
-        onReset(null);
-        onViewMemory(null);
-        memoryStage.toBack();
-        if (machine.isLooping()) {
-            onPause(null);
-        }
-        try {
-            machine = Machine.getInstance(file);
-            LogUtils.m("Load file: " + file.getName());
-        } catch (Exception e) {
-            String[] reasons = e.getMessage().split(":");
-            LogUtils.m("Fail to load file: " + file.getName() + ", reason: " +
-                    reasons[reasons.length - 1]);
-            machine = Machine.getInstance(null);
-        }
-        if (memoryStageController != null) {
-            memoryStageController.refresh();
-        }
+
     }
 
     public void setMemoryStageController(MemoryStageController memoryStageController) {

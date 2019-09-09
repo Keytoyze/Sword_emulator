@@ -3,10 +3,13 @@ package indi.key.mipsemulator.core.controller;
 import java.io.File;
 
 import indi.key.mipsemulator.core.model.CpuStatistics;
+import indi.key.mipsemulator.core.model.Statement;
 import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.interfaces.CpuCallback;
 import indi.key.mipsemulator.model.interfaces.Resetable;
 import indi.key.mipsemulator.storage.AddressRedirector;
+import indi.key.mipsemulator.storage.ByteArrayMemory;
+import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
 import indi.key.mipsemulator.util.LogUtils;
@@ -18,6 +21,7 @@ public class Machine implements Resetable {
     private Cpu cpu;
     private Register[] registers;
     private AddressRedirector addressRedirector;
+    private ByteArrayMemory rom = null;
     private Counter counter;
     private BitArray switches;
     private BitArray buttons;
@@ -25,22 +29,15 @@ public class Machine implements Resetable {
     private Register hi = new Register(RegisterType.HI);
     private Register lo = new Register(RegisterType.LO);
 
-
-    public static Machine getInstance(File initFile) {
+    public static Machine getInstance() {
         if (instance == null) {
-            instance = new Machine(initFile);
-        } else {
-            instance.setInitFile(initFile);
+            instance = new Machine();
         }
         return instance;
     }
 
-    public static Machine getReference() {
-        return instance;
-    }
-
-    private Machine(File initFile) {
-        this.addressRedirector = new AddressRedirector(initFile);
+    private Machine() {
+        this.addressRedirector = new AddressRedirector();
         registers = new Register[RegisterType.values().length];
         for (int i = 0; i < registers.length; i++) {
             registers[i] = new Register(RegisterType.of(i));
@@ -50,9 +47,32 @@ public class Machine implements Resetable {
         reset();
     }
 
-    private void setInitFile(File initFile) {
-        this.addressRedirector.setInitFile(initFile);
-        reset();
+    public void setRam(File ram) {
+        addressRedirector.setInitFile(ram);
+    }
+
+    public File getRam() {
+        return addressRedirector.getInitFile();
+    }
+
+    public void setRom(File romFile) {
+        if (romFile != null) {
+            this.rom = new ByteArrayMemory((int) romFile.length());
+            this.rom.setInitFile(romFile);
+        } else {
+            this.rom = null;
+        }
+    }
+
+    public File getRom() {
+        if (this.rom != null) {
+            return this.rom.getInitFile();
+        }
+        return null;
+    }
+
+    public void setDelaySlot(boolean enable) {
+        cpu.setDelaySlot(enable);
     }
 
     public void singleStep() {
@@ -106,6 +126,9 @@ public class Machine implements Resetable {
             register.reset();
         }
         addressRedirector.reset();
+        if (rom != null) {
+            rom.reset();
+        }
         counter.endTicking();
         cpu.reset();
         hi.reset();
@@ -150,6 +173,11 @@ public class Machine implements Resetable {
 
     public int loadInt(long address) {
         return addressRedirector.loadInt(address);
+    }
+
+    public Statement loadStatement(long address) {
+        Memory source = rom == null ? addressRedirector : rom;
+        return Statement.of(source.loadInt(address));
     }
 
     public void saveMemory(long address, byte[] data) {

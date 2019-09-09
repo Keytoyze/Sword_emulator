@@ -17,7 +17,8 @@ public enum SwordPrefs {
     CLOCK_FREQUENCY("50"),
     DIV("8"),
 
-    DEFAULT_PATH("");
+    DEFAULT_PATH(""),
+    DEFAULT_ROM_PATH("");
 
 
     private static Preferences preferences = null;

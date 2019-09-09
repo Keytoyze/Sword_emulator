@@ -19,9 +19,13 @@ public class ByteArrayMemory implements Memory {
         reset();
     }
 
-    void setInitFile(File initFile) {
+    public void setInitFile(File initFile) {
         this.initFile = initFile;
         reset();
+    }
+
+    public File getInitFile() {
+        return this.initFile;
     }
 
     @Override
@@ -86,12 +90,12 @@ public class ByteArrayMemory implements Memory {
             int addrInt = (int) address;
             switch (bytesNum) {
                 case 4:
-                    return new byte[] {memory[addrInt], memory[addrInt + 1], memory[addrInt + 2],
+                    return new byte[]{memory[addrInt], memory[addrInt + 1], memory[addrInt + 2],
                             memory[addrInt + 3]};
                 case 2:
-                    return new byte[] {memory[addrInt], memory[addrInt + 1]};
+                    return new byte[]{memory[addrInt], memory[addrInt + 1]};
                 case 1:
-                    return new byte[] {memory[addrInt]};
+                    return new byte[]{memory[addrInt]};
                 default:
                     return Arrays.copyOfRange(memory, addrInt, addrInt + bytesNum);
             }

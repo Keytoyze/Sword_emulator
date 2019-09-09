@@ -18,7 +18,7 @@ public class GpioRegister implements Memory {
     @Override
     public void save(long address, byte[] bytes) throws MemoryOutOfBoundsException {
         // TODO: change cursor
-        Machine machine = Machine.getReference();
+        Machine machine = Machine.getInstance();
         writeRegister.save(address, bytes);
         BitArray bitArray = BitArray.of(writeRegister.getAll());
         machine.setLed(bitArray.subArray(2, 18));
@@ -26,7 +26,7 @@ public class GpioRegister implements Memory {
 
     @Override
     public byte[] load(long address, int bytesNum) throws MemoryOutOfBoundsException {
-        Machine machine = Machine.getReference();
+        Machine machine = Machine.getInstance();
         BitArray bitArray = BitArray.of(readRegister.getAll());
         boolean counterOut = machine.getCounter().getCounterOut();
         bitArray.set(31, counterOut);

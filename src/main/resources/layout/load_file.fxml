@@ -1,46 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="267.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="indi.key.mipsemulator.controller.stage.LoadFileController">
-   <children>
-      <TabPane prefHeight="283.0" prefWidth="421.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-          <Tab text="单周期处理器">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Label layoutX="25.0" layoutY="28.0" text="数据初始化文件（RAM）：" />
-                        <TextField fx:id="singleRam" layoutX="25.0" layoutY="55.0" prefHeight="30.0" prefWidth="317.0" />
-                        <Button fx:id="singleRamChoose" layoutX="342.0" layoutY="55.0" mnemonicParsing="false" text="选择" />
-                        <Label layoutX="27.0" layoutY="106.0" text="代码初始化文件（ROM）：" />
-                        <TextField fx:id="singleRom" layoutX="27.0" layoutY="133.0" prefHeight="30.0" prefWidth="317.0" />
-                        <Button fx:id="singleRomChoose" layoutX="344.0" layoutY="133.0" mnemonicParsing="false" text="选择" />
-                        <Button fx:id="singleLoad" layoutX="184.0" layoutY="179.0" mnemonicParsing="false" text="加载" />
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-          <Tab text="多周期处理器">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Label layoutX="32.0" layoutY="55.0" text="初始化文件（RAM）：" />
-                        <TextField fx:id="multiRam" layoutX="29.0" layoutY="84.0" prefHeight="30.0" prefWidth="327.0" />
-                        <Button fx:id="multiRamChoose" layoutX="347.0" layoutY="84.0" mnemonicParsing="false" text="选择" />
-                        <Button fx:id="multiLoad" layoutX="186.0" layoutY="160.0" mnemonicParsing="false" text="加载" />
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
-   </children>
+<VBox prefHeight="267.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="indi.key.mipsemulator.controller.stage.LoadFileController">
+
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="267.0" prefWidth="404.0">
+
+        <Label layoutX="25.0" layoutY="28.0" text="RAM数据初始化文件：" />
+
+        <TextField fx:id="ramText" layoutX="25.0" layoutY="54.0" prefHeight="30.0" prefWidth="318.0" />
+
+        <Button fx:id="ramButton" layoutX="354.0" layoutY="58.0" mnemonicParsing="false" text="…" />
+
+        <TextField fx:id="romText" layoutX="25.0" layoutY="136.0" prefHeight="30.0" prefWidth="317.0" />
+
+        <Button fx:id="romButton" layoutX="354.0" layoutY="139.0" mnemonicParsing="false" text="…" />
+
+        <Button fx:id="loadButton" layoutX="191.0" layoutY="221.0" mnemonicParsing="false" text="加载" />
+
+        <CheckBox fx:id="romCheck" layoutX="25.0" layoutY="110.0" mnemonicParsing="false" text="使用ROM代码初始化文件（单周期系统）" />
+
+        <CheckBox fx:id="delaySlotCheck" layoutX="26.0" layoutY="189.0" mnemonicParsing="false" text="使用延迟槽（流水线系统）" />
+    </AnchorPane>
 </VBox>

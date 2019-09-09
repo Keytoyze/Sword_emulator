@@ -14,14 +14,13 @@ public class AddressRedirector implements Memory {
     private ArrayList<ArrayList<MemoryListener>> listeners;
     private boolean init = false;
 
-    public AddressRedirector(File initFile) {
+    public AddressRedirector() {
         memories = new Memory[MemoryType.values().length];
         listeners = new ArrayList<>(MemoryType.values().length);
         for (MemoryType memoryType : MemoryType.values()) {
             memories[memoryType.ordinal()] = memoryType.generateStorage();
             listeners.add(memoryType.ordinal(), new ArrayList<>());
         }
-        setInitFile(initFile);
     }
 
     public boolean hasInit() {
@@ -31,6 +30,10 @@ public class AddressRedirector implements Memory {
     public void setInitFile(File initFile) {
         ((ByteArrayMemory) memories[MemoryType.RAM.ordinal()]).setInitFile(initFile);
         init = initFile != null;
+    }
+
+    public File getInitFile() {
+        return ((ByteArrayMemory) memories[MemoryType.RAM.ordinal()]).getInitFile();
     }
 
     public void addListener(MemoryType listenTo, MemoryListener listener) {
@@ -67,10 +70,6 @@ public class AddressRedirector implements Memory {
             Memory memory = memories[memoryType.ordinal()];
             return memory.load(relativeAddress, bytesNum);
         });
-    }
-
-    public int loadInt(long address) {
-        return IoUtils.bytesToInt(load(address, 4));
     }
 
     @Override
