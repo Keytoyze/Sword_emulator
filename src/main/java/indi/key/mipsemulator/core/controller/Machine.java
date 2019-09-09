@@ -72,7 +72,11 @@ public class Machine implements Resetable {
     }
 
     public void setDelaySlot(boolean enable) {
-        cpu.setDelaySlot(enable);
+        cpu.delaySlotEnable = enable;
+    }
+
+    public boolean isDelaySlotEnable() {
+        return cpu.delaySlotEnable;
     }
 
     public void singleStep() {

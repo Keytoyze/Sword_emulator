@@ -38,7 +38,7 @@ public class Cpu implements Resetable {
     // Use cache to speed loop
     private Runnable[] instructionCache;
 
-    private boolean delaySlotEnable = false; // TODO
+    boolean delaySlotEnable = false; // TODO
 
     public Cpu(Machine machine) {
         this.machine = machine;
@@ -50,10 +50,6 @@ public class Cpu implements Resetable {
     public void reset() {
         looping = false;
         instructionCache = new Runnable[MemoryType.RAM.getCapacity() / 4 + 1];
-    }
-
-    public void setDelaySlot(boolean enable) {
-        this.delaySlotEnable = enable;
     }
 
     public void addCpuListener(CpuCallback callback) {

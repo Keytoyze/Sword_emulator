@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
@@ -26,14 +27,14 @@ public class LoadFileController implements Initializable {
     public TextField romText;
     public Button romButton;
     public Button loadButton;
-    public CheckBox romCheck;
+    public CheckBox multiCheck;
     public CheckBox delaySlotCheck;
-
-    private File rom = null;
+    public Label romLabel;
 
     private EventHandler<ActionEvent> onRomChecked = event -> {
-        romText.setDisable(!romCheck.isSelected());
-        romButton.setDisable(!romCheck.isSelected());
+        romText.setDisable(multiCheck.isSelected());
+        romButton.setDisable(multiCheck.isSelected());
+        romLabel.setDisable(multiCheck.isSelected());
     };
 
     @Override
@@ -41,12 +42,14 @@ public class LoadFileController implements Initializable {
         Machine machine = Machine.getInstance();
         bind(machine.getRam(), ramButton, SwordPrefs.DEFAULT_PATH, ramText);
         bind(machine.getRom(), romButton, SwordPrefs.DEFAULT_ROM_PATH, romText);
+        multiCheck.setSelected(machine.getRom() == null);
+        delaySlotCheck.setSelected(machine.isDelaySlotEnable());
 
-        romCheck.setOnAction(onRomChecked);
+        multiCheck.setOnAction(onRomChecked);
         onRomChecked.handle(null); // manual disable rom options
 
         loadButton.setOnAction(event -> {
-            File rom = romCheck.isSelected() ? new File(romText.getText()) : null;
+            File rom = multiCheck.isSelected() ? null : new File(romText.getText());
             if (callback.onLoad(new File(ramText.getText()), rom, delaySlotCheck.isSelected())) {
                 FxUtils.getStage(ramText).close();
             }
