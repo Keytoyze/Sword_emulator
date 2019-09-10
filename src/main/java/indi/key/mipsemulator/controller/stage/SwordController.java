@@ -29,9 +29,11 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.RadioMenuItem;
@@ -44,6 +46,8 @@ import javafx.stage.Stage;
 
 public class SwordController implements Initializable {
 
+    @FXML
+    Button memoryButton;
     @FXML
     RadioButton graphModeButton;
     @FXML
@@ -99,10 +103,8 @@ public class SwordController implements Initializable {
     private LedController ledController;
     private ButtonController buttonController;
     private SegmentController segmentController;
-    private MemoryStageController memoryStageController;
 
     private static Stage primaryStage;
-    private static Stage memoryStage;
     private static SwordController instance;
 
     @Override
@@ -129,9 +131,7 @@ public class SwordController implements Initializable {
                 primaryStage = null;
                 Main.INSTANCE = null;
             }
-            if (memoryStage != null && memoryStage.isShowing()) {
-                memoryStage.close();
-            }
+            MemoryStageController.closeAll();
             Machine machine = Machine.getInstance();
             if (machine != null && machine.isLooping()) {
                 machine.exitLoop();
@@ -217,43 +217,25 @@ public class SwordController implements Initializable {
     }
 
     public void onOpenFile(ActionEvent actionEvent) {
-//        FileChooser fileChooser = new FileChooser();
-//        fileChooser.getExtensionFilters().addAll(
-//                new FileChooser.ExtensionFilter("COE文件", "*.coe"),
-//                new FileChooser.ExtensionFilter("二进制文件", "*.*")
-//        );
-//        try {
-//            fileChooser.setInitialDirectory(new File(SwordPrefs.DEFAULT_PATH.get()));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        File file = fileChooser.showOpenDialog(primaryStage);
-//        if (file != null) {
-//            openFile(file);
-//        }
         LoadFileController.run((ram, rom, useDelaySlot) -> {
             if (machine.isLooping()) {
                 onPause(null);
             }
             try {
-                machine.setRam(ram);
-                machine.setRom(rom);
+                machine.setRamFile(ram);
+                machine.setRomFile(rom);
                 machine.setDelaySlot(useDelaySlot);
                 LogUtils.m("Load successfully, RAM: " + ram.getName() +
                         (rom == null ? "" : ", ROM: " + rom.getName()) +
                         (!useDelaySlot ? "" : ", enable delay slot"));
             } catch (Exception e) {
-                machine.setRam(null);
-                machine.setRom(null);
+                machine.setRamFile(null);
+                machine.setRomFile(null);
                 FxUtils.showException(e);
                 return false;
             }
             onReset(null);
-            onViewMemory(null);
-            memoryStage.toBack();
-            if (memoryStageController != null) {
-                memoryStageController.refresh();
-            }
+            MemoryStageController.refreshAll();
             return true;
         });
     }
@@ -261,10 +243,6 @@ public class SwordController implements Initializable {
     public void openFile(File file) {
         SwordPrefs.DEFAULT_PATH.set(file.getParent());
 
-    }
-
-    public void setMemoryStageController(MemoryStageController memoryStageController) {
-        this.memoryStageController = memoryStageController;
     }
 
     public void onReset(ActionEvent actionEvent) {
@@ -292,18 +270,28 @@ public class SwordController implements Initializable {
     }
 
     public void onViewMemory(Event event) {
-        if (memoryStage == null) {
-            memoryStage = FxUtils.newStage(null, "内存查看",
-                    "memory.fxml", "main.css");
+//        if (memoryStage == null) {
+//            memoryStage = FxUtils.newStage(null, "内存查看",
+//                    "memory.fxml", "main.css");
+//        }
+//        memoryStage.show();
+//        memoryStage.toFront();
+        if (machine.getRomFile() == null) {
+            MemoryStageController.viewMemory(true);
+        } else {
+            MenuItem ramViewItem = new MenuItem("查看RAM");
+            ramViewItem.setOnAction(event1 -> MemoryStageController.viewMemory(true));
+            MenuItem romViewItem = new MenuItem("查看ROM");
+            romViewItem.setOnAction(event1 -> MemoryStageController.viewMemory(false));
+            new ContextMenu(ramViewItem, romViewItem).show(memoryButton, Side.TOP, 0, 0);
         }
-        memoryStage.show();
-        memoryStage.toFront();
+
     }
 
     public void onSingle(ActionEvent actionEvent) {
         machine.singleStep();
         try {
-            memoryStageController.jumpPcButton.fire();
+            MemoryStageController.jumpToPC();
         } catch (Exception ignore) {
         }
     }

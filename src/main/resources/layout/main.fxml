@@ -157,7 +157,6 @@
                             text="VGA模式控制寄存器…" />
 
 
-
                         <MenuItem
                             mnemonicParsing="false"
                             onAction="#onCustomClock"
@@ -885,6 +884,7 @@
                             GridPane.rowIndex="2" />
 
                         <Button
+                            fx:id="memoryButton"
                             mnemonicParsing="false"
                             onAction="#onViewMemory"
                             prefHeight="40.0"

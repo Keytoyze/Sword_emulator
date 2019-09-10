@@ -47,15 +47,15 @@ public class Machine implements Resetable {
         reset();
     }
 
-    public void setRam(File ram) {
+    public void setRamFile(File ram) {
         addressRedirector.setInitFile(ram);
     }
 
-    public File getRam() {
+    public File getRamFile() {
         return addressRedirector.getInitFile();
     }
 
-    public void setRom(File romFile) {
+    public void setRomFile(File romFile) {
         if (romFile != null) {
             this.rom = new ByteArrayMemory((int) romFile.length());
             this.rom.setInitFile(romFile);
@@ -64,11 +64,15 @@ public class Machine implements Resetable {
         }
     }
 
-    public File getRom() {
+    public File getRomFile() {
         if (this.rom != null) {
             return this.rom.getInitFile();
         }
         return null;
+    }
+
+    public Memory getRom() {
+        return rom;
     }
 
     public void setDelaySlot(boolean enable) {

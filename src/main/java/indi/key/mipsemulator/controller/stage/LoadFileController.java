@@ -40,9 +40,9 @@ public class LoadFileController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Machine machine = Machine.getInstance();
-        bind(machine.getRam(), ramButton, SwordPrefs.DEFAULT_PATH, ramText);
-        bind(machine.getRom(), romButton, SwordPrefs.DEFAULT_ROM_PATH, romText);
-        multiCheck.setSelected(machine.getRom() == null);
+        bind(machine.getRamFile(), ramButton, SwordPrefs.DEFAULT_PATH, ramText);
+        bind(machine.getRomFile(), romButton, SwordPrefs.DEFAULT_ROM_PATH, romText);
+        multiCheck.setSelected(machine.getRomFile() == null);
         delaySlotCheck.setSelected(machine.isDelaySlotEnable());
 
         multiCheck.setOnAction(onRomChecked);

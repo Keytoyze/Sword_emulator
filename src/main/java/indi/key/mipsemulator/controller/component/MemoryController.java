@@ -38,10 +38,10 @@ public class MemoryController implements CpuCallback, TickCallback {
 
     public MemoryController(TableView<MemoryBean> tableView, Machine machine,
                             Button jump, Button last, Button next, ComboBox<String> typeBox,
-                            TextField addressText, int pageNum) {
+                            TextField addressText, int pageNum, Memory memory) {
         this.tableView = tableView;
         this.pageNum = pageNum;
-        this.memoryListWrapper = new MemoryListWrapper(machine.getAddressRedirector(), pageNum);
+        this.memoryListWrapper = new MemoryListWrapper(memory, pageNum);
         this.machine = machine;
         machine.addCpuListener(this);
         TimingRenderer.register(this);
