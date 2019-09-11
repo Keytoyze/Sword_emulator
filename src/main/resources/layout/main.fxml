@@ -114,10 +114,22 @@
 
                         <SeparatorMenuItem />
 
-                        <MenuItem
+                        <Menu
                             mnemonicParsing="false"
-                            onAction="#onViewMemory"
-                            text="显示内存" />
+                            text="查看内存">
+
+                            <MenuItem
+                                mnemonicParsing="false"
+                                onAction="#onViewRAM"
+                                text="查看RAM" />
+
+                            <MenuItem
+                                fx:id="romViewMenu"
+                                mnemonicParsing="false"
+                                onAction="#onViewROM"
+                                disable="true"
+                                text="查看ROM" />
+                        </Menu>
                     </items>
                 </Menu>
 

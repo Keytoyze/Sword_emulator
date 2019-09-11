@@ -10,6 +10,7 @@ import indi.key.mipsemulator.model.interfaces.Resetable;
 import indi.key.mipsemulator.storage.AddressRedirector;
 import indi.key.mipsemulator.storage.ByteArrayMemory;
 import indi.key.mipsemulator.storage.Memory;
+import indi.key.mipsemulator.storage.MemoryType;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
 import indi.key.mipsemulator.util.LogUtils;
@@ -57,7 +58,7 @@ public class Machine implements Resetable {
 
     public void setRomFile(File romFile) {
         if (romFile != null) {
-            this.rom = new ByteArrayMemory((int) romFile.length());
+            this.rom = new ByteArrayMemory(MemoryType.RAM.getCapacity());
             this.rom.setInitFile(romFile);
         } else {
             this.rom = null;

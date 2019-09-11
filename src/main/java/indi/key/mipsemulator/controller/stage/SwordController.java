@@ -47,6 +47,8 @@ import javafx.stage.Stage;
 public class SwordController implements Initializable {
 
     @FXML
+    MenuItem romViewMenu;
+    @FXML
     Button memoryButton;
     @FXML
     RadioButton graphModeButton;
@@ -235,6 +237,7 @@ public class SwordController implements Initializable {
                 return false;
             }
             onReset(null);
+            romViewMenu.setDisable(rom == null);
             MemoryStageController.refreshAll();
             return true;
         });
@@ -277,15 +280,23 @@ public class SwordController implements Initializable {
 //        memoryStage.show();
 //        memoryStage.toFront();
         if (machine.getRomFile() == null) {
-            MemoryStageController.viewMemory(true);
+            onViewRAM(event);
         } else {
             MenuItem ramViewItem = new MenuItem("查看RAM");
-            ramViewItem.setOnAction(event1 -> MemoryStageController.viewMemory(true));
+            ramViewItem.setOnAction(event1 -> onViewRAM(event1));
             MenuItem romViewItem = new MenuItem("查看ROM");
-            romViewItem.setOnAction(event1 -> MemoryStageController.viewMemory(false));
+            romViewItem.setOnAction(event1 -> onViewROM(event1));
             new ContextMenu(ramViewItem, romViewItem).show(memoryButton, Side.TOP, 0, 0);
         }
 
+    }
+
+    public void onViewRAM(Event event) {
+        MemoryStageController.viewMemory(true);
+    }
+
+    public void onViewROM(Event event) {
+        MemoryStageController.viewMemory(false);
     }
 
     public void onSingle(ActionEvent actionEvent) {
