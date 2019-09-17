@@ -32,22 +32,22 @@ public enum Instruction {
         rt.set(rs.get() & immediate.value());
     }),
     // BAL, BC1F, BC1FL, ... , BC2TL
-    BEQ((BranchAction) (m, rs, rt) -> rs.equals(rt)),
-    BEQL(BEQ),
-    BGEZ((BranchAction) (m, rs, rt) -> rs.get() >= 0),
-    BGEZAL((BranchAction) (m, rs, rt) -> rs.get() >= 0, true),
-    BGEZALL(BGEZAL),
-    BGEZL(BGEZ),
-    BGTZ((BranchAction) (m, rs, rt) -> rs.get() > 0),
-    BGTZL(BGTZ),
-    BLEZ((BranchAction) (m, rs, rt) -> rs.get() <= 0),
-    BLEZL(BLEZ),
-    BLTZ((BranchAction) (m, rs, rt) -> rs.get() < 0),
-    BLTZAL((BranchAction) (m, rs, rt) -> rs.get() < 0, true),
-    BLTZALL(BLTZAL),
-    BLTZL(BLTZ),
-    BNE((BranchAction) (m, rs, rt) -> !rs.equals(rt)),
-    BNEL(BNE),
+    BEQ((BranchAction) (m, rs, rt) -> rs.equals(rt), DelaySlotType.ALWAYS),
+    BEQL((BranchAction) (m, rs, rt) -> rs.equals(rt), DelaySlotType.LIKELY),
+    BGEZ((BranchAction) (m, rs, rt) -> rs.get() >= 0, DelaySlotType.ALWAYS),
+    BGEZAL((BranchAction) (m, rs, rt) -> rs.get() >= 0, true, DelaySlotType.ALWAYS),
+    BGEZALL((BranchAction) (m, rs, rt) -> rs.get() >= 0, true, DelaySlotType.LIKELY),
+    BGEZL((BranchAction) (m, rs, rt) -> rs.get() >= 0, DelaySlotType.LIKELY),
+    BGTZ((BranchAction) (m, rs, rt) -> rs.get() > 0, DelaySlotType.ALWAYS),
+    BGTZL((BranchAction) (m, rs, rt) -> rs.get() > 0, DelaySlotType.LIKELY),
+    BLEZ((BranchAction) (m, rs, rt) -> rs.get() <= 0, DelaySlotType.ALWAYS),
+    BLEZL((BranchAction) (m, rs, rt) -> rs.get() <= 0, DelaySlotType.LIKELY),
+    BLTZ((BranchAction) (m, rs, rt) -> rs.get() < 0, DelaySlotType.ALWAYS),
+    BLTZAL((BranchAction) (m, rs, rt) -> rs.get() < 0, true, DelaySlotType.ALWAYS),
+    BLTZALL((BranchAction) (m, rs, rt) -> rs.get() < 0, true, DelaySlotType.LIKELY),
+    BLTZL((BranchAction) (m, rs, rt) -> rs.get() < 0, DelaySlotType.LIKELY),
+    BNE((BranchAction) (m, rs, rt) -> !rs.equals(rt), DelaySlotType.ALWAYS),
+    BNEL((BranchAction) (m, rs, rt) -> !rs.equals(rt), DelaySlotType.LIKELY),
     BREAK,
     // C, ... , CLZ
     COP2,
@@ -62,10 +62,10 @@ public enum Instruction {
         m.getHi().set((int) (rs.getUnsigned() % rt.getUnsigned()));
     }),
     ERET,
-    J((JumpAction) (m, statement) -> statement.getAddress().value() << 2),
-    JAL((JumpAction) (m, statement) -> statement.getAddress().value() << 2, true),
-    JALR((JumpAction) (m, statement) -> m.getRegister(statement.getRs()).get(), true),
-    JR((JumpAction) (m, statement) -> m.getRegister(statement.getRs()).get()),
+    J((JumpAction) (m, statement) -> statement.getAddress().value() << 2, DelaySlotType.ALWAYS),
+    JAL((JumpAction) (m, statement) -> statement.getAddress().value() << 2, true, DelaySlotType.ALWAYS),
+    JALR((JumpAction) (m, statement) -> m.getRegister(statement.getRs()).get(), true, DelaySlotType.ALWAYS),
+    JR((JumpAction) (m, statement) -> m.getRegister(statement.getRs()).get(), DelaySlotType.ALWAYS),
     LB((MemoryAction) (m, address, rt) -> {
         rt.set(IoUtils.bytesToInt(m.loadMemory(address, 1)));
     }),
@@ -208,13 +208,14 @@ public enum Instruction {
 
     private Action action;
     private boolean linkNext;
+    private int delaySlotType;
 
     Instruction() {
-        this(null, false);
+        this(null, false, DelaySlotType.DISABLE);
     }
 
     Instruction(Instruction delegate) {
-        this(delegate.action, delegate.linkNext);
+        this(delegate.action, delegate.linkNext, delegate.delaySlotType);
     }
 
     Instruction(Action action) {
@@ -222,12 +223,25 @@ public enum Instruction {
     }
 
     Instruction(Action action, boolean linkNext) {
+        this(action, linkNext, DelaySlotType.DISABLE);
+    }
+
+    Instruction(Action action, int delaySlotType) {
+        this(action, false, delaySlotType);
+    }
+
+    Instruction(Action action, boolean linkNext, int delaySlotType) {
         this.action = action;
         this.linkNext = linkNext;
+        this.delaySlotType = delaySlotType;
     }
 
     public Action getAction() {
         return action;
+    }
+
+    public int getDelaySlotType() {
+        return delaySlotType;
     }
 
     public boolean isLinkNext() {
