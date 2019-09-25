@@ -187,7 +187,7 @@ public class MemoryController implements CpuCallback, TickCallback {
                         bitArray.toString().substring(2, 10) :
                         Integer.toHexString(bitArray.value()).toUpperCase();
                 Statement statement = Statement.of(bitArray.value());
-                Instruction instruction = statement.getInstruction();
+                Instruction instruction = statement.instruction;
                 String s;
                 if (instruction == Instruction.UNKNOWN || (binary && address % 4 != 0)) {
                     s = "";

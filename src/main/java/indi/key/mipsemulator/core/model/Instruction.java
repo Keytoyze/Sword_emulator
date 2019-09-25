@@ -62,10 +62,10 @@ public enum Instruction {
         m.getHi().set((int) (rs.getUnsigned() % rt.getUnsigned()));
     }),
     ERET,
-    J((JumpAction) (m, statement) -> statement.getAddress().value() << 2, DelaySlotType.ALWAYS),
-    JAL((JumpAction) (m, statement) -> statement.getAddress().value() << 2, true, DelaySlotType.ALWAYS),
-    JALR((JumpAction) (m, statement) -> m.getRegister(statement.getRs()).get(), true, DelaySlotType.ALWAYS),
-    JR((JumpAction) (m, statement) -> m.getRegister(statement.getRs()).get(), DelaySlotType.ALWAYS),
+    J((JumpAction) (m, statement) -> statement.address.value() << 2, DelaySlotType.ALWAYS),
+    JAL((JumpAction) (m, statement) -> statement.address.value() << 2, true, DelaySlotType.ALWAYS),
+    JALR((JumpAction) (m, statement) -> statement.rsReg.get(), true, DelaySlotType.ALWAYS),
+    JR((JumpAction) (m, statement) -> statement.rsReg.get(), DelaySlotType.ALWAYS),
     LB((MemoryAction) (m, address, rt) -> {
         rt.set(IoUtils.bytesToInt(m.loadMemory(address, 1)));
     }),

@@ -1,23 +1,21 @@
 package indi.key.mipsemulator.core.model;
 
+import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.disassemble.Dissambler;
 import indi.key.mipsemulator.model.info.BitArray;
+import indi.key.mipsemulator.storage.Register;
 
+public final class Statement {
 
-public class Statement {
+    public final BitArray value;
+    public final BitArray op, rs, rt, rd, shamt, func, immediate, address, cofun;
+    public final Operation operation;
+    public final Instruction instruction;
+    public final Register rsReg, rtReg, rdReg;
 
-    private BitArray value;
-    private BitArray op;
-    private BitArray rs;
-    private BitArray rt;
-    private BitArray rd;
-    private BitArray shamt;
-    private BitArray func;
-    private BitArray immediate;
-    private BitArray address;
-
-    private Statement(int word) {
+    private Statement(int word, Machine machine) {
         this.value = BitArray.of(word, 32);
+        // decode every elements here.
         this.op = value.subArray(26, 32);
         this.rs = value.subArray(21, 26);
         this.rt = value.subArray(16, 21);
@@ -26,62 +24,16 @@ public class Statement {
         this.func = value.subArray(0, 6);
         this.immediate = value.subArray(0, 16);
         this.address = value.subArray(0, 26);
+        this.cofun = value.subArray(0, 25);
+        this.operation = Operation.of(op, rs, rt, func);
+        this.instruction = operation.toInstruction();
+        this.rsReg = machine.getRegister(rs);
+        this.rtReg = machine.getRegister(rt);
+        this.rdReg = machine.getRegister(rd);
     }
 
     public static Statement of(int value) {
-        return new Statement(value);
-    }
-
-    public BitArray getValue() {
-        return value;
-    }
-
-    public BitArray getOp() {
-        return op;
-    }
-
-    public BitArray getRs() {
-        return rs;
-    }
-
-    public BitArray getRt() {
-        return rt;
-    }
-
-    public BitArray getRd() {
-        return rd;
-    }
-
-    public BitArray getCofun() {
-        return value.subArray(0, 25);
-    }
-
-    public BitArray getShamt() {
-        return shamt;
-    }
-
-    public BitArray getFunc() {
-        return func;
-    }
-
-    public BitArray getImmediate() {
-        return immediate;
-    }
-
-    public int getOffset() {
-        return immediate.integerValue();
-    }
-
-    public BitArray getAddress() {
-        return address;
-    }
-
-    public Instruction getInstruction() {
-        return Operation.of(op, rs, rt, func).toInstruction();
-    }
-
-    public Operation getOperation() {
-        return Operation.of(op, rs, rt, func);
+        return new Statement(value, Machine.getInstance());
     }
 
     @Override

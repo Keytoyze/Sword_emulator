@@ -4,17 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import indi.key.mipsemulator.core.action.Action;
-import indi.key.mipsemulator.core.action.BranchAction;
-import indi.key.mipsemulator.core.action.ITypeAction;
-import indi.key.mipsemulator.core.action.JumpAction;
-import indi.key.mipsemulator.core.action.MemoryAction;
-import indi.key.mipsemulator.core.action.RTypeAction;
 import indi.key.mipsemulator.core.model.CpuStatistics;
 import indi.key.mipsemulator.core.model.DelaySlotType;
 import indi.key.mipsemulator.core.model.Instruction;
 import indi.key.mipsemulator.core.model.Statement;
-import indi.key.mipsemulator.model.exception.NotImplementedException;
-import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.interfaces.CpuCallback;
 import indi.key.mipsemulator.model.interfaces.Resetable;
 import indi.key.mipsemulator.storage.MemoryType;
@@ -45,7 +38,7 @@ public class Cpu implements Resetable {
 
     boolean delaySlotEnable = false;
 
-    public Cpu(Machine machine) {
+    Cpu(Machine machine) {
         this.machine = machine;
         this.pc = machine.getRegister(RegisterType.PC);
         reset();
@@ -57,7 +50,7 @@ public class Cpu implements Resetable {
         instructionCache = new Runnable[MemoryType.RAM.getCapacity() / 4 + 1];
     }
 
-    public void addCpuListener(CpuCallback callback) {
+    void addCpuListener(CpuCallback callback) {
         callbackSet.add(callback);
     }
 
@@ -67,7 +60,7 @@ public class Cpu implements Resetable {
         }
     }
 
-    public boolean isLooping() {
+    boolean isLooping() {
         return looping;
     }
 
@@ -96,12 +89,12 @@ public class Cpu implements Resetable {
         }
     }
 
-    public void singleStep() {
+    void singleStep() {
         single();
         notifyListeners();
     }
 
-    public void singleStepWithoutJal() {
+    void singleStepWithoutJal() {
         int pcValue = pc.get();
         single();
         pc.set(pcValue + 4);
@@ -109,7 +102,7 @@ public class Cpu implements Resetable {
         notifyListeners();
     }
 
-    public void loop() {
+    void loop() {
         looping = true;
         instructionCount = 0;
         errorCount = 0;
@@ -132,7 +125,7 @@ public class Cpu implements Resetable {
         }).start();
     }
 
-    public CpuStatistics exitLoop() {
+    CpuStatistics exitLoop() {
         looping = false;
         //counter.endTicking();
         if (resentException != null) {
@@ -146,80 +139,32 @@ public class Cpu implements Resetable {
     private Runnable getStatementRunnable() {
         int index = pc.get();
         Statement statement = machine.loadStatement(index);
-        Instruction instruction = statement.getInstruction();
+        Instruction instruction = statement.instruction;
         Action action = instruction.getAction();
         boolean linkNext = instruction.isLinkNext();
-        int delaySlotType = instruction.getDelaySlotType();
-        Register rs = machine.getRegister(statement.getRs());
-        Register rt = machine.getRegister(statement.getRt());
-        Register rd = machine.getRegister(statement.getRd());
         Register ra = machine.getRegister(RegisterType.RA);
-        BitArray immediate = statement.getImmediate();
-        int shamt = statement.getShamt().value();
 
-        if (action instanceof RTypeAction) {
-            RTypeAction rTypeAction = (RTypeAction) action;
-            return () -> {
-                beforeExcution(pc, ra, linkNext);
-                rTypeAction.execute(machine, rs, rt, rd, shamt);
-            };
-        } else if (action instanceof ITypeAction) {
-            ITypeAction iTypeAction = (ITypeAction) action;
-            return () -> {
-                beforeExcution(pc, ra, linkNext);
-                iTypeAction.execute(machine, rs, rt, immediate);
-            };
-        } else if (action instanceof BranchAction) {
-            BranchAction branchAction = (BranchAction) action;
-            return () -> {
-                beforeExcution(pc, ra, linkNext);
-                boolean check = branchAction.check(machine, rs, rt);
-                if (check) {
-                    changeAddress(delaySlotType, pc.get() + statement.getOffset() * 4);
-                }
-            };
-        } else if (action instanceof JumpAction) {
-            JumpAction jumpAction = (JumpAction) action;
-            return () -> {
-                beforeExcution(pc, ra, linkNext);
-                changeAddress(delaySlotType, jumpAction.getNext(machine, statement));
-            };
-        } else if (action instanceof MemoryAction) {
-            MemoryAction memoryAction = (MemoryAction) action;
-            return () -> {
-                beforeExcution(pc, ra, linkNext);
-                memoryAction.execute(machine, rs.getUnsigned() + immediate.integerValue(), rt);
-            };
-        } else {
-            return () -> {
-                throw new NotImplementedException("Action " + instruction.name() + " haven't been implemented.");
-            };
-        }
+        return () -> {
+            // Move pc to loop;
+            pc.set(pc.get() + 4);
+            // Link the address to $ra
+            if (linkNext) {
+                ra.set(pc.get());
+            }
+            action.execute(machine, Cpu.this, statement);
+        };
     }
 
-    private void track(int index, Statement statement) {
-        if (!looping) {
-            LogUtils.i(index + ": " + statement.toString());
-        }
-    }
-
-    private static void beforeExcution(Register pc, Register ra, boolean linkNext) {
-        // Move pc to loop;
-        pc.set(pc.get() + 4);
-        // Link the address to $ra
-        if (linkNext) {
-            ra.set(pc.get());
-        }
-    }
-
-    private void changeAddress(int delaySlotType, long address) {
-
+    public void changeAddress(int delaySlotType, long address) {
         if (!delaySlotEnable || delaySlotType != DelaySlotType.ALWAYS) {
             pc.setUnsigned(address);
-            LogUtils.i(delaySlotType);
         } else {
             nextAddress = address;
             isInDelaySlot = false;
         }
+    }
+
+    public int getPc() {
+        return pc.get();
     }
 }

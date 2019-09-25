@@ -10,7 +10,7 @@ import indi.key.mipsemulator.model.info.BitArray;
 public class Dissambler {
 
     public static String dissambleStatement(Statement statement) {
-        Operation operation = statement.getOperation();
+        Operation operation = statement.operation;
         InstructionInformation information = operation.toInstructionInformation();
         OperandPrototype[] prototypes = information.getOperandListPrototype();
         StringBuilder stringBuilder = new StringBuilder(operation.toString());

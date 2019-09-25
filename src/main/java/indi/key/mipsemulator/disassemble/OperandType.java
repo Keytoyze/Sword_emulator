@@ -20,8 +20,8 @@ public enum OperandType {
     SHIFT_AMOUNT((bitArray, statement) -> String.valueOf(bitArray.integerValue())),
     TARGET((bitArray, statement) -> bitArray.toHexString()),
     OFFSET_BASE((bitArray, statement) ->
-            statement.getImmediate().integerValue() + "(" +
-                    RegisterType.of(statement.getRs()) + ")");
+            statement.immediate.integerValue() + "(" +
+                    RegisterType.of(statement.rs) + ")");
 
     BiFunction<BitArray, Statement, String> disassembler;
 

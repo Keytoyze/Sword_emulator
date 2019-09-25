@@ -75,16 +75,26 @@ public class IoUtils {
         }
     }
 
+    private static final BitArray CONVERT_UTIL = BitArray.ofEmpty();
+
     public static int bytesToInt(byte[] bytes) {
-        return BitArray.of(bytes).value();
+        if (bytes.length > 4) {
+            throw new IllegalArgumentException("Bytes length > 4");
+        }
+        int value = 0;
+        for (byte b : bytes) {
+            value <<= 8;
+            value |= b & 0xFF;
+        }
+        return value;
     }
 
     public static int bytesToUnsignedInt(byte[] bytes) {
-        return BitArray.of(bytes).integerValue();
+        return CONVERT_UTIL.setTo(bytesToInt(bytes), bytes.length * 8).integerValue();
     }
 
     public static byte[] intToBytes(int value, int length) {
-        return BitArray.of(value, length).bytes();
+        return CONVERT_UTIL.setTo(value, length).bytes();
     }
 
     public static String completeWithZero(String content, int length) {

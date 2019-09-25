@@ -5,6 +5,8 @@
 
 package indi.key.mipsemulator.model.info;
 
+import indi.key.mipsemulator.util.IoUtils;
+
 /**
  * Index starts from right to left.
  */
@@ -93,25 +95,7 @@ public class BitArray {
     }
 
     public static BitArray of(byte[] bytes) {
-        if (bytes.length > 4) {
-            throw new IllegalArgumentException("Bytes length > 4");
-        }
-        int value = 0;
-        for (byte b : bytes) {
-            value <<= 8;
-            value |= b & 0xFF;
-        }
-        return of(value, bytes.length * 8);/*
-        if (bytes.length > 4) {
-            throw new IllegalArgumentException("Bytes length > 4");
-        }
-        int value = 0;
-        int shamt = 0;
-        for (byte b : bytes) {
-            value |= (b & 0xFF) << shamt;
-            shamt += 8;
-        }
-        return of(value, bytes.length * 8);*/
+        return of(IoUtils.bytesToInt(bytes), bytes.length * 8);
     }
 
     public static BitArray ofInteger(int value, int length) {
@@ -297,6 +281,12 @@ public class BitArray {
             throw new IllegalArgumentException("value length > " + length + ": " + value);
         }
         this.value = value;
+        return this;
+    }
+
+    public BitArray setTo(int value, int length) {
+        this.value = value;
+        this.length = length;
         return this;
     }
 
