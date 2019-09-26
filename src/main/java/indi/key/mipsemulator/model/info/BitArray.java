@@ -234,12 +234,12 @@ public class BitArray {
     }
 
     public BitArray subArray(int fromIndex, int toIndex) {
-        checkRange(fromIndex, toIndex);
-        return BitArray.copyOf(this).rightShift(fromIndex).setLength(toIndex - fromIndex);
+        return subArray(fromIndex, toIndex, BitArray.copyOf(this));
     }
 
-    public BitArray subArray(int fromIndex) {
-        return subArray(fromIndex, length);
+    public BitArray subArray(int fromIndex, int toIndex, BitArray writtenInto) {
+        checkRange(fromIndex, toIndex);
+        return writtenInto.setAs(this).rightShift(fromIndex).setLength(toIndex - fromIndex);
     }
 
     public BitArray setTo(int index, boolean value) {

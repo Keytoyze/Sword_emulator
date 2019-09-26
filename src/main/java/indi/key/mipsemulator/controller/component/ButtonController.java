@@ -3,9 +3,9 @@ package indi.key.mipsemulator.controller.component;
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.model.info.BitArray;
-import indi.key.mipsemulator.storage.ByteArrayMemory;
 import indi.key.mipsemulator.storage.Memory;
 import indi.key.mipsemulator.storage.MemoryType;
+import indi.key.mipsemulator.storage.RegisterMemory;
 import indi.key.mipsemulator.util.LogUtils;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -67,17 +67,16 @@ public class ButtonController {
         }
     }
 
-    public static class ButtonMemory extends ByteArrayMemory {
+    public static class ButtonMemory extends RegisterMemory {
 
         public ButtonMemory(int depth) {
-            super(depth);
+            super();
         }
 
         @Override
         public byte[] load(long address, int bytesNum) throws MemoryOutOfBoundsException {
             byte[] bytes = super.load(address, bytesNum);
-            BitArray bitArray = BitArray.of(getAll()).set(31, false);
-            super.save(0, bitArray.bytes());
+            getBitArray().set(31, false);
             return bytes;
         }
     }

@@ -27,15 +27,12 @@ public class LedController implements TickCallback {
     public void onTick(long ticks) {
         BitArray led = machine.getLed();
         assert led.length() == 16;
-        int leds = led.value();
-        int k = 1;
         for (int i = 0; i < 16; i++) {
-            if ((leds & k) != 0) {
+            if (led.get(i)) {
                 circles[15 - i].setFill(Color.YELLOW);
             } else {
                 circles[15 - i].setFill(Color.rgb(220, 220, 220));
             }
-            k <<= 1;
         }
     }
 }

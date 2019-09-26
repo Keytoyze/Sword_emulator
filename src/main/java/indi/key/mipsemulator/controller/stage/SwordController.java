@@ -366,7 +366,7 @@ public class SwordController implements Initializable {
             final File tempFile = File.createTempFile(getClass().getSimpleName() + "_usage", ".pdf");
             InputStream is = getClass().getResource("/document/document.pdf").openStream();
             FileOutputStream fos = new FileOutputStream(tempFile);
-            byte[] b = new byte[5];
+            byte[] b = new byte[1024];
             int len;
             while ((len = is.read(b)) != -1) {
                 fos.write(b, 0, len);

@@ -6,12 +6,14 @@ import indi.key.mipsemulator.model.info.BitArray;
 
 public class GpioRegister implements Memory {
 
-    private ByteArrayMemory readRegister;
-    private ByteArrayMemory writeRegister;
+    private RegisterMemory readRegister;
+    private RegisterMemory writeRegister;
+
+    private BitArray ledData = BitArray.ofEmpty();
 
     public GpioRegister(int length) {
-        this.readRegister = new ByteArrayMemory(4);
-        this.writeRegister = new ByteArrayMemory(4);
+        this.readRegister = new RegisterMemory();
+        this.writeRegister = new RegisterMemory();
         reset();
     }
 
@@ -20,21 +22,21 @@ public class GpioRegister implements Memory {
         // TODO: change cursor
         Machine machine = Machine.getInstance();
         writeRegister.save(address, bytes);
-        BitArray bitArray = BitArray.of(writeRegister.getAll());
-        machine.setLed(bitArray.subArray(2, 18));
+        writeRegister.getBitArray().subArray(2, 18, ledData);
+        machine.setLed(ledData);
     }
 
     @Override
     public byte[] load(long address, int bytesNum) throws MemoryOutOfBoundsException {
         Machine machine = Machine.getInstance();
-        BitArray bitArray = BitArray.of(readRegister.getAll());
+        BitArray bitArray = readRegister.getBitArray();
         boolean counterOut = machine.getCounter().getCounterOut();
         bitArray.set(31, counterOut);
         bitArray.set(30, counterOut);
         bitArray.set(29, counterOut);
         bitArray.setTo(16, machine.getButtons());
         bitArray.setTo(0, machine.getSwitches());
-        readRegister.save(0, bitArray.bytes());
+
         return readRegister.load(address, bytesNum);
     }
 
