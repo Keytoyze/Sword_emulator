@@ -89,12 +89,17 @@ public class IoUtils {
         return value;
     }
 
-    public static int bytesToUnsignedInt(byte[] bytes) {
-        return CONVERT_UTIL.setTo(bytesToInt(bytes), bytes.length * 8).integerValue();
+    public synchronized static int bytesToUnsignedInt(byte[] bytes) {
+//        return BitArray.of(bytesToInt(bytes), bytes.length * 8).integerValue();
+        synchronized (CONVERT_UTIL) {
+            return CONVERT_UTIL.setTo(bytesToInt(bytes), bytes.length * 8).integerValue();
+        }
     }
 
-    public static byte[] intToBytes(int value, int length) {
-        return CONVERT_UTIL.setTo(value, length).bytes();
+    public synchronized static byte[] intToBytes(int value, int length) {
+        synchronized (CONVERT_UTIL) {
+            return CONVERT_UTIL.setTo(value, length).bytes();
+        }
     }
 
     public static String completeWithZero(String content, int length) {

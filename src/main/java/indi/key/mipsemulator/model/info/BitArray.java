@@ -225,9 +225,10 @@ public class BitArray {
     }
 
     public byte[] bytes() {
-        byte[] result = new byte[(int) Math.ceil(length / 8.0)];
-        for (int i = 0; i < length; i += 8) {
-            result[result.length - i / 8 - 1] = (byte) subArray(i, i + Math.min(8, length - i)).value;
+        int byteLength = length / 8 + (length % 8 == 0 ? 0 : 1);
+        byte[] result = new byte[byteLength];
+        for (int i = 0; i < byteLength; i++) {
+            result[byteLength - i - 1] = (byte) ((value >> (i * 8)) & 0xFF);
         }
         return result;
     }
@@ -287,7 +288,7 @@ public class BitArray {
     public BitArray setTo(int value, int length) {
         this.value = value;
         this.length = length;
-        return this;
+        return trimValue();
     }
 
     public BitArray setTo(int fromIndex, BitArray bitArray) {
