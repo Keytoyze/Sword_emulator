@@ -65,6 +65,7 @@ public class LoadFileController implements Initializable {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter("COE文件", "*.coe"),
+                    new FileChooser.ExtensionFilter("HEX文件", "*.hex"),
                     new FileChooser.ExtensionFilter("二进制文件", "*.*")
             );
             File selected;

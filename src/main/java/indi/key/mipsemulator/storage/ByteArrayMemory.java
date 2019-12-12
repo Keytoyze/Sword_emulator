@@ -43,6 +43,13 @@ public class ByteArrayMemory implements Memory {
                         throw new RuntimeException(e);
                     }
                     break;
+                case "hex":
+                    try (FileInputStream fileInputStream = new FileInputStream(initFile)) {
+                        content = CoeReader.hexToBytes(fileInputStream);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
                 default:
                     content = IoUtils.read(initFile);
                     break;

@@ -26,6 +26,20 @@ public class CoeReader {
 
     private static ThreadLocal<Matcher> VECTOR_IGNORE_MATCHER = RegexUtils.makeThreadLocalMatcher("[,\\s]+");
 
+    public static byte[] hexToBytes(InputStream inputStream) throws IOException {
+        String vector = IoUtils.readAsString(inputStream);
+        Matcher vectorIgnoreMatcher = VECTOR_IGNORE_MATCHER.get().reset(vector);
+        vector = vectorIgnoreMatcher.replaceAll("");
+        byte[] bytes = new byte[(int) Math.ceil(vector.length() / 2d)];
+        for (int i = 0, j = 0, k = 2; j < vector.length(); ++i, j = k, k += 2) {
+            if (k > vector.length()) {
+                k = vector.length();
+            }
+            bytes[i] = parseUnsignedByte(vector.substring(j, k), 16);
+        }
+        return bytes;
+    }
+
     public static byte[] coeToBytes(InputStream inputStream) throws IOException, CoeReaderException {
 
         String input = IoUtils.readAsString(inputStream).toLowerCase();
