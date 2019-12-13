@@ -51,9 +51,9 @@ public class KeyboardController {
         protected void beforeLoad() {
             Byte key = keyQueue.poll();
             if (key != null) {
-                content.setTo(0, 0b10000000, 8);
-                content.setTo(24, ((int) key) & 0xff, 8);
-                LogUtils.m("read PS2 data: 0x" + content.toHexString() + " (" + content.toString() + ")");
+                content.setTo(24, 0b10000000, 8);
+                content.setTo(0, ((int) key) & 0xff, 8);
+                LogUtils.m("read PS2 data: " + content.toHexString() + " (" + content.toString() + ")");
             } else {
                 content.set(31, false);
             }
