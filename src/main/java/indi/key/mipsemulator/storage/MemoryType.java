@@ -24,7 +24,8 @@ public enum MemoryType {
 
     private Function<Integer, Memory> memorySupplier;
     private SwordPrefs beginPref;
-    private Long[] addresses;
+    private long[] addresses;
+    public static MemoryType[] VALUE = values();
     private int capacity;
 
     MemoryType(Function<Integer, Memory> memorySupplier, SwordPrefs prefs) {
@@ -42,8 +43,8 @@ public enum MemoryType {
         }
     }
 
-    public int getRelativeAddress(Long address, int length) {
-        for (Long a : addresses) {
+    public int getRelativeAddress(long address, int length) {
+        for (long a : addresses) {
             if (address >= a && a + this.capacity >= address + length) {
                 return (int) (address - a);
             }

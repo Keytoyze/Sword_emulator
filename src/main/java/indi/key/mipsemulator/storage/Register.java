@@ -7,7 +7,7 @@ import indi.key.mipsemulator.model.interfaces.Resetable;
 public class Register implements Comparable<Register>, Resetable {
 
     private RegisterType registerType;
-    private Integer value;
+    private int value;
 
     public Register(RegisterType registerType) {
         this.registerType = registerType;
@@ -67,12 +67,12 @@ public class Register implements Comparable<Register>, Resetable {
         if (!(obj instanceof Register)) {
             return false;
         }
-        return ((Register) obj).value.equals(value);
+        return ((Register) obj).value == value;
     }
 
     @Override
     public int compareTo(Register o) {
-        return value.compareTo(o.value);
+        return Integer.compare(value, o.value);
     }
 
     @Override

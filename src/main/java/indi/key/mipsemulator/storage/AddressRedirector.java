@@ -10,8 +10,8 @@ public class AddressRedirector extends AlternativeMemory {
     private boolean init = false;
 
     public AddressRedirector() {
-        memories = new Memory[MemoryType.values().length];
-        for (MemoryType memoryType : MemoryType.values()) {
+        memories = new Memory[MemoryType.VALUE.length];
+        for (MemoryType memoryType : MemoryType.VALUE) {
             memories[memoryType.ordinal()] = memoryType.generateStorage();
         }
     }
@@ -38,7 +38,7 @@ public class AddressRedirector extends AlternativeMemory {
             throws MemoryOutOfBoundsException {
         boolean flag = true;
         int re = 0;
-        for (MemoryType memoryType : MemoryType.values()) {
+        for (MemoryType memoryType : MemoryType.VALUE) {
             int relative = memoryType.getRelativeAddress(address, length);
             if (relative >= 0) {
                 flag = false;

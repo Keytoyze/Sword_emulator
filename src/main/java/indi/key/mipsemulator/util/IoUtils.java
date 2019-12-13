@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.stream.Stream;
 
 import indi.key.mipsemulator.model.info.BitArray;
 
@@ -141,16 +140,23 @@ public class IoUtils {
         return parseUnsignedInt(string.substring(index), radix);
     }
 
-    public static String longToString(Long... longs) {
-        return Stream.of(longs)
-                .map(aLong -> "0x" + completeWithZero(Long.toHexString(aLong), 8).toUpperCase())
-                .reduce((s, s2) -> s + "; " + s2)
-                .orElse("");
+    public static String longToString(long[] longs) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < longs.length; i++) {
+            sb.append("0x").append(completeWithZero(Long.toHexString(longs[i]), 8).toUpperCase());
+            if (i != longs.length - 1) {
+                sb.append(";");
+            }
+        }
+        return sb.toString();
     }
 
-    public static Long[] stringToLong(String value) {
-        return Stream.of(value.split(";"))
-                .map(s -> Integer.toUnsignedLong(parseUnsignedInteger(s.trim())))
-                .toArray(Long[]::new);
+    public static long[] stringToLong(String value) {
+        String[] splited = value.split(";");
+        long[] result = new long[splited.length];
+        for (int i = 0; i < splited.length; i++) {
+            result[i] = Integer.toUnsignedLong(parseUnsignedInteger(splited[i].trim()));
+        }
+        return result;
     }
 }
