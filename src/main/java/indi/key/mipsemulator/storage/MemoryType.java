@@ -7,12 +7,14 @@ import indi.key.mipsemulator.controller.component.KeyboardController;
 import indi.key.mipsemulator.controller.component.SegmentController;
 import indi.key.mipsemulator.util.IoUtils;
 import indi.key.mipsemulator.util.SwordPrefs;
+import indi.key.mipsemulator.vga.GraphProvider;
+import indi.key.mipsemulator.vga.TextProvider;
 
 public enum MemoryType {
 
     RAM(null, SwordPrefs.RAM, 0x10000),
-    VRAM_TEXT(null, SwordPrefs.VRAM_TEXT, 80 * 60 * 2),
-    VRAM_GRAPH(null, SwordPrefs.VRAM_GRAPH, 640 * 480 * 2),
+    VRAM_TEXT(TextProvider.TextVram::new, SwordPrefs.VRAM_TEXT, 80 * 60 * 2),
+    VRAM_GRAPH(GraphProvider.GraphVram::new, SwordPrefs.VRAM_GRAPH, 640 * 480 * 2),
     SEGMENT(SegmentController.SegmentMemory::new,
             SwordPrefs.SEGMENT, 0x100),
     GPIO(GpioRegister::new, SwordPrefs.GPIO),
@@ -34,7 +36,7 @@ public enum MemoryType {
         this.capacity = capacity;
         this.addresses = IoUtils.stringToLong(prefs.get());
         if (memorySupplier == null) {
-            this.memorySupplier = ByteArrayMemory::new;
+            this.memorySupplier = capacity == 4 ? integer -> new RegisterMemory() :  ByteArrayMemory::new;
         } else {
             this.memorySupplier = memorySupplier;
         }

@@ -176,25 +176,9 @@ public class Machine implements Resetable {
         return addressRedirector;
     }
 
-    public byte[] loadMemory(long address, int bytesNum) {
-        return addressRedirector.load(address, bytesNum);
-    }
-
-    public int loadInt(long address) {
-        return addressRedirector.loadInt(address);
-    }
-
     public Statement loadStatement(long address) {
         Memory source = rom == null ? addressRedirector : rom;
-        return Statement.of(source.loadInt(address));
-    }
-
-    public void saveMemory(long address, byte[] data) {
-        addressRedirector.save(address, data);
-    }
-
-    public void saveInt(long address, int data) {
-        addressRedirector.saveInt(address, data);
+        return Statement.of(source.loadWord(address));
     }
 
     public void ticks() {

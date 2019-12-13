@@ -1,9 +1,9 @@
 package indi.key.mipsemulator.controller.component;
 
 import indi.key.mipsemulator.core.controller.Machine;
+import indi.key.mipsemulator.core.controller.TimingRenderer;
 import indi.key.mipsemulator.model.interfaces.Resetable;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
-import indi.key.mipsemulator.core.controller.TimingRenderer;
 import indi.key.mipsemulator.vga.GraphProvider;
 import indi.key.mipsemulator.vga.ScreenProvider;
 import indi.key.mipsemulator.vga.TextProvider;

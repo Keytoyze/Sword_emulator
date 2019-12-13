@@ -181,7 +181,7 @@ public class MemoryController implements CpuCallback, TickCallback {
                     beginAddress + index :
                     beginAddress + index * 4;
             try {
-                byte[] bytes = memory.loadConstantly(address, 4);
+                byte[] bytes = memory.loadConst(address, 4);
                 BitArray bitArray = BitArray.of(bytes);
                 String data = binary ?
                         bitArray.toString().substring(2, 10) :
@@ -198,7 +198,7 @@ public class MemoryController implements CpuCallback, TickCallback {
             } catch (MemoryOutOfBoundsException e) {
                 if (binary) {
                     try {
-                        byte[] bytes = memory.load(address, 1);
+                        byte[] bytes = memory.loadConst(address, 1);
                         return new MemoryBean(address,
                                 BitArray.of(bytes).toString().substring(2, 10), "", bytes);
                     } catch (MemoryOutOfBoundsException ignored) {

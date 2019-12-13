@@ -7,8 +7,6 @@ import indi.key.mipsemulator.core.action.JumpAction;
 import indi.key.mipsemulator.core.action.MemoryAction;
 import indi.key.mipsemulator.core.action.RTypeAction;
 import indi.key.mipsemulator.model.exception.OverflowException;
-import indi.key.mipsemulator.model.info.BitArray;
-import indi.key.mipsemulator.util.IoUtils;
 
 // TODO: currently delay slots and exception handlers are not supported.
 @SuppressWarnings("unused")
@@ -67,21 +65,21 @@ public enum Instruction {
     JALR((JumpAction) (m, statement) -> statement.rsReg.get(), true, DelaySlotType.ALWAYS),
     JR((JumpAction) (m, statement) -> statement.rsReg.get(), DelaySlotType.ALWAYS),
     LB((MemoryAction) (m, address, rt) -> {
-        rt.set(IoUtils.bytesToInt(m.loadMemory(address, 1)));
+        rt.set((int) m.loadByte(address));
     }),
     LBU((MemoryAction) (m, address, rt) -> {
-        rt.set(IoUtils.bytesToUnsignedInt(m.loadMemory(address, 1)));
+        rt.set(((int) m.loadByte(address)) & 0xff);
     }),
     LDC1,
     LDC2,
     LH((MemoryAction) (m, address, rt) -> {
-        rt.set(IoUtils.bytesToInt(m.loadMemory(address, 2)));
+        rt.set((int) m.loadHalf(address));
     }),
     LHU((MemoryAction) (m, address, rt) -> {
-        rt.set(IoUtils.bytesToUnsignedInt(m.loadMemory(address, 2)));
+        rt.set(((int) m.loadByte(address)) & 0xffff);
     }),
     LL((MemoryAction) (m, address, rt) -> {
-        rt.set(m.loadInt(address));
+        rt.set(m.loadWord(address));
     }),
     LUI((ITypeAction) (m, rs, rt, immediate) -> {
         rt.set(immediate.value() << 16);
@@ -135,10 +133,10 @@ public enum Instruction {
     }),
     PREF,
     SB((MemoryAction) (m, address, rt) -> {
-        m.saveMemory(address, BitArray.ofValue(rt.get()).setLength(8).bytes());
+        m.saveByte(address, (byte) rt.get());
     }),
     SC((MemoryAction) (m, address, rt) -> {
-        m.saveInt(address, rt.get());
+        m.saveWord(address, rt.get());
     }),
     // SDBBP
     SDC1,
@@ -146,7 +144,7 @@ public enum Instruction {
     //    SDL,
 //    SDR,
     SH((MemoryAction) (m, address, rt) -> {
-        m.saveMemory(address, BitArray.ofValue(rt.get()).setLength(16).bytes());
+        m.saveHalf(address, (short) rt.get());
     }),
     SLL((RTypeAction) (m, rs, rt, rd, shamt) -> {
         rd.set(rt.get() << shamt);

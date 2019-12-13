@@ -2,7 +2,6 @@ package indi.key.mipsemulator.storage;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Arrays;
 
 import indi.key.mipsemulator.disassemble.CoeReader;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
@@ -62,58 +61,93 @@ public class ByteArrayMemory implements Memory {
         return depth;
     }
 
+    protected void onSave(long address, int length) {
+    }
+
     @Override
-    public void save(long address, byte[] bytes) throws MemoryOutOfBoundsException {
+    public void saveByte(long address, byte data) throws MemoryOutOfBoundsException {
         try {
-            int addrInt = (int) address;
-            switch (bytes.length) {
-                case 4:
-                    memory[addrInt + 3] = bytes[3];
-                    memory[addrInt + 2] = bytes[2];
-                    // Fall
-                case 2:
-                    memory[addrInt + 1] = bytes[1];
-                    // Fall
-                case 1:
-                    memory[addrInt] = bytes[0];
-                    break;
-                default:
-                    System.arraycopy(bytes, 0, memory, addrInt, bytes.length);
-                    break;
-            }
+            memory[(int) address] = data;
+            onSave(address, 1);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new MemoryOutOfBoundsException("Cannot save address: " + Long.toHexString(address));
+            throwOutOfBoundException(address);
         }
     }
 
     @Override
-    public byte[] load(long address, int bytesNum) throws MemoryOutOfBoundsException {
-        return loadConstantly(address, bytesNum);
+    public void saveHalf(long address, short data) throws MemoryOutOfBoundsException {
+        try {
+            memory[(int) address] = (byte) ((data >> 8) & 0xff);
+            memory[(int) address + 1] = (byte) (data & 0xff);
+            onSave(address, 2);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throwOutOfBoundException(address);
+        }
     }
 
     @Override
-    public byte[] loadConstantly(long address, int bytesNum) throws MemoryOutOfBoundsException {
+    public void saveWord(long address, int data) throws MemoryOutOfBoundsException {
         try {
-            int addrInt = (int) address;
-            switch (bytesNum) {
-                case 4:
-                    return new byte[]{memory[addrInt], memory[addrInt + 1], memory[addrInt + 2],
-                            memory[addrInt + 3]};
-                case 2:
-                    return new byte[]{memory[addrInt], memory[addrInt + 1]};
-                case 1:
-                    return new byte[]{memory[addrInt]};
-                default:
-                    return Arrays.copyOfRange(memory, addrInt, addrInt + bytesNum);
-            }
+            memory[(int) address] = (byte) ((data >> 24) & 0xff);
+            memory[(int) address + 1] = (byte) ((data >> 16) & 0xff);
+            memory[(int) address + 2] = (byte) ((data >> 8) & 0xff);
+            memory[(int) address + 3] = (byte) (data & 0xff);
+            onSave(address, 4);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new MemoryOutOfBoundsException("Cannot load address 0x" + Long.toHexString(address)
-                    + " out of limit: 0x" + Long.toHexString(memory.length));
+            throwOutOfBoundException(address);
         }
+    }
+
+    @Override
+    public byte loadByte(long address) throws MemoryOutOfBoundsException {
+        try {
+            return memory[(int) address];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throwOutOfBoundException(address);
+            return 0;
+        }
+    }
+
+    @Override
+    public short loadHalf(long address) throws MemoryOutOfBoundsException {
+        try {
+            short result = 0;
+            result |= (memory[(int) address] << 8) & 0xff;
+            result |= memory[(int) address + 1] & 0xff;
+            return result;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throwOutOfBoundException(address);
+            return 0;
+        }
+    }
+
+    @Override
+    public int loadWord(long address) throws MemoryOutOfBoundsException {
+        try {
+            int result = 0;
+            result |= (memory[(int) address] & 0xff) << 24;
+            result |= (memory[(int) address + 1] & 0xff) << 16;
+            result |= (memory[(int) address + 2] & 0xff) << 8;
+            result |= (memory[(int) address + 3] & 0xff);
+            return result;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throwOutOfBoundException(address);
+            return 0;
+        }
+    }
+
+    @Override
+    public byte loadByteConst(long address) throws MemoryOutOfBoundsException {
+        return loadByte(address);
     }
 
     protected byte[] getAll() {
         return memory;
+    }
+
+    private void throwOutOfBoundException(long address) {
+        throw new MemoryOutOfBoundsException("Cannot access address 0x" + Long.toHexString(address)
+                + " out of limit: 0x" + Long.toHexString(memory.length));
     }
 
     //    void checkBounds(int address) throws MemoryOutOfBoundsException {

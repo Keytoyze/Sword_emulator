@@ -4,11 +4,9 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import indi.key.mipsemulator.core.controller.Machine;
-import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
-import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.info.PS2Key;
-import indi.key.mipsemulator.storage.ByteArrayMemory;
 import indi.key.mipsemulator.storage.MemoryType;
+import indi.key.mipsemulator.storage.RegisterMemory;
 import indi.key.mipsemulator.util.LogUtils;
 import javafx.scene.input.KeyCode;
 
@@ -37,7 +35,7 @@ public class KeyboardController {
         }
     }
 
-    public static class PS2Memory extends ByteArrayMemory {
+    public static class PS2Memory extends RegisterMemory {
 
         private Queue<Byte> keyQueue = new LinkedBlockingQueue<>();
 
@@ -46,23 +44,19 @@ public class KeyboardController {
         }
 
         public PS2Memory(int depth) {
-            super(depth);
+            super();
         }
 
         @Override
-        public byte[] load(long address, int bytesNum) throws MemoryOutOfBoundsException {
+        protected void beforeLoad() {
             Byte key = keyQueue.poll();
-            byte[] bytes = super.load(0, 4);
             if (key != null) {
-                bytes[0] = (byte) 0b10000000;
-                bytes[3] = key;
-                BitArray bitArray = BitArray.of(bytes);
-                LogUtils.m("read PS2 data: " + bitArray.toHexString() + " (" + bitArray.toString() + ")");
+                content.setTo(0, 0b10000000, 8);
+                content.setTo(24, ((int) key) & 0xff, 8);
+                LogUtils.m("read PS2 data: 0x" + content.toHexString() + " (" + content.toString() + ")");
             } else {
-                bytes = BitArray.of(bytes).set(31, false).bytes();
+                content.set(31, false);
             }
-            super.save(0, bytes);
-            return super.load(address, bytesNum);
         }
     }
 }

@@ -2,13 +2,12 @@ package indi.key.mipsemulator.controller.component;
 
 import indi.key.mipsemulator.core.controller.Machine;
 import indi.key.mipsemulator.core.controller.TimingRenderer;
-import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
 import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
+import indi.key.mipsemulator.storage.AlternativeMemory;
 import indi.key.mipsemulator.storage.ByteArrayMemory;
-import indi.key.mipsemulator.storage.Memory;
+import indi.key.mipsemulator.storage.MemorySelectedCallback;
 import indi.key.mipsemulator.storage.MemoryType;
-import indi.key.mipsemulator.util.IoUtils;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -171,7 +170,7 @@ public class SegmentController implements TickCallback {
         });
     }
 
-    public static class SegmentMemory implements Memory {
+    public static class SegmentMemory extends AlternativeMemory {
 
         private ByteArrayMemory highGraph, lowGraph, text;
 
@@ -182,35 +181,29 @@ public class SegmentController implements TickCallback {
         }
 
         @Override
-        public void save(long address, byte[] bytes) throws MemoryOutOfBoundsException {
-            text.save(0, bytes);
-            if ((address & 1) == 0) {
-                lowGraph.save(0, bytes);
+        protected int selectMemory(long address, boolean isRead, int length, MemorySelectedCallback callback, int param) {
+            if (isRead) {
+                return callback.onMemorySelected(text, address, param);
             } else {
-                highGraph.save(0, bytes);
+                if ((address & 1) == 0) {
+                    callback.onMemorySelected(lowGraph, address, param);
+                } else {
+                    callback.onMemorySelected(highGraph, address, param);
+                }
+                return callback.onMemorySelected(text, address, param);
             }
         }
 
-        @Override
-        public byte[] load(long address, int bytesNum) throws MemoryOutOfBoundsException {
-            return text.load(0, bytesNum);
-        }
-
-        @Override
-        public byte[] loadConstantly(long address, int bytesNum) throws MemoryOutOfBoundsException {
-            return load(address, bytesNum);
-        }
-
         int getText() {
-            return IoUtils.bytesToInt(text.load(0, 4));
+            return text.loadWord(0);
         }
 
         int getGraphLow() {
-            return IoUtils.bytesToInt(lowGraph.load(0, 4));
+            return lowGraph.loadWord(0);
         }
 
         int getGraphHigh() {
-            return IoUtils.bytesToInt(highGraph.load(0, 4));
+            return highGraph.loadWord(0);
         }
 
         @Override
