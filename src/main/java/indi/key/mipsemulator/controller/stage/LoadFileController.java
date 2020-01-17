@@ -1,7 +1,5 @@
 package indi.key.mipsemulator.controller.stage;
 
-import com.sun.istack.internal.Nullable;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,9 +30,9 @@ public class LoadFileController implements Initializable {
     public Label romLabel;
 
     private EventHandler<ActionEvent> onRomChecked = event -> {
-        romText.setDisable(multiCheck.isSelected());
-        romButton.setDisable(multiCheck.isSelected());
-        romLabel.setDisable(multiCheck.isSelected());
+        romText.setDisable(isNotSupportRom());
+        romButton.setDisable(isNotSupportRom());
+        romLabel.setDisable(isNotSupportRom());
     };
 
     @Override
@@ -42,18 +40,22 @@ public class LoadFileController implements Initializable {
         Machine machine = Machine.getInstance();
         bind(machine.getRamFile(), ramButton, SwordPrefs.DEFAULT_PATH, ramText);
         bind(machine.getRomFile(), romButton, SwordPrefs.DEFAULT_ROM_PATH, romText);
-        multiCheck.setSelected(machine.getRomFile() == null);
+        multiCheck.setSelected(machine.getRomFile() != null);
         delaySlotCheck.setSelected(machine.isDelaySlotEnable());
 
         multiCheck.setOnAction(onRomChecked);
         onRomChecked.handle(null); // manual disable rom options
 
         loadButton.setOnAction(event -> {
-            File rom = multiCheck.isSelected() ? null : new File(romText.getText());
+            File rom = isNotSupportRom() ? null : new File(romText.getText());
             if (callback.onLoad(new File(ramText.getText()), rom, delaySlotCheck.isSelected())) {
                 FxUtils.getStage(ramText).close();
             }
         });
+    }
+
+    private boolean isNotSupportRom() {
+        return !multiCheck.isSelected();
     }
 
     private void bind(File originFile, Button selectButton, SwordPrefs defaultPath,
@@ -96,7 +98,7 @@ public class LoadFileController implements Initializable {
     }
 
     public interface FileLoadCallback {
-        boolean onLoad(File ram, @Nullable File rom, boolean useDelaySlot);
+        boolean onLoad(File ram, File rom, boolean useDelaySlot);
     }
 
 }

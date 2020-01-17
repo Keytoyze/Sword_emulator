@@ -14,7 +14,7 @@ public class SplitRegisterMemory<T extends Memory> extends AlternativeMemory {
     @Override
     protected int selectMemory(long address, boolean isRead, int length, MemorySelectedCallback callback, int param) {
         T memory = isRead ? readMemory : writeMemory;
-        if (isRead) {
+        if (isRead && callback != MemorySelectedCallback.LOAD_CONST) {
             beforeLoad(memory);
         }
         int re = callback.onMemorySelected(memory, address, param);

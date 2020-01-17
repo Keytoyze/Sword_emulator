@@ -61,20 +61,19 @@
             layoutX="24.0"
             layoutY="174.0"
             mnemonicParsing="false"
-            selected="true"
-            text="使用多周期系统" />
+            text="使用哈佛结构" />
 
         <CheckBox
             fx:id="delaySlotCheck"
             layoutX="24.0"
             layoutY="203.0"
             mnemonicParsing="false"
-            text="使用延迟槽（流水线系统）" />
+            text="使用延迟槽" />
 
         <Label
             fx:id="romLabel"
             layoutX="25.0"
             layoutY="98.0"
-            text="ROM初始化文件：（仅单周期系统可用）" />
+            text="ROM指令初始化文件：（仅哈佛结构可用）" />
     </AnchorPane>
 </VBox>
