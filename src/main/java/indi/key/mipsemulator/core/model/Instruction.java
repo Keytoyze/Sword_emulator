@@ -8,7 +8,7 @@ import indi.key.mipsemulator.core.action.MemoryAction;
 import indi.key.mipsemulator.core.action.RTypeAction;
 import indi.key.mipsemulator.model.exception.OverflowException;
 
-// TODO: currently delay slots and exception handlers are not supported.
+// TODO: currently float number and exception handlers are not supported.
 @SuppressWarnings("unused")
 public enum Instruction {
     ADD((RTypeAction) (m, rs, rt, rd, shamt) -> {
