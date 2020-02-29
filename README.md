@@ -12,7 +12,7 @@ Thanks to Zhanghai for his awesome project [mipsasm](https://github.com/zhanghai
 ![MemoryViewer](./screenshot/MemoryViewer.jpg)
 
 ## usage
-See [here](https://github.com/Keytoyze/Sword_emulator/tree/master/src/res/document/document.pdf).
+See [here](https://github.com/Keytoyze/Sword_emulator/blob/master/document.pdf).
 
 ## Supported Instruction set
 See [here](https://github.com/Keytoyze/Sword_emulator/blob/master/src/indi/key/mipsemulator/core/model/Instruction.java).
