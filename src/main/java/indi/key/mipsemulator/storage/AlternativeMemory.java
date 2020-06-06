@@ -38,7 +38,7 @@ public abstract class AlternativeMemory implements Memory {
 
     @Override
     public byte loadByteConst(long address) throws MemoryOutOfBoundsException {
-        return (byte) selectMemory(address, true, 4, MemorySelectedCallback.LOAD_CONST, 0);
+        return (byte) selectMemory(address, true, 1, MemorySelectedCallback.LOAD_CONST, 0);
     }
 
 }

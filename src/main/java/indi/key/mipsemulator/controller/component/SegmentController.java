@@ -5,9 +5,9 @@ import indi.key.mipsemulator.core.controller.TimingRenderer;
 import indi.key.mipsemulator.model.info.BitArray;
 import indi.key.mipsemulator.model.interfaces.TickCallback;
 import indi.key.mipsemulator.storage.AlternativeMemory;
-import indi.key.mipsemulator.storage.ByteArrayMemory;
 import indi.key.mipsemulator.storage.MemorySelectedCallback;
 import indi.key.mipsemulator.storage.MemoryType;
+import indi.key.mipsemulator.storage.RegisterMemory;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -172,12 +172,12 @@ public class SegmentController implements TickCallback {
 
     public static class SegmentMemory extends AlternativeMemory {
 
-        private ByteArrayMemory highGraph, lowGraph, text;
+        private RegisterMemory highGraph, lowGraph, text;
 
         public SegmentMemory(int depth) {
-            highGraph = new ByteArrayMemory(32);
-            lowGraph = new ByteArrayMemory(32);
-            text = new ByteArrayMemory(32);
+            highGraph = new RegisterMemory();
+            lowGraph = new RegisterMemory();
+            text = new RegisterMemory();
         }
 
         @Override
