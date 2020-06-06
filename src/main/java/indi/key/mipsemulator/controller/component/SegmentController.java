@@ -186,9 +186,9 @@ public class SegmentController implements TickCallback {
                 return callback.onMemorySelected(text, address, param);
             } else {
                 if ((address & 1) == 0) {
-                    callback.onMemorySelected(lowGraph, address, param);
+                    callback.onMemorySelected(lowGraph, 0, param);
                 } else {
-                    callback.onMemorySelected(highGraph, address, param);
+                    callback.onMemorySelected(highGraph, 0, param);
                 }
                 return callback.onMemorySelected(text, address, param);
             }
