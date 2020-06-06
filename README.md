@@ -1,4 +1,10 @@
 # Sword Emulator
+
+[![](https://img.shields.io/github/v/release/Keytoyze/Sword_emulator?color=blue)](https://github.com/Keytoyze/Sword_emulator/releases/latest)
+[![](https://img.shields.io/github/downloads/Keytoyze/Sword_emulator/total)](https://github.com/Keytoyze/Sword_emulator/releases)
+[![](https://img.shields.io/github/issues-closed/Keytoyze/Sword_emulator)](https://github.com/Keytoyze/Sword_emulator/issues)
+[![](https://img.shields.io/github/license/Keytoyze/Sword_emulator)](https://github.com/Keytoyze/Sword_emulator/blob/master/LICENSE)
+
 Java implementation of MIPS instruction set and graphical emulator. 
 It's designed for ZJU SWORD.
 
