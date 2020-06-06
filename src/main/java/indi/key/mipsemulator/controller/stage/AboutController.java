@@ -12,7 +12,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class AboutController implements Initializable {
-    private static final String VERSION_NAME = "1.2.1";
+    private static final String VERSION_NAME = "1.2.2";
     public Hyperlink githubLink;
     public Label versionLabel;
 
