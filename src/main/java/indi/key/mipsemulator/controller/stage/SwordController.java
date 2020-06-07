@@ -367,4 +367,15 @@ public class SwordController implements Initializable {
             FxUtils.showException(e);
         }
     }
+
+    public void onMemorySizeChange(ActionEvent actionEvent) {
+        InputDialogController.run(SwordPrefs.RAM_SIZE.get(), s -> {
+            if (!s.startsWith("0x")) {
+                throw new Exception("Memory size should be a hex number starting with 0x");
+            }
+            SwordPrefs.RAM_SIZE.set("0x" + Integer.toHexString(Integer.parseInt(s.substring(2), 16)).toUpperCase());
+
+            FxUtils.showInfo("请重启软件以生效");
+        }, "设置内存大小 (bytes)");
+    }
 }

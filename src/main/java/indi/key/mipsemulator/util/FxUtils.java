@@ -47,6 +47,12 @@ public class FxUtils {
         information.showAndWait();
     }
 
+    public static void showInfo(String info) {
+        Alert information = new Alert(Alert.AlertType.INFORMATION);
+        information.setHeaderText(info);
+        information.showAndWait();
+    }
+
     public static Stage getStage(Node node) {
         return (Stage) node.getScene().getWindow();
     }

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 
 import indi.key.mipsemulator.disassemble.CoeReader;
 import indi.key.mipsemulator.model.exception.MemoryOutOfBoundsException;
+import indi.key.mipsemulator.util.FxUtils;
 import indi.key.mipsemulator.util.IoUtils;
 
 public class ByteArrayMemory implements Memory {
@@ -53,7 +54,11 @@ public class ByteArrayMemory implements Memory {
                     content = IoUtils.read(initFile);
                     break;
             }
-            System.arraycopy(content, 0, memory, 0, content.length);
+            try {
+                System.arraycopy(content, 0, memory, 0, content.length);
+            } catch (Exception e) {
+                FxUtils.showException(e);
+            }
         }
     }
 

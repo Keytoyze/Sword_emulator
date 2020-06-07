@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
 import indi.key.mipsemulator.util.FxUtils;
 import javafx.application.Platform;
@@ -17,7 +16,7 @@ import javafx.stage.Stage;
 public class InputDialogController implements Initializable {
 
     private static Map<Stage, String> defaultStrings = new HashMap<>();
-    private static Map<Stage, Consumer<String>> callbacks = new HashMap<>();
+    private static Map<Stage, InputCallback> callbacks = new HashMap<>();
     @FXML
     TextField inputText;
     @FXML
@@ -39,8 +38,12 @@ public class InputDialogController implements Initializable {
         });
         okButton.setOnAction(event -> {
             Stage stage = FxUtils.getStage(okButton);
-            callbacks.get(stage).accept(inputText.getText());
-            stage.close();
+            try {
+                callbacks.get(stage).accept(inputText.getText());
+                stage.close();
+            } catch (Exception e) {
+                FxUtils.showException(e);
+            }
         });
         cancelButton.setOnAction(event -> {
             Stage stage = FxUtils.getStage(cancelButton);
@@ -48,10 +51,14 @@ public class InputDialogController implements Initializable {
         });
     }
 
-    public static void run(String defaultString, Consumer<String> returnCallback, String title) {
+    public static void run(String defaultString, InputCallback returnCallback, String title) {
         Stage stage = FxUtils.newStage(null, title, "simple_input_dialog.fxml", null);
         defaultStrings.put(stage, defaultString);
         callbacks.put(stage, returnCallback);
         stage.show();
+    }
+
+    public interface InputCallback {
+        void accept(String content) throws Exception;
     }
 }

@@ -18,7 +18,8 @@ public enum SwordPrefs {
     DIV("8"),
 
     DEFAULT_PATH(""),
-    DEFAULT_ROM_PATH("");
+    DEFAULT_ROM_PATH(""),
+    RAM_SIZE("0x400000");
 
 
     private static Preferences preferences = null;
