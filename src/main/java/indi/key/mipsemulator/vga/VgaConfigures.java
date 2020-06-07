@@ -117,6 +117,7 @@ public class VgaConfigures {
 
     public static void setOnFontChangedCallback(Runnable callback) {
         onFontChangedCallback = callback;
+        onFontChangedCallback.run();
     }
 
     public static Resolution getResolution() {
