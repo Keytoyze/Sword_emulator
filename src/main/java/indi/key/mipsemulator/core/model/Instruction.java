@@ -200,7 +200,7 @@ public enum Instruction {
         rd.set(rs.get() ^ rt.get());
     }),
     XORI((ITypeAction) (m, rs, rt, immediate) -> {
-        rt.set(rt.get() ^ immediate.value());
+        rt.set(rs.get() ^ immediate.value());
     }),
     UNKNOWN;
 
