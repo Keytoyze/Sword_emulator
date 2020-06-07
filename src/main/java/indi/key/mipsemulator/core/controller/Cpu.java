@@ -149,7 +149,11 @@ public class Cpu implements Resetable {
             pc.set(pc.get() + 4);
             // Link the address to $ra
             if (linkNext) {
-                ra.set(pc.get());
+                if (instruction == Instruction.JALR) {
+                    statement.rdReg.set(pc.get());
+                } else {
+                    ra.set(pc.get());
+                }
             }
             action.execute(machine, Cpu.this, statement);
         };
