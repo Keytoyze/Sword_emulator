@@ -6,7 +6,7 @@
 
     <groupId>indi.key.mipsemulator</groupId>
     <artifactId>MipsEmulator</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <build>
         <plugins>
             <plugin>
