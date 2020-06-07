@@ -14,6 +14,9 @@ public class RegisterMemory implements Memory {
     protected void beforeLoad() {
     }
 
+    protected void afterLoad() {
+    }
+
     @Override
     public void saveByte(long address, byte data) throws MemoryOutOfBoundsException {
         checkOutOfBound(address, 1);
@@ -35,19 +38,25 @@ public class RegisterMemory implements Memory {
     @Override
     public byte loadByte(long address) throws MemoryOutOfBoundsException {
         beforeLoad();
-        return loadByteConst(address);
+        byte result = loadByteConst(address);
+        afterLoad();
+        return result;
     }
 
     @Override
     public short loadHalf(long address) throws MemoryOutOfBoundsException {
         beforeLoad();
-        return (short) ((content.value() >>> (address * 8)) & 0xffff);
+        short result = (short) ((content.value() >>> (address * 8)) & 0xffff);
+        afterLoad();
+        return result;
     }
 
     @Override
     public int loadWord(long address) throws MemoryOutOfBoundsException {
         beforeLoad();
-        return content.value() >>> (address * 8);
+        int result = content.value() >>> (address * 8);
+        afterLoad();
+        return result;
     }
 
     @Override

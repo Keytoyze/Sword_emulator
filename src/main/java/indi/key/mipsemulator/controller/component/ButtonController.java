@@ -73,7 +73,7 @@ public class ButtonController {
         }
 
         @Override
-        protected void beforeLoad() {
+        protected void afterLoad() {
             content.set(31, false);
         }
     }
