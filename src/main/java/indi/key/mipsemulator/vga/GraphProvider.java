@@ -31,8 +31,8 @@ public class GraphProvider extends ScreenProvider {
             if (provider != null) {
                 int initAddr = (int) (address - address % 2);
                 for (int i = initAddr; i < address + length; i += 2) {
-                    byte firstByte = loadByte(address);
-                    byte secondByte = loadByte(address + 1);
+                    byte firstByte = loadByte(i);
+                    byte secondByte = loadByte(i + 1);
                     int index = i * 2;
                     byte b = (byte) (secondByte & 0xf);
                     byte g = (byte) ((secondByte & 0xf0) >>> 4);
