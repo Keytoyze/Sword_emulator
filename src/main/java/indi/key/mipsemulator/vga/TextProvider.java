@@ -19,11 +19,11 @@ public class TextProvider extends ScreenProvider {
         ((TextVram) machine.getAddressRedirector().getMemory(MemoryType.VRAM_TEXT)).registerProvider(this);
     }
 
-
     public static class TextVram extends ByteArrayMemory {
 
         private VgaConfigures.Font preFont = VgaConfigures.Font.EN_8_8;
         private TextProvider provider = null;
+        private CharacterBean[] characterCache = null;
 
         public TextVram(int depth) {
             super(depth);
@@ -84,6 +84,14 @@ public class TextProvider extends ScreenProvider {
 
         private void drawCharacter(int fontWidth, int fontHeight, int index, byte[] wordStocks,
                                    int address, int fb, int fg, int fr, int bb, int bg, int br, int rawWidth) {
+            // save cache to avoid redundant drawing
+            CharacterBean cache = characterCache[index];
+            if (cache != null && cache.address == address && cache.fb == fb && cache.fg == fg
+                    && cache.fr == fr && cache.bb == bb && cache.bg == bg && cache.br == br) {
+                return;
+            }
+            characterCache[index] = new CharacterBean(address, fb, fg, fr, bb, bg, br);
+
             int numberPerLine = VgaController.WIDTH / fontWidth;
             int indexX = index / 4 % numberPerLine;
             int indexY = index / 4 / numberPerLine;
@@ -116,6 +124,26 @@ public class TextProvider extends ScreenProvider {
                     pointIndex++;
                 }
             }
+        }
+
+        @Override
+        public void reset() {
+            super.reset();
+            characterCache = new CharacterBean[getDepth()];
+        }
+    }
+
+    private static class CharacterBean {
+        int address, fb, fg, fr, bb, bg, br;
+
+        CharacterBean(int address, int fb, int fg, int fr, int bb, int bg, int br) {
+            this.address = address;
+            this.fb = fb;
+            this.fg = fg;
+            this.fr = fr;
+            this.bb = bb;
+            this.bg = bg;
+            this.br = br;
         }
     }
 
