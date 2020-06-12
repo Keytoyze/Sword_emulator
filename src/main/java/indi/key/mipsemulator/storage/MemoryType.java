@@ -22,7 +22,7 @@ public enum MemoryType {
             return 0x400000;
         }
     }),
-    VRAM_TEXT(TextProvider.TextVram::new, SwordPrefs.VRAM_TEXT, () -> 80 * 60 * 2),
+    VRAM_TEXT(TextProvider.TextVram::new, SwordPrefs.VRAM_TEXT, () -> 80 * 60 * 8),
     VRAM_GRAPH(GraphProvider.GraphVram::new, SwordPrefs.VRAM_GRAPH, () -> 640 * 480 * 2),
     SEGMENT(SegmentController.SegmentMemory::new,
             SwordPrefs.SEGMENT, () -> 0x100),
