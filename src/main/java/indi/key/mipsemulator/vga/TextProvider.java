@@ -11,9 +11,11 @@ public class TextProvider extends ScreenProvider {
 
     private byte[] asciiStocks;
     private byte[] gbkStocks;
+    private Machine machine;
 
     public TextProvider(Machine machine) {
         super(machine);
+        this.machine = machine;
         asciiStocks = IoUtils.read("/font/ASCII_8.bin");
         gbkStocks = IoUtils.read("/font/HZK_16.bin");
         ((TextVram) machine.getAddressRedirector().getMemory(MemoryType.VRAM_TEXT)).registerProvider(this);
@@ -31,6 +33,16 @@ public class TextProvider extends ScreenProvider {
 
         void registerProvider(TextProvider provider) {
             this.provider = provider;
+        }
+
+        public void redrawCursor(int preCursorIndex, int afterCursorIndex) {
+            long address1 = preCursorIndex * 4;
+            long address2 = afterCursorIndex * 4;
+            if (address2 > getDepth() || address1 > getDepth() || address1 < 0 || address2 < 0) {
+                return;
+            }
+            onSave(address1, 4);
+            onSave(address2, 4);
         }
 
         @Override
@@ -84,6 +96,15 @@ public class TextProvider extends ScreenProvider {
 
         private void drawCharacter(int fontWidth, int fontHeight, int index, byte[] wordStocks,
                                    int address, int fb, int fg, int fr, int bb, int bg, int br, int rawWidth) {
+            int charIndex = index / 4;
+            if (provider.machine.shouldReverseCursor(charIndex)) {
+                fb = ~fb;
+                fg = ~fg;
+                fr = ~fr;
+                bb = ~bb;
+                bg = ~bg;
+                br = ~br;
+            }
             // save cache to avoid redundant drawing
             CharacterBean cache = characterCache[index];
             if (cache != null && cache.address == address && cache.fb == fb && cache.fg == fg
@@ -93,8 +114,8 @@ public class TextProvider extends ScreenProvider {
             characterCache[index] = new CharacterBean(address, fb, fg, fr, bb, bg, br);
 
             int numberPerLine = VgaController.WIDTH / fontWidth;
-            int indexX = index / 4 % numberPerLine;
-            int indexY = index / 4 / numberPerLine;
+            int indexX = charIndex % numberPerLine;
+            int indexY = charIndex / numberPerLine;
             int foldX = fontWidth / rawWidth;
             int foldY = fontHeight / rawWidth;
             int marginX = indexX * fontWidth;

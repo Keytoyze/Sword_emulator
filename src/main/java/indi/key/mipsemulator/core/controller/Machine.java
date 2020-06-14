@@ -2,6 +2,7 @@ package indi.key.mipsemulator.core.controller;
 
 import java.io.File;
 
+import indi.key.mipsemulator.controller.component.VgaController;
 import indi.key.mipsemulator.core.model.CpuStatistics;
 import indi.key.mipsemulator.core.model.Statement;
 import indi.key.mipsemulator.model.info.BitArray;
@@ -14,6 +15,8 @@ import indi.key.mipsemulator.storage.MemoryType;
 import indi.key.mipsemulator.storage.Register;
 import indi.key.mipsemulator.storage.RegisterType;
 import indi.key.mipsemulator.util.LogUtils;
+import indi.key.mipsemulator.vga.TextProvider;
+import indi.key.mipsemulator.vga.VgaConfigures;
 
 public class Machine implements Resetable {
 
@@ -29,6 +32,11 @@ public class Machine implements Resetable {
     private BitArray led;
     private Register hi = new Register(RegisterType.HI);
     private Register lo = new Register(RegisterType.LO);
+    // for cursor
+    private int cursorIndex = -1;
+    private int cursorX = -1;
+    private int cursorY = -1;
+    private boolean blink = false;
 
     public static Machine getInstance() {
         if (instance == null) {
@@ -212,4 +220,34 @@ public class Machine implements Resetable {
         this.switches = bitArray;
     }
 
+    public void setCursor(BitArray cursorX, BitArray cursorY) {
+        if (this.cursorX != cursorX.value() || this.cursorY != cursorY.value()) {
+            this.cursorX = cursorX.value();
+            this.cursorY = cursorY.value();
+            updateCursor();
+        }
+    }
+
+    public void blink() {
+        blink = !blink;
+        updateCursor();
+    }
+
+    public boolean shouldReverseCursor(int index) {
+        if (!blink) {
+            return false;
+        }
+        return index == this.cursorIndex;
+    }
+
+    private void updateCursor() {
+        if (this.cursorX < 0 || this.cursorY < 0) {
+            return;
+        }
+        int lineNum = VgaController.WIDTH / VgaConfigures.getFont().getWidth();
+        int beforeCursorIndex = this.cursorIndex;
+        this.cursorIndex = lineNum * this.cursorY + this.cursorX;
+        TextProvider.TextVram textVram = (TextProvider.TextVram) addressRedirector.getMemory(MemoryType.VRAM_TEXT);
+        textVram.redrawCursor(beforeCursorIndex, this.cursorIndex);
+    }
 }

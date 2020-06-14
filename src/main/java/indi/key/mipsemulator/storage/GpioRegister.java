@@ -6,6 +6,8 @@ import indi.key.mipsemulator.model.info.BitArray;
 public class GpioRegister extends SplitRegisterMemory<RegisterMemory> {
 
     private BitArray ledData = BitArray.ofEmpty();
+    private BitArray cursorX = BitArray.ofEmpty();
+    private BitArray cursorY = BitArray.ofEmpty();
 
     public GpioRegister(int length) {
         super(new RegisterMemory(), new RegisterMemory());
@@ -27,6 +29,9 @@ public class GpioRegister extends SplitRegisterMemory<RegisterMemory> {
     public void onSave(RegisterMemory memory) {
         Machine machine = Machine.getInstance();
         memory.getBitArray().subArray(2, 18, ledData);
+        memory.getBitArray().subArray(18, 25, cursorX);
+        memory.getBitArray().subArray(25, 32, cursorY);
+        machine.setCursor(cursorX, cursorY);
         machine.setLed(ledData);
     }
 }

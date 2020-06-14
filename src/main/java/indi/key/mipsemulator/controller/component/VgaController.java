@@ -52,6 +52,10 @@ public class VgaController implements TickCallback, Resetable {
             ScreenProvider currentProvider = VgaConfigures.isTextMode() ? textProvider : graphProvider;
             content.getPixelWriter().setPixels(0, 0, WIDTH, HEIGHT, PixelFormat.getByteBgraPreInstance()
                     , currentProvider.get(), 0, WIDTH * 4);
+            // blink cursor
+            if (ticks % 10 == 0) {
+                machine.blink();
+            }
         });
 
     }
